@@ -6,15 +6,15 @@ import (
 )
 
 func CalcularDigitosCpf(cpf string) [2]int {
-	var digitosVerificadoresCpf [2]int
 	digitosBase := obterDigitosCpf(cpf)
+	var digitosVerificadoresCpf [2]int
 	var digitosCpf [10]int
-	for i, _ := range digitosBase {
+	for i := range digitosBase {
 		digitosCpf[i] = digitosBase[i]
 	}
 	digitosVerificadoresCpf[0] =
-		calcularPrimeiroDigitoCpf(obterDigitosCpf(cpf))
-	digitosCpf[9] = calcularPrimeiroDigitoCpf(obterDigitosCpf(cpf))
+		calcularPrimeiroDigitoCpf(digitosBase)
+	digitosCpf[9] = calcularPrimeiroDigitoCpf(digitosBase)
 	digitosVerificadoresCpf[1] = calcularSegundoDigitoCpf(digitosCpf)
 	return digitosVerificadoresCpf
 }
@@ -54,9 +54,12 @@ func calcularSegundoDigitoCpf(digitosCpf [10]int) int {
 }
 
 func obterDigitosCpf(cpf string) [9]int {
-	cpf = reterNumeros(cpf, 9)
+	cpf = ReterNumeros(cpf, 9)
+	if len(cpf) < 9 {
+		log.Fatal("o CPF informado deve ter no mínimo 9 dígitos")
+	}
 	var digitosCpf [9]int
-	for i, _ := range cpf {
+	for i := range cpf {
 		digito, err := strconv.Atoi(cpf[i : i+1])
 		if err != nil {
 			log.Fatal(err)
@@ -66,7 +69,7 @@ func obterDigitosCpf(cpf string) [9]int {
 	return digitosCpf
 }
 
-func reterNumeros(cpf string, limite int) string {
+func ReterNumeros(cpf string, limite int) string {
 	if limite == 0 {
 		limite = len(cpf)
 	}
@@ -83,10 +86,3 @@ func reterNumeros(cpf string, limite int) string {
 	}
 	return stringNumerica
 }
-
-// func main() {
-// fmt.Println(reterNumeros("111.444.777-35", 9))
-// fmt.Println(obterDigitosCpf("111.444.777-35"))
-// fmt.Println(calcularDigitoCpf(obterDigitosCpf("111.444.777-35")))
-// fmt.Println(CalcularDigitosCpf("111.444.777-35"))
-// }
