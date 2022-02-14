@@ -1,8 +1,6 @@
 class Cpf:
     def marcar(cpf):
-        n_cpf = Cpf.reter_numeros(cpf)
-        assert type(n_cpf) == int
-        n_cpf = str(n_cpf)
+        n_cpf = str(Cpf.reter_numeros(cpf, True))
         if len(n_cpf) != 11:
             return False
         n_cpf = Cpf.adicionar_separador(n_cpf, 2)
