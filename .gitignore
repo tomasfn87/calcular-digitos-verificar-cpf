@@ -1,0 +1,7 @@
+# typescript
+/typescript/node_modules
+/typescript/package-lock.json
+
+# python
+/python/__pycache__
+/python/.vscode/
