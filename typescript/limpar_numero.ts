@@ -12,7 +12,7 @@ forem números, covertidos para string, e então concatenados a uma
 variável. Caso "limpar_numero" receba um número, o mesmo será
 convertido em string.
     Uma vez obtida uma string a partir do argumento recebido, os
-caracteres da mesma será checados se são números de 0 a 9: em caso
+caracteres da mesma serão checados se são números de 0 a 9: em caso
 positivo, serão concatenados a uma variável, que será retornada ao
 final da execução.
 */
