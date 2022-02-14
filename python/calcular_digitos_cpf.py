@@ -14,8 +14,9 @@ def calcular_digitos(cpf):
     resultado1 = "CPF informado: {}".format(cpf_informado)
     
     resultado2 = "CPF completo:  {}".format(
-        Cpf.marcar(int(str(cpf[:9]) + str(digitos[0]) + str(digitos[1])))
+        Cpf.marcar(str(cpf[:9]) + str(digitos[0]) + str(digitos[1]))
     )
+    
     
     print(resultado1)
     print(resultado2)
