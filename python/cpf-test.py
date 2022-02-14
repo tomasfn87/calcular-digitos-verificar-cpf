@@ -86,16 +86,20 @@ class TestCpf:
         assert C.adicionar_separador(numero, posicao, separador) == resultado
     
     @pytest.mark.parametrize("numero, resultado", [
-        ("123.456.789-01",                 12345678901),
-        ("+55(11)98765-4321)",             5511987654321),
-        ("!S01234567890E~^",               1234567890),
-        ("afduhas3fdiuha2sduf1hasdjfhasd", 321),
-        ("papagaio",                       "papagaio"),
+        ("123.456.789-01",                   12345678901),
+        ("-123.456.789-01",                  -12345678901),
+        ("+55(11)98765-4321)",               5511987654321),
+        ("-+55(11)98765-4321)",              -5511987654321),
+        ("!S01234567890E~^",                 1234567890),
+        ("afduhas3fdiuha2sduf1hasdjfhasd",   321),
+        ("papagaio",                         "papagaio"),
         ('{"nome": "arara", "tipo": "ave"}', '{"nome": "arara", "tipo": "ave"}'),
         ('{"nome": "arara", "peso_kg": 12}', 12),
-        ("-ahsdfasofd-1", -1),
-        (0,                                0),
-        (1,                                1)
+        ("-ahsdfasofd-1",                    -1),
+        (0,                                  0),
+        (1,                                  1),
+        ('01',                               1),
+        ('0',                                0),
     ])
     def test_cpf_reter_numeros_simples(self, numero, resultado, C):
         assert C.reter_numeros(numero) == resultado
