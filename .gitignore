@@ -4,4 +4,6 @@
 
 # python
 /python/__pycache__
-/python/.vscode/
+
+# vscode
+*.vscode/
