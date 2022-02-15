@@ -7,7 +7,7 @@ import (
 )
 
 func VerificarCpf(cpf string) bool {
-	cpf = ReterNumeros(cpf, 11)
+	cpf = NewDigitos(cpf, 11).ReterNumeros()
 	if len(cpf) < 11 {
 		log.Fatal("o CPF informado deve ter 11 dígitos")
 	}
