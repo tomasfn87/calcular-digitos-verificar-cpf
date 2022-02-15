@@ -6,23 +6,40 @@ import (
 	"strconv"
 )
 
-func CalcularDigitosCpf(cpf string) [2]int {
-	cpf = ReterNumeros(cpf, 9)
-	if len(cpf) < 9 {
-		log.Fatal("o CPF informado deve ter no mínimo 9 dígitos")
+type Digitos struct {
+	cpf    string
+	limite int
+}
+
+func NewDigitos(cpf string, limite int) *Digitos {
+	return &Digitos{cpf, limite}
+}
+
+func (d *Digitos) ReterNumeros() string {
+	if d.limite <= 0 {
+		d.limite = len(d.cpf)
 	}
-	digitosBaseCpf := obterDigitosCpf(cpf)
-	var digitosCpf [10]int
-	copy(digitosCpf[:], digitosBaseCpf[:])
-	var DVsCpf [2]int
-	DVsCpf[0] = calcularPrimeiroDV(digitosBaseCpf)
-	digitosCpf[9] = DVsCpf[0]
-	DVsCpf[1] = calcularSegundoDV(digitosCpf)
-	cpfInformado := fmt.Sprintf("%s.%s.%s", cpf[0:3], cpf[3:6], cpf[6:9])
-	cpfCompleto := fmt.Sprintf("%s-%d%d", cpfInformado, DVsCpf[0], DVsCpf[1])
-	fmt.Printf("CPF informado: %s\n", cpfInformado)
-	fmt.Printf("CPF completo : %s\n", cpfCompleto)
-	return DVsCpf
+	stringNumerica := ""
+	n_digitos := 0
+	for j, charCode := range d.cpf {
+		if n_digitos == d.limite {
+			break
+		}
+		if charCode >= 48 && charCode <= 57 {
+			stringNumerica += d.cpf[j : j+1]
+			n_digitos++
+		}
+	}
+	return stringNumerica
+}
+
+func obterDigitosCpf(cpf string) [9]int {
+	var digitosCpf [9]int
+	for i := range cpf {
+		digito, _ := strconv.Atoi(cpf[i : i+1])
+		digitosCpf[i] = digito
+	}
+	return digitosCpf
 }
 
 func calcularDVCpf(digitosCpf []int) int {
@@ -50,29 +67,21 @@ func calcularSegundoDV(digitosCpf [10]int) int {
 	return calcularDVCpf(digitosCpf[:])
 }
 
-func obterDigitosCpf(cpf string) [9]int {
-	var digitosCpf [9]int
-	for i := range cpf {
-		digito, _ := strconv.Atoi(cpf[i : i+1])
-		digitosCpf[i] = digito
+func CalcularDigitosCpf(cpf string) [2]int {
+	cpf = NewDigitos(cpf, 9).ReterNumeros()
+	if len(cpf) < 9 {
+		log.Fatal("o CPF informado deve ter no mínimo 9 dígitos")
 	}
-	return digitosCpf
-}
-
-func ReterNumeros(cpf string, limite int) string {
-	if limite <= 0 {
-		limite = len(cpf)
-	}
-	stringNumerica := ""
-	n_digitos := 0
-	for j, charCode := range cpf {
-		if n_digitos == limite {
-			break
-		}
-		if charCode >= 48 && charCode <= 57 {
-			stringNumerica += cpf[j : j+1]
-			n_digitos++
-		}
-	}
-	return stringNumerica
+	digitosBaseCpf := obterDigitosCpf(cpf)
+	var digitosCpf [10]int
+	copy(digitosCpf[:], digitosBaseCpf[:])
+	var DVsCpf [2]int
+	DVsCpf[0] = calcularPrimeiroDV(digitosBaseCpf)
+	digitosCpf[9] = DVsCpf[0]
+	DVsCpf[1] = calcularSegundoDV(digitosCpf)
+	cpfInformado := fmt.Sprintf("%s.%s.%s", cpf[0:3], cpf[3:6], cpf[6:9])
+	cpfCompleto := fmt.Sprintf("%s-%d%d", cpfInformado, DVsCpf[0], DVsCpf[1])
+	fmt.Printf("CPF informado: %s\n", cpfInformado)
+	fmt.Printf("CPF completo : %s\n", cpfCompleto)
+	return DVsCpf
 }
