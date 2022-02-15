@@ -9,17 +9,14 @@ func CalcularDigitosCpf(cpf string) [2]int {
 	digitosBase := obterDigitosCpf(cpf)
 	var digitosVerificadoresCpf [2]int
 	var digitosCpf [10]int
-	for i := range digitosBase {
-		digitosCpf[i] = digitosBase[i]
-	}
-	digitosVerificadoresCpf[0] =
-		calcularPrimeiroDigitoCpf(digitosBase)
-	digitosCpf[9] = calcularPrimeiroDigitoCpf(digitosBase)
+	copy(digitosCpf[:], digitosBase[:])
+	digitosVerificadoresCpf[0] = calcularPrimeiroDigitoCpf(digitosBase)
+	digitosCpf[9] = digitosVerificadoresCpf[0]
 	digitosVerificadoresCpf[1] = calcularSegundoDigitoCpf(digitosCpf)
 	return digitosVerificadoresCpf
 }
 
-func calcularPrimeiroDigitoCpf(digitosCpf [9]int) int {
+func calcularDigitoCpf(digitosCpf []int) int {
 	multiplicador := len(digitosCpf) + 1
 	for i := 0; i < len(digitosCpf); i++ {
 		digitosCpf[i] *= multiplicador
@@ -36,21 +33,12 @@ func calcularPrimeiroDigitoCpf(digitosCpf [9]int) int {
 	return 11 - somaAposMultiplicacao
 }
 
+func calcularPrimeiroDigitoCpf(digitosCpf [9]int) int {
+	return calcularDigitoCpf(digitosCpf[:])
+}
+
 func calcularSegundoDigitoCpf(digitosCpf [10]int) int {
-	multiplicador := len(digitosCpf) + 1
-	for i := 0; i < len(digitosCpf); i++ {
-		digitosCpf[i] *= multiplicador
-		multiplicador -= 1
-	}
-	somaAposMultiplicacao := 0
-	for j := 0; j < len(digitosCpf); j++ {
-		somaAposMultiplicacao += digitosCpf[j]
-		somaAposMultiplicacao %= 11
-	}
-	if somaAposMultiplicacao < 2 {
-		return 0
-	}
-	return 11 - somaAposMultiplicacao
+	return calcularDigitoCpf(digitosCpf[:])
 }
 
 func obterDigitosCpf(cpf string) [9]int {
@@ -60,10 +48,7 @@ func obterDigitosCpf(cpf string) [9]int {
 	}
 	var digitosCpf [9]int
 	for i := range cpf {
-		digito, err := strconv.Atoi(cpf[i : i+1])
-		if err != nil {
-			log.Fatal(err)
-		}
+		digito, _ := strconv.Atoi(cpf[i : i+1])
 		digitosCpf[i] = digito
 	}
 	return digitosCpf
