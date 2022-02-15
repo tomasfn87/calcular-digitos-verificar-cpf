@@ -7,19 +7,19 @@ import (
 )
 
 func Test_ReterNumeros_1(t *testing.T) {
-	assert.Equal(t, "111444777", ReterNumeros("111.444.777", 9))
+	assert.Equal(t, "111444777", NewDigitos("111.444.777", 9).ReterNumeros())
 }
 
 func Test_ReterNumeros_2(t *testing.T) {
-	assert.Equal(t, "111444777", ReterNumeros("111.444.777-35", 9))
+	assert.Equal(t, "111444777", NewDigitos("111.444.777-35", 9).ReterNumeros())
 }
 
 func Test_ReterNumeros_3(t *testing.T) {
-	assert.Equal(t, "11144477735", ReterNumeros("111.444.777-35", 11))
+	assert.Equal(t, "11144477735", NewDigitos("111.444.777-35", 11).ReterNumeros())
 }
 
 func Test_ReterNumeros_4(t *testing.T) {
-	assert.Equal(t, "11144477735", ReterNumeros("111.444.777-354", 11))
+	assert.Equal(t, "11144477735", NewDigitos("111.444.777-354", 11).ReterNumeros())
 }
 
 func Test_CalcularDigitosCpf_1(t *testing.T) {
