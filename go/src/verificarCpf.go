@@ -1,6 +1,7 @@
 package cpf
 
 import (
+	"fmt"
 	"log"
 	"strconv"
 )
@@ -16,5 +17,13 @@ func VerificarCpf(cpf string) bool {
 	digitosRecebidos[0] = primeiroDigito
 	digitosRecebidos[1] = segundoDigito
 	digitosCalculados := CalcularDigitosCpf(cpf)
-	return digitosRecebidos == digitosCalculados
+	cpfCompleto := fmt.Sprintf("%s.%s.%s-%d%d", cpf[0:3], cpf[3:6], cpf[6:9],
+		digitosCalculados[0], digitosCalculados[1])
+	resultado, validez := "inválido", false
+	if digitosRecebidos == digitosCalculados {
+		resultado, validez = "válido", !validez
+	}
+	fmt.Printf("O CPF %s-%d%d é %s.\n", cpfCompleto[:11],
+		digitosRecebidos[0], digitosRecebidos[1], resultado)
+	return validez
 }

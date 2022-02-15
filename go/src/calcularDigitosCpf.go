@@ -8,6 +8,9 @@ import (
 
 func CalcularDigitosCpf(cpf string) [2]int {
 	cpf = ReterNumeros(cpf, 9)
+	if len(cpf) < 9 {
+		log.Fatal("o CPF informado deve ter no mínimo 9 dígitos")
+	}
 	digitosBase := obterDigitosCpf(cpf)
 	var digitosVerificadoresCpf [2]int
 	var digitosCpf [10]int
@@ -49,9 +52,6 @@ func calcularSegundoDigitoCpf(digitosCpf [10]int) int {
 }
 
 func obterDigitosCpf(cpf string) [9]int {
-	if len(cpf) < 9 {
-		log.Fatal("o CPF informado deve ter no mínimo 9 dígitos")
-	}
 	var digitosCpf [9]int
 	for i := range cpf {
 		digito, _ := strconv.Atoi(cpf[i : i+1])
