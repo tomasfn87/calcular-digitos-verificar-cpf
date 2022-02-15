@@ -1,11 +1,13 @@
 package cpf
 
 import (
+	"fmt"
 	"log"
 	"strconv"
 )
 
 func CalcularDigitosCpf(cpf string) [2]int {
+	cpf = ReterNumeros(cpf, 9)
 	digitosBase := obterDigitosCpf(cpf)
 	var digitosVerificadoresCpf [2]int
 	var digitosCpf [10]int
@@ -13,6 +15,11 @@ func CalcularDigitosCpf(cpf string) [2]int {
 	digitosVerificadoresCpf[0] = calcularPrimeiroDigitoCpf(digitosBase)
 	digitosCpf[9] = digitosVerificadoresCpf[0]
 	digitosVerificadoresCpf[1] = calcularSegundoDigitoCpf(digitosCpf)
+	cpfInformado := fmt.Sprintf("%s.%s.%s", cpf[0:3], cpf[3:6], cpf[6:9])
+	cpfCompleto := fmt.Sprintf("%s-%d%d", cpfInformado,
+		digitosVerificadoresCpf[0], digitosVerificadoresCpf[1])
+	fmt.Printf("CPF informado: %s\n", cpfInformado)
+	fmt.Printf("CPF completo : %s\n", cpfCompleto)
 	return digitosVerificadoresCpf
 }
 
@@ -42,7 +49,6 @@ func calcularSegundoDigitoCpf(digitosCpf [10]int) int {
 }
 
 func obterDigitosCpf(cpf string) [9]int {
-	cpf = ReterNumeros(cpf, 9)
 	if len(cpf) < 9 {
 		log.Fatal("o CPF informado deve ter no mínimo 9 dígitos")
 	}
