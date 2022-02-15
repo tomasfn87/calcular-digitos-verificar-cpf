@@ -11,44 +11,43 @@ func CalcularDigitosCpf(cpf string) [2]int {
 	if len(cpf) < 9 {
 		log.Fatal("o CPF informado deve ter no mínimo 9 dígitos")
 	}
-	digitosBase := obterDigitosCpf(cpf)
-	var digitosVerificadoresCpf [2]int
+	digitosBaseCpf := obterDigitosCpf(cpf)
 	var digitosCpf [10]int
-	copy(digitosCpf[:], digitosBase[:])
-	digitosVerificadoresCpf[0] = calcularPrimeiroDigitoCpf(digitosBase)
-	digitosCpf[9] = digitosVerificadoresCpf[0]
-	digitosVerificadoresCpf[1] = calcularSegundoDigitoCpf(digitosCpf)
+	copy(digitosCpf[:], digitosBaseCpf[:])
+	var DVsCpf [2]int
+	DVsCpf[0] = calcularPrimeiroDV(digitosBaseCpf)
+	digitosCpf[9] = DVsCpf[0]
+	DVsCpf[1] = calcularSegundoDV(digitosCpf)
 	cpfInformado := fmt.Sprintf("%s.%s.%s", cpf[0:3], cpf[3:6], cpf[6:9])
-	cpfCompleto := fmt.Sprintf("%s-%d%d", cpfInformado,
-		digitosVerificadoresCpf[0], digitosVerificadoresCpf[1])
+	cpfCompleto := fmt.Sprintf("%s-%d%d", cpfInformado, DVsCpf[0], DVsCpf[1])
 	fmt.Printf("CPF informado: %s\n", cpfInformado)
 	fmt.Printf("CPF completo : %s\n", cpfCompleto)
-	return digitosVerificadoresCpf
+	return DVsCpf
 }
 
-func calcularDigitoCpf(digitosCpf []int) int {
+func calcularDVCpf(digitosCpf []int) int {
 	multiplicador := len(digitosCpf) + 1
 	for i := 0; i < len(digitosCpf); i++ {
 		digitosCpf[i] *= multiplicador
 		multiplicador -= 1
 	}
-	somaAposMultiplicacao := 0
+	soma := 0
 	for j := 0; j < len(digitosCpf); j++ {
-		somaAposMultiplicacao += digitosCpf[j]
-		somaAposMultiplicacao %= 11
+		soma += digitosCpf[j]
+		soma %= 11
 	}
-	if somaAposMultiplicacao < 2 {
+	if soma < 2 {
 		return 0
 	}
-	return 11 - somaAposMultiplicacao
+	return 11 - soma
 }
 
-func calcularPrimeiroDigitoCpf(digitosCpf [9]int) int {
-	return calcularDigitoCpf(digitosCpf[:])
+func calcularPrimeiroDV(digitosCpf [9]int) int {
+	return calcularDVCpf(digitosCpf[:])
 }
 
-func calcularSegundoDigitoCpf(digitosCpf [10]int) int {
-	return calcularDigitoCpf(digitosCpf[:])
+func calcularSegundoDV(digitosCpf [10]int) int {
+	return calcularDVCpf(digitosCpf[:])
 }
 
 func obterDigitosCpf(cpf string) [9]int {
