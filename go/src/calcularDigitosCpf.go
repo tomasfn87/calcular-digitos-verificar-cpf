@@ -60,7 +60,7 @@ func obterDigitosCpf(cpf string) [9]int {
 }
 
 func ReterNumeros(cpf string, limite int) string {
-	if limite == 0 {
+	if limite <= 0 {
 		limite = len(cpf)
 	}
 	stringNumerica := ""
