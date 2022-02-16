@@ -10,10 +10,11 @@ import (
 func main() {
 	option := os.Args[1]
 	inputCpf := os.Args[2]
+	cpfUsuario := cpf.NewCpf(cpf.Cpf{Cpf: inputCpf})
 	if option == "cdcpf" {
-		fmt.Println(cpf.CalcularDigitosCpf(inputCpf))
+		fmt.Println(cpfUsuario.CalcularDigitosCpf())
 	} else if option == "vcpf" {
-		fmt.Println(cpf.VerificarCpf(inputCpf))
+		fmt.Println(cpfUsuario.VerificarCpf())
 	} else {
 		return
 	}
