@@ -82,6 +82,6 @@ func CalcularDigitosCpf(cpf string) [2]int {
 	cpfInformado := fmt.Sprintf("%s.%s.%s", cpf[0:3], cpf[3:6], cpf[6:9])
 	cpfCompleto := fmt.Sprintf("%s-%d%d", cpfInformado, DVsCpf[0], DVsCpf[1])
 	fmt.Printf("CPF informado: %s\n", cpfInformado)
-	fmt.Printf("CPF completo : %s\n", cpfCompleto)
+	fmt.Printf("CPF completo:  %s\n", cpfCompleto)
 	return DVsCpf
 }
