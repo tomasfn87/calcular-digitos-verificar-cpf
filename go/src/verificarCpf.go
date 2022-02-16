@@ -21,7 +21,7 @@ func VerificarCpf(cpf string) bool {
 		digitosCalculados[0], digitosCalculados[1])
 	resultado, validez := "inválido", false
 	if digitosRecebidos == digitosCalculados {
-		resultado, validez = "válido", !validez
+		resultado, validez = resultado[2:], !validez
 	}
 	fmt.Printf("O CPF %s-%d%d é %s.\n", cpfCompleto[:11],
 		digitosRecebidos[0], digitosRecebidos[1], resultado)
