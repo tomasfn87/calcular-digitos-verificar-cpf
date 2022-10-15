@@ -21,16 +21,19 @@ class Cpf:
         if dv < 2:
             return 0
         return 11 - dv
-    
+
     def obter_dvs(cpf):
         cpf = Cpf.reter_numeros(cpf, True)
         digitos_cpf = Cpf.obter_lista_digitos(cpf, 9)
         primeiro_dv_cpf = Cpf.calcular_dv(digitos_cpf)
         digitos_cpf.append(primeiro_dv_cpf)
         return primeiro_dv_cpf, Cpf.calcular_dv(digitos_cpf)
-    
+
     def verificar(cpf):
-        cpf, dvs = str(cpf), Cpf.obter_dvs(cpf)
+        cpf = str(Cpf.reter_numeros(cpf, True))
+        if len(cpf) < 11:
+            cpf = cpf.rjust(11,'0')
+        dvs = Cpf.obter_dvs(cpf)
         if int(cpf[-1]) == dvs[-1] and int(cpf[-2]) == dvs[-2]:
             return True
         return False
@@ -43,7 +46,7 @@ class Cpf:
         for i in range(0, limite):
             lista_digitos.append(int(numero[i]))
         return lista_digitos
-    
+
     def reter_numeros(numero, literal=False, accept_float=False):
         real = False
         tipo = type(numero)
@@ -66,7 +69,7 @@ class Cpf:
         if real:
             return float(texto_numerico)
         return int(texto_numerico)
-    
+
     def adicionar_separador(numero, posicao_do_final=4, separador="-"):
         numero = str(numero)
         if len(numero) <= posicao_do_final:

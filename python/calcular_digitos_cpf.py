@@ -3,7 +3,8 @@ from cpf import Cpf
 def calcular_digitos(cpf):
     cpf = Cpf.reter_numeros(cpf, True)
 
-    assert len(str(cpf)) >= 9
+    if len(str(cpf)) < 9:
+        cpf = str(cpf).rjust(9,'0')
 
     cpf_informado = "{}.{}.{}".format(
         cpf[0:3], cpf[3:6], cpf[6:9]
