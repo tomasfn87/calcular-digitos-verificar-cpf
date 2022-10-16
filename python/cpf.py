@@ -31,6 +31,9 @@ class Cpf:
 
     def verificar(cpf):
         cpf = str(Cpf.reter_numeros(cpf, True))
+        if not cpf.isdigit():
+            print("O CPF é um número.")
+            return
         if len(cpf) < 11:
             cpf = cpf.rjust(11,'0')
         dvs = Cpf.obter_dvs(cpf)
