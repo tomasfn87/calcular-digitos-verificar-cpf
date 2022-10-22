@@ -4,8 +4,7 @@ def calcular_digitos(cpf):
     cpf = Cpf.reter_numeros(cpf, literal=True)
 
     if not cpf.isdigit():
-        print("O CPF é um número.")
-        return
+        return 1
 
     if len(str(cpf)) < 9:
         cpf = str(cpf).rjust(9,'0')

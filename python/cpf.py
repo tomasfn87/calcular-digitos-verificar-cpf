@@ -30,10 +30,8 @@ class Cpf:
         return primeiro_dv_cpf, Cpf.calcular_dv(digitos_cpf)
 
     def verificar(cpf):
-        cpf = str(Cpf.reter_numeros(cpf, True))
         if not cpf.isdigit():
-            print("O CPF é um número.")
-            return
+            return 'NaN'
         if len(cpf) < 11:
             cpf = cpf.rjust(11,'0')
         dvs = Cpf.obter_dvs(cpf)
