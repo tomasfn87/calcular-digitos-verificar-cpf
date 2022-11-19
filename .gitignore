@@ -7,3 +7,6 @@
 
 # vscode
 *.vscode/
+
+# asdf folder
+.tool-versions
