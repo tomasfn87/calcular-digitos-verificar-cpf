@@ -23,9 +23,9 @@ func Test_ReterNumeros_4(t *testing.T) {
 }
 
 func Test_CalcularDigitosCpf_1(t *testing.T) {
-	assert.Equal(t, [2]int{3, 5}, NewCpf(Cpf{"111.444.777-34"}).CalcularDigitosCpf())
+	assert.Equal(t, [2]int{3, 5}, NewCpf(Cpf{"111.444.777-34"}).CalcularDigitosCpf(false))
 }
 
 func Test_CalcularDigitosCpf_2(t *testing.T) {
-	assert.Equal(t, [2]int{3, 5}, NewCpf(Cpf{"111.444.777-35"}).CalcularDigitosCpf())
+	assert.Equal(t, [2]int{3, 5}, NewCpf(Cpf{"111.444.777-35"}).CalcularDigitosCpf(false))
 }
