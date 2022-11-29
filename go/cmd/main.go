@@ -12,9 +12,9 @@ func main() {
 	inputCpf := os.Args[2]
 	cpfUsuario := cpf.NewCpf(cpf.Cpf{Cpf: inputCpf})
 	if option == "cdcpf" {
-		fmt.Println(cpfUsuario.CalcularDigitosCpf())
+		fmt.Println(cpfUsuario.CalcularDigitosCpf(true))
 	} else if option == "vcpf" {
-		fmt.Println(cpfUsuario.VerificarCpf())
+		fmt.Println(cpfUsuario.VerificarCpf(true))
 	} else {
 		return
 	}
