@@ -7,9 +7,9 @@ import (
 )
 
 func Test_VerificarCpf_1(t *testing.T) {
-	assert.Equal(t, true, NewCpf(Cpf{"111.444.777-35"}).VerificarCpf())
+	assert.Equal(t, true, NewCpf(Cpf{"111.444.777-35"}).VerificarCpf(false))
 }
 
 func Test_VerificarCpf_2(t *testing.T) {
-	assert.Equal(t, false, NewCpf(Cpf{"111.444.777-34"}).VerificarCpf())
+	assert.Equal(t, false, NewCpf(Cpf{"111.444.777-34"}).VerificarCpf(false))
 }
