@@ -7,7 +7,7 @@ _Como calcular os dígitos verificadores de um_ __CPF__; _em_ `Python`, `Typescr
 <br><br>
 
 _Teste a versão em_ `Go`:
-- [Calcular Digitos / Verificar CPF](https://bit.ly/3Uh0fWQ)
+- [CPF - Calcular Digitos / Verificar](http://bit.ly/3UvUSTL)
 
 <br><br>
 
