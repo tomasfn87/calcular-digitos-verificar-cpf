@@ -37,7 +37,7 @@ func (c *Cpf) ObterDigitosCpf() [9]int {
 	return digitosCpf
 }
 
-func (c *Cpf) CalcularDigitosCpf() [2]int {
+func (c *Cpf) CalcularDigitosCpf(loud bool) [2]int {
 	c.Cpf = NewDigitos(Digitos{*c, 9}).ReterNumeros()
 	if len(c.Cpf) < 9 {
 		log.Fatal("o CPF informado deve ter no mínimo 9 dígitos")
@@ -52,8 +52,10 @@ func (c *Cpf) CalcularDigitosCpf() [2]int {
 	cpfInformado :=
 		fmt.Sprintf("%s.%s.%s", c.Cpf[0:3], c.Cpf[3:6], c.Cpf[6:9])
 	cpfCompleto := fmt.Sprintf("%s-%d%d", cpfInformado, DVsCpf[0], DVsCpf[1])
-	fmt.Printf("CPF informado: %s\n", cpfInformado)
-	fmt.Printf("CPF completo:  %s\n", cpfCompleto)
+	if loud {
+		fmt.Printf("CPF informado: %s\n", cpfInformado)
+		fmt.Printf("CPF completo:  %s\n", cpfCompleto)
+	}
 	return DVsCpf
 }
 
