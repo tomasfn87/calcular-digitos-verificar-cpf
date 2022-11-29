@@ -6,7 +6,7 @@ import (
 	"strconv"
 )
 
-func (c *Cpf) VerificarCpf() bool {
+func (c *Cpf) VerificarCpf(loud bool) bool {
 	c.Cpf = NewDigitos(Digitos{*c, 11}).ReterNumeros()
 	if len(c.Cpf) < 11 {
 		log.Fatal("o CPF informado deve ter 11 dígitos")
@@ -16,7 +16,7 @@ func (c *Cpf) VerificarCpf() bool {
 	segundoDigito, _ := strconv.Atoi(c.Cpf[10:11])
 	digitosRecebidos[0] = primeiroDigito
 	digitosRecebidos[1] = segundoDigito
-	digitosCalculados := c.CalcularDigitosCpf()
+	digitosCalculados := c.CalcularDigitosCpf(loud)
 	cpfCompleto := fmt.Sprintf(
 		"%s.%s.%s-%d%d", c.Cpf[0:3], c.Cpf[3:6], c.Cpf[6:9],
 		digitosCalculados[0], digitosCalculados[1])
@@ -24,7 +24,9 @@ func (c *Cpf) VerificarCpf() bool {
 	if digitosRecebidos == digitosCalculados {
 		resultado, validez = resultado[2:], !validez
 	}
-	fmt.Printf("O CPF %s-%d%d é %s.\n", cpfCompleto[:11],
-		digitosRecebidos[0], digitosRecebidos[1], resultado)
+	if loud {
+		fmt.Printf("O CPF %s-%d%d é %s.\n", cpfCompleto[:11],
+			digitosRecebidos[0], digitosRecebidos[1], resultado)
+	}
 	return validez
 }
