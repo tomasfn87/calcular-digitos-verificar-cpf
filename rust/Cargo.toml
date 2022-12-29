@@ -1,0 +1,17 @@
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[package]
+name = "calcular-digitos-verificar-cpf"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+lazy_static = "1.4.0"
+regex = "1"
+pad = "0.1.6"
+
+[[bin]]
+name = "main"
+path = "src/main.rs"
+test = false
+bench = false
