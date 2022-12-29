@@ -10,3 +10,6 @@
 
 # asdf folder
 .tool-versions
+
+# rust target
+rust/target/
