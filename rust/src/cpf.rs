@@ -5,8 +5,8 @@ use std::vec::IntoIter;
 
 pub fn reter_numeros(cpf: &str, n: usize) -> String {
     /*
-    Argumento:
-    ---------
+    Argumentos:
+    ----------
     - cpf: ponteiro para string com números que serão isolados
         de caracteres não numéricos; caso não existam caracteres
         numéricos, será devolvida uma string vazia.
@@ -25,10 +25,10 @@ pub fn reter_numeros(cpf: &str, n: usize) -> String {
         let number_string = REGEXP_NON_NUMBERS.replace_all(cpf, "").to_string();
         return number_string.pad(n, '0', Alignment::Right, true)
     }
-    return String::from("")
+    String::from("")
 }
 
-pub fn obter_digitos(cpf: &str, n: usize) -> IntoIter<i32> {
+pub fn obter_digitos(cpf: &str, n: usize) -> IntoIter<i16> {
     /*
     Argumentos:
     ----------
@@ -39,20 +39,58 @@ pub fn obter_digitos(cpf: &str, n: usize) -> IntoIter<i32> {
         -  9 dígitos -> Cálculo dos dígitos verificadores de CPF;
         - 11 dígitos -> Verificação do número de CPF.
     */
-    println!("-       valor : cpf = \"{}\"", cpf);
-    println!("- comprimento : cpf.len() = {}", cpf.len());
     let cpf_filtrado = &reter_numeros(&cpf, n);
-    println!("-       valor : cpf_filtrado = \"{}\"", cpf_filtrado);
-    println!("- comprimento : cpf_filtrado.len() = {}", cpf_filtrado.len());
     let mut digitos = vec![];
-    println!("- comprimento : digitos.len() = {}", digitos.len());
-    println!("-       valor : digitos = {:?}", digitos);
-    let mut i = 0;
+    let mut i: usize = 0;
     while i < cpf_filtrado.len() && i < n {
-        let d = cpf_filtrado.chars().nth(i).unwrap().to_string().parse::<i32>().unwrap();
+        let d = cpf_filtrado.chars().nth(i).unwrap().to_string().parse::<i16>().unwrap();
         digitos.extend(vec![d]);
-        // println!("  -> digitos[{}] = {}", i, digitos[i]);
         i += 1
     }
-    return digitos.into_iter()
+    digitos.into_iter()
 }
+
+pub fn calcular_digitos(cpf: &str) -> [i16; 2] {
+    /*
+    Argumento:
+    ---------
+      cpf: string (texto) com o número de CPF, com ou sem marcação
+    */
+    if reter_numeros(cpf, 9) == "" {
+        panic!("ERRO: informe um número válido.")
+    }
+    let mut digitos_cpf = vec![];
+    for d in obter_digitos(cpf, 9) {
+        digitos_cpf.extend(vec![d]);
+    }
+    let digito_verificador_1 = calcular_digito_verificador(&digitos_cpf);
+    digitos_cpf.extend(vec![digito_verificador_1]);
+    let digito_verificador_2 = calcular_digito_verificador(&digitos_cpf);
+    [ digito_verificador_1, digito_verificador_2 ]
+}
+
+fn calcular_digito_verificador(digitos: &[i16]) -> i16 {
+    /*
+    Argumento:
+    ---------
+      digitos: vetor com uma lista de 9 ou 10 dígitos para efetuar o
+        cálculo dos dígitos verificadores
+    */
+    let mut soma: i16 = 0;
+    let mut multiplicador: i16 = (digitos.len() as i16) + 1;
+    for d in digitos {
+        soma += d * multiplicador;
+        multiplicador -= 1
+    }
+    let resto: i16 = soma % 11;
+    if resto < 2 {
+        return 0
+    }
+    11 - resto
+}
+
+/*
+pub fn verificar(cpf: &str) -> bool {
+    return false
+}
+*/
