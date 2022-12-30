@@ -54,7 +54,10 @@ pub fn calcular_digitos(cpf: &str) -> [i16; 2] {
     /*
     Argumento:
     ---------
-      cpf: string (texto) com o número de CPF, com ou sem marcação
+    - cpf: string (texto) com o número de CPF, com ou sem marcação;
+        o número será encarado com um CPF incompleto (sem os dígitos
+        verificadores); seus dígitos finais serão calculados pela
+        função 'calcular_digito_verificador'
     */
     if reter_numeros(cpf, 9) == "" {
         panic!("ERRO: informe um número válido.")
@@ -73,7 +76,7 @@ fn calcular_digito_verificador(digitos: &[i16]) -> i16 {
     /*
     Argumento:
     ---------
-      digitos: vetor com uma lista de 9 ou 10 dígitos para efetuar o
+    - digitos: vetor com uma lista de 9 ou 10 dígitos para efetuar o
         cálculo dos dígitos verificadores
     */
     let mut soma: i16 = 0;
@@ -89,8 +92,27 @@ fn calcular_digito_verificador(digitos: &[i16]) -> i16 {
     11 - resto
 }
 
-/*
 pub fn verificar(cpf: &str) -> bool {
-    return false
+    /*
+    Argumento:
+    ---------
+    - cpf: string (texto) com o número de CPF, com ou sem marcação; o
+        número será encarado com um CPF completo; seus dígitos finais
+        serão comparados com os dígitos calculados a partir dos 9
+        primeiros dígitos
+    */
+    let mut digitos_recebidos = vec![];
+    let mut c: u8 = 0;
+    for d in obter_digitos(cpf, 11) {
+        if c == 9 || c == 10 {
+            digitos_recebidos.extend(vec![d]);
+        }
+        c += 1
+    }
+    let digitos_calculados: [i16; 2] = calcular_digitos(&cpf);
+    if digitos_recebidos[0] == digitos_calculados[0]
+        && digitos_recebidos[1] == digitos_calculados[1] {
+        return true
+    }
+    false
 }
-*/
