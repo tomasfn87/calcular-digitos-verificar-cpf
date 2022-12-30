@@ -18,8 +18,7 @@ fn main() {
     let digitos_a2: IntoIter<i16> = cpf::obter_digitos(A, 9);
     println!("CPF A,  9 : digitos = {:?}", digitos_a2);
     print!("Digitos verificadores CPF A = ");
-    let digitos_calculados_cpf_a: [i16; 2] = cpf::calcular_digitos(A);
-    for d in digitos_calculados_cpf_a {
+    for d in cpf::calcular_digitos(A) {
         print!("{} ", d)
     }
     println!();
@@ -32,8 +31,7 @@ fn main() {
     let digitos_b2: IntoIter<i16> = cpf::obter_digitos(B, 9);
     println!("CPF B,  9 : digitos = {:?}", digitos_b2);
     print!("Digitos verificadores CPF B = ");
-    let digitos_calculados_cpf_b: [i16; 2] = cpf::calcular_digitos(B);
-    for d in digitos_calculados_cpf_b {
+    for d in cpf::calcular_digitos(B) {
         print!("{} ", d)
     }
     println!();
