@@ -6,12 +6,10 @@ use std::vec::IntoIter;
 
 pub fn verificar(cpf: &str) -> bool {
     /*
-    Argumento:
-    ---------
     - cpf: string (texto) com o número de CPF, com ou sem marcação; o
-        número será encarado com um CPF completo; seus dígitos finais
+        número será tratado como um CPF completo; seus dígitos finais
         serão comparados com os dígitos calculados a partir dos 9
-        primeiros dígitos
+        primeiros dígitos.
     */
     let mut digitos_recebidos = vec![];
     let mut c: u8 = 0;
@@ -31,8 +29,6 @@ pub fn verificar(cpf: &str) -> bool {
 
 pub fn obter_digitos(cpf: &str, n: usize) -> IntoIter<i16> {
     /*
-    Argumentos:
-    ----------
     - cpf: string com números que serão filtrados e transformados em
         inteiros para execução do cálculo de CPF;
     - n: inteiro que corresponde à quantidade de dígitos desejada, a
@@ -53,12 +49,10 @@ pub fn obter_digitos(cpf: &str, n: usize) -> IntoIter<i16> {
 
 pub fn calcular_digitos(cpf: &str) -> [i16; 2] {
     /*
-    Argumento:
-    ---------
     - cpf: string (texto) com o número de CPF, com ou sem marcação;
         o número será encarado com um CPF incompleto (sem os dígitos
         verificadores); seus dígitos finais serão calculados pela
-        função 'calcular_digito_verificador'
+        função 'calcular_digito_verificador'.
     */
     if reter_numeros(cpf, 9) == "" {
         panic!("ERRO: informe um número válido.")
@@ -74,13 +68,14 @@ pub fn calcular_digitos(cpf: &str) -> [i16; 2] {
 
 pub fn reter_numeros(cpf: &str, n: usize) -> String {
     /*
-    Argumentos:
-    ----------
     - cpf: ponteiro para string com números que serão isolados
-        de caracteres não numéricos; caso não existam caracteres
-        numéricos, será devolvida uma string vazia.
-    - n: inteiro que corresponde à quantidade de dígitos desejada, a
-        depender da operação em questão:
+        de caracteres não numéricos, e então preenchidos com zeros,
+        para que a string tenha o mesmo comprimento que 'n'; caso
+        não existam caracteres numéricos, será devolvida uma
+        string vazia.
+    - n: inteiro que corresponde à quantidade de dígitos desejada (e
+        também ao comprimento final da string retornada, a depender
+        da operação em questão:
         -  9 dígitos -> Cálculo dos dígitos verificadores de CPF;
         - 11 dígitos -> Verificação do número de CPF.
     */
@@ -99,13 +94,11 @@ pub fn reter_numeros(cpf: &str, n: usize) -> String {
 
 fn calcular_digito_verificador(digitos: &[i16]) -> i16 {
     /*
-    Argumento:
-    ---------
     - digitos: vetor com uma lista de 9 ou 10 dígitos para efetuar o
-        cálculo dos dígitos verificadores
+        cálculo dos dígitos verificadores.
     */
     let mut soma: i16 = 0;
-    let mut multiplicador: i16 = (digitos.len() as i16) + 1;
+    let mut multiplicador: i16 = digitos.len() as i16 + 1;
     for d in digitos {
         soma += d * multiplicador;
         multiplicador -= 1
