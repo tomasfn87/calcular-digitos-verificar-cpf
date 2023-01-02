@@ -86,12 +86,12 @@ func calcularDVCpf(digitosCpf []int) int {
 	soma := 0
 	for j := 0; j < len(digitosCpf); j++ {
 		soma += digitosCpf[j]
-		soma %= 11
 	}
-	if soma < 2 {
+	resto := soma % 11
+	if resto < 2 {
 		return 0
 	}
-	return 11 - soma
+	return 11 - resto
 }
 
 func calcularPrimeiroDV(digitosCpf [9]int) int {
