@@ -14,13 +14,13 @@ class Cpf:
             i *= multiplicador
             calculo_dv.append(i)
             multiplicador -= 1
-        dv = 0
+        soma = 0
         for j in calculo_dv:
-            dv += j
-            dv = dv % 11
-        if dv < 2:
+            soma += j
+        resto = soma % 11
+        if resto < 2:
             return 0
-        return 11 - dv
+        return 11 - resto
 
     def obter_dvs(cpf):
         cpf = Cpf.reter_numeros(cpf, True)
