@@ -1,6 +1,6 @@
 # calcular-digitos-verificar-cpf
 
-_Como calcular os dígitos verificadores de um_ __CPF__; _em_ `Python`, `Typescript` e `Go`.
+_Como calcular os dígitos verificadores de um_ __CPF__; _em_ `Python`, `Typescript`, `Go` e `Rust`.
 
 ---
 
