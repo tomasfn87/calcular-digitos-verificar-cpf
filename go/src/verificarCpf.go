@@ -2,14 +2,13 @@ package cpf
 
 import (
 	"fmt"
-	"log"
 	"strconv"
 )
 
 func (c *Cpf) VerificarCpf(loud bool) bool {
 	c.Cpf = NewDigitos(Digitos{*c, 11}).ReterNumeros()
 	if len(c.Cpf) < 11 {
-		log.Fatal("o CPF informado deve ter 11 dígitos")
+		c.Cpf = PadRight(c.Cpf, "0", 11-len(c.Cpf))
 	}
 	var digitosRecebidos [2]int
 	primeiroDigito, _ := strconv.Atoi(c.Cpf[9:10])
