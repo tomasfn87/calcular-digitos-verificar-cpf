@@ -19,7 +19,7 @@ pub fn verificar(cpf: &str) -> bool {
         }
         c += 1
     }
-    let digitos_calculados: [i16; 2] = calcular_digitos(&cpf);
+    let digitos_calculados: [u16; 2] = calcular_digitos(&cpf);
     if digitos_recebidos[0] == digitos_calculados[0]
         && digitos_recebidos[1] == digitos_calculados[1] {
         return true
@@ -27,7 +27,7 @@ pub fn verificar(cpf: &str) -> bool {
     false
 }
 
-pub fn obter_digitos(cpf: &str, n: usize) -> IntoIter<i16> {
+pub fn obter_digitos(cpf: &str, n: usize) -> IntoIter<u16> {
     /*
     - cpf: string com números que serão filtrados e transformados em
         inteiros para execução do cálculo de CPF;
@@ -40,17 +40,17 @@ pub fn obter_digitos(cpf: &str, n: usize) -> IntoIter<i16> {
     let mut digitos = vec![];
     let mut i: usize = 0;
     while i < cpf_filtrado.len() && i < n {
-        let d = cpf_filtrado.chars().nth(i).unwrap().to_string().parse::<i16>().unwrap();
+        let d = cpf_filtrado.chars().nth(i).unwrap().to_string().parse::<u16>().unwrap();
         digitos.extend(vec![d]);
         i += 1
     }
     digitos.into_iter()
 }
 
-pub fn calcular_digitos(cpf: &str) -> [i16; 2] {
+pub fn calcular_digitos(cpf: &str) -> [u16; 2] {
     /*
     - cpf: string (texto) com o número de CPF, com ou sem marcação;
-        o número será encarado com um CPF incompleto (sem os dígitos
+        o número será encarado como um CPF incompleto (sem os dígitos
         verificadores); seus dígitos finais serão calculados pela
         função 'calcular_digito_verificador'.
     */
@@ -92,18 +92,19 @@ pub fn reter_numeros(cpf: &str, n: usize) -> String {
     String::from("")
 }
 
-fn calcular_digito_verificador(digitos: &[i16]) -> i16 {
+fn calcular_digito_verificador(digitos: &[u16]) -> u16 {
     /*
-    - digitos: vetor com uma lista de 9 ou 10 dígitos para efetuar o
-        cálculo dos dígitos verificadores.
+    - digitos: slice contendo 9 ou 10 dígitos para efetuar o cálculo
+        dos dígitos verificadores.
     */
-    let mut soma: i16 = 0;
-    let mut multiplicador: i16 = digitos.len() as i16 + 1;
+    let mut soma: u16 = 0;
+    let mut multiplicador: u16 = u16::try_from(digitos.len()).unwrap();
+    multiplicador += 1;
     for d in digitos {
         soma += d * multiplicador;
         multiplicador -= 1
     }
-    let resto: i16 = soma % 11;
+    let resto: u16 = soma % 11;
     if resto < 2 {
         return 0
     }

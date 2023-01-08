@@ -12,10 +12,10 @@ fn main() {
     println!("C = \"{}\";          reter_numeros(C, 11) = \"{}\"", C, cpf::reter_numeros(C, 11));
     println!("D = \"{}\";               reter_numeros(D, 1)  = \"{}\"", D, cpf::reter_numeros(D, 1));
     println!();
-    let digitos_a1: IntoIter<i16> = cpf::obter_digitos(A, 11);
+    let digitos_a1: IntoIter<u16> = cpf::obter_digitos(A, 11);
     println!("                      CPF A = {A}");
     println!("        CPF A, 11 : digitos = {:?}", digitos_a1);
-    let digitos_a2: IntoIter<i16> = cpf::obter_digitos(A, 9);
+    let digitos_a2: IntoIter<u16> = cpf::obter_digitos(A, 9);
     println!("        CPF A,  9 : digitos = {:?}", digitos_a2);
     print!("Digitos verificadores CPF A = [ ");
     for d in cpf::calcular_digitos(A) {
@@ -26,9 +26,9 @@ fn main() {
     println!("{}", cpf::verificar(A));
     println!();
     println!("                      CPF B = {B}");
-    let digitos_b1: IntoIter<i16> = cpf::obter_digitos(B, 11);
+    let digitos_b1: IntoIter<u16> = cpf::obter_digitos(B, 11);
     println!("        CPF B, 11 : digitos = {:?}", digitos_b1);
-    let digitos_b2: IntoIter<i16> = cpf::obter_digitos(B, 9);
+    let digitos_b2: IntoIter<u16> = cpf::obter_digitos(B, 9);
     println!("        CPF B,  9 : digitos = {:?}", digitos_b2);
     print!("Digitos verificadores CPF B = [ ");
     for d in cpf::calcular_digitos(B) {
