@@ -8,7 +8,7 @@ import (
 func (c *Cpf) VerificarCpf(loud bool) bool {
 	c.Cpf = NewDigitos(Digitos{*c, 11}).ReterNumeros()
 	if len(c.Cpf) < 11 {
-		c.Cpf = PadRight(c.Cpf, "0", 11-len(c.Cpf))
+		c.Cpf = PadRight(c.Cpf, "0", 11)
 	}
 	var digitosRecebidos [2]int
 	primeiroDigito, _ := strconv.Atoi(c.Cpf[9:10])

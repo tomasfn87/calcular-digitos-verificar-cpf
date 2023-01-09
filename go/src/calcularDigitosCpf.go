@@ -40,7 +40,7 @@ func (c *Cpf) ObterDigitosCpf() [9]int {
 func (c *Cpf) CalcularDigitosCpf(loud bool) [2]int {
 	c.Cpf = NewDigitos(Digitos{*c, 9}).ReterNumeros()
 	if len(c.Cpf) < 9 {
-		c.Cpf = PadRight(c.Cpf, "0", 9-len(c.Cpf))
+		c.Cpf = PadRight(c.Cpf, "0", 9)
 	}
 	digitosBaseCpf := c.ObterDigitosCpf()
 	var digitosCpf [10]int
@@ -56,6 +56,7 @@ func (c *Cpf) CalcularDigitosCpf(loud bool) [2]int {
 	if loud {
 		fmt.Printf("CPF informado: %s\n", cpfInformado)
 		fmt.Printf("CPF completo:  %s\n", cpfCompleto)
+		fmt.Printf("               %s%d%d\n", c.Cpf[:], DVsCpf[0], DVsCpf[1])
 	}
 	return DVsCpf
 }
@@ -79,7 +80,7 @@ func (d *Digitos) ReterNumeros() string {
 }
 
 func PadRight(text string, char string, size int) string {
-	return fmt.Sprintf("%s%s", repeatChar(char, size), text)
+	return fmt.Sprintf("%s%s", repeatChar(char, size-len(text)), text)
 }
 
 func repeatChar(char string, size int) string {
