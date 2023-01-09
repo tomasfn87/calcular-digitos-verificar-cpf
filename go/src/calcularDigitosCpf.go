@@ -89,13 +89,10 @@ func repeatChar(char string, size int) string {
 
 func calcularDVCpf(digitosCpf []int) int {
 	multiplicador := len(digitosCpf) + 1
-	for i := 0; i < len(digitosCpf); i++ {
-		digitosCpf[i] *= multiplicador
-		multiplicador -= 1
-	}
 	soma := 0
-	for j := 0; j < len(digitosCpf); j++ {
-		soma += digitosCpf[j]
+	for _, v := range digitosCpf {
+		soma += v * multiplicador
+		multiplicador -= 1
 	}
 	resto := soma % 11
 	if resto < 2 {
