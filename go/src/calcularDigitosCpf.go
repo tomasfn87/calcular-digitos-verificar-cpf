@@ -2,6 +2,7 @@ package cpf
 
 import (
 	"fmt"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -49,11 +50,11 @@ func (c *Cpf) CalcularDigitosCpf(loud bool) [2]int {
 	DVsCpf[0] = calcularPrimeiroDV(digitosBaseCpf)
 	digitosCpf[9] = DVsCpf[0]
 	DVsCpf[1] = calcularSegundoDV(digitosCpf)
-	cpfInformado := fmt.Sprintf(
-		"%s.%s.%s", c.Cpf[0:3], c.Cpf[3:6], c.Cpf[6:9])
-	cpfCompleto := fmt.Sprintf(
-		"%s-%d%d", cpfInformado, DVsCpf[0], DVsCpf[1])
 	if loud {
+		cpfInformado := fmt.Sprintf(
+			"%s.%s.%s", c.Cpf[0:3], c.Cpf[3:6], c.Cpf[6:9])
+		cpfCompleto := fmt.Sprintf(
+			"%s-%d%d", cpfInformado, DVsCpf[0], DVsCpf[1])
 		fmt.Printf("CPF informado: %s\n", cpfInformado)
 		fmt.Printf("CPF completo:  %s\n", cpfCompleto)
 		fmt.Printf("               %s%d%d\n", c.Cpf[:], DVsCpf[0], DVsCpf[1])
@@ -62,21 +63,12 @@ func (c *Cpf) CalcularDigitosCpf(loud bool) [2]int {
 }
 
 func (d *Digitos) ReterNumeros() string {
-	if d.limite <= 0 {
-		d.limite = len(d.cpf.Cpf)
+	RENotNumbers := regexp.MustCompile(`\D`)
+	cpf := RENotNumbers.ReplaceAllString(d.cpf.Cpf, "")
+	if len(cpf) > d.limite {
+		return cpf[0:d.limite]
 	}
-	stringNumerica := ""
-	n_digitos := 0
-	for j, charCode := range d.cpf.Cpf {
-		if n_digitos == d.limite {
-			break
-		}
-		if charCode >= 48 && charCode <= 57 {
-			stringNumerica += d.cpf.Cpf[j : j+1]
-			n_digitos++
-		}
-	}
-	return stringNumerica
+	return cpf
 }
 
 func PadRight(text string, char string, size int) string {
