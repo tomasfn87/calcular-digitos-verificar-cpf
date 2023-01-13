@@ -8,8 +8,7 @@ function Verificar(cpf)
         return false end
     dvCpf1, dvCpf2 = digitos[10], digitos[11]
     print("       Dígitos CPF:", dvCpf1, dvCpf2)
-    c = ReterNumeros(cpf, 11)
-    c = string.sub(c, 1, string.len(c)-2)
+    c = string.sub(ReterNumeros(cpf, 11), 1, 9)
     dvCalc1, dvCalc2 = CalcularDigitos(c)
     print("Dígitos calculados:", dvCalc1, dvCalc2)
     if dvCpf1 == dvCalc1 and dvCpf2 == dvCalc2 then
@@ -18,18 +17,21 @@ function Verificar(cpf)
 
 function ObterDigitos(cpf, n)
     digitos = {}
-    cpf = ReterNumeros(cpf)
-    if string.len(cpf) == 0 then
+    cpf = ReterNumeros(cpf, n)
+    if cpf == "" then
         return digitos end
-    if string.len(cpf) < n then
-        cpf = string.rep("0", n - string.len(cpf))..cpf  end
     for i=1, n, 1 do
         d = ParseInt(string.sub(cpf, i, i))
         table.insert(digitos, d) end
     return digitos end
 
-function ReterNumeros(cpf)
-    return string.gsub(cpf, "%D", "") end
+function ReterNumeros(cpf, n)
+    cpf = string.gsub(cpf, "%D", "")
+    if cpf == "" then
+        return cpf end
+    if string.len(cpf) < n then
+        cpf = string.rep("0", n - string.len(cpf))..cpf  end
+    return cpf end
 
 function CalcularDigitos(cpf)
     digitos = ObterDigitos(cpf, 9)
