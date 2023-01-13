@@ -2,16 +2,16 @@
 
 
 function Verificar(cpf)
-    print("cpf:", cpf)
+    print("               CPF:", cpf)
     digitos = ObterDigitos(cpf, 11)
     if table.getn(digitos) == 0 then
         return false end
     dvCpf1, dvCpf2 = digitos[10], digitos[11]
-    print("digitos cpf:", dvCpf1, dvCpf2)
+    print("       Dígitos CPF:", dvCpf1, dvCpf2)
     c = ReterNumeros(cpf, 11)
     c = string.sub(c, 1, string.len(c)-2)
     dvCalc1, dvCalc2 = CalcularDigitos(c)
-    print("digitos cal:", dvCalc1, dvCalc2)
+    print("Dígitos calculados:", dvCalc1, dvCalc2)
     if dvCpf1 == dvCalc1 and dvCpf2 == dvCalc2 then
         return true end
     return false end
@@ -34,7 +34,7 @@ function ReterNumeros(cpf)
 function CalcularDigitos(cpf)
     digitos = ObterDigitos(cpf, 9)
     if table.getn(digitos) == 0 then
-        return end
+        return false end
     dv1 = CalcularDigito(digitos)
     table.insert(digitos, dv1)
     dv2 = CalcularDigito(digitos)
