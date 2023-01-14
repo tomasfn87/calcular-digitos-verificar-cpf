@@ -1,5 +1,5 @@
 -- LuaJIT 2.0.5 -- Copyright (C) 2005-2017 Mike Pall. http://luajit.org/
-
+local params = {...}
 
 function Verificar(cpf)
     print("               CPF:", cpf)
@@ -63,18 +63,23 @@ function CalcularDigito(digitos)
     return 11 - resto end
 
 -- CPF inválido p/ verificação (sem números)
-a = "a"
-print(Verificar(a)) -- expected: false
-print(CalcularDigitos(a))
+-- a = "a"
+-- print(Verificar(a)) -- expected: false
+-- print(CalcularDigitos(a))
 
 -- CPF válido p/ verificacão (o número é inválido)
-print()
-b = "123a"
-print(Verificar(b)) -- expected: false
-print(CalcularDigitos(b))
+-- print()
+-- b = "123a"
+-- print(Verificar(b)) -- expected: false
+-- print(CalcularDigitos(b))
 
 -- CPF válido p/ verificação (o número é válido)
-print()
-c = "123-60"
-print(Verificar(c)) -- expected: true
-print(CalcularDigitos(c))
+-- print()
+-- c = "123-60"
+-- print(Verificar(c)) -- expected: true
+-- print(CalcularDigitos(c))
+
+if params[1] == 'c' then
+    print(CalcularDigitos(params[2])) end
+if params[1] == 'v' then
+    print(Verificar(params[2])) end
