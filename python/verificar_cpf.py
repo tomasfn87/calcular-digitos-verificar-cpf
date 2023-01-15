@@ -9,5 +9,5 @@ def verificar(cpf):
 
 if __name__ == "__main__":
     import sys
-    cpf = str(sys.argv[1])
+    cpf = sys.argv[1]
     print(verificar(cpf))
