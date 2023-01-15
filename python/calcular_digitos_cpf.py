@@ -17,7 +17,7 @@ def calcular_digitos(cpf):
 
     resultado1 = f"CPF informado: {cpf_informado}"
     resultado2 = f"CPF completo:  {Cpf.marcar(cpf_calculado)}"
-    resultado3 = f"CPF completo:  {cpf_calculado}"
+    resultado3 = f"               {cpf_calculado}"
 
     print(resultado1)
     print(resultado2)
