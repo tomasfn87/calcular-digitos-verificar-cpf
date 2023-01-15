@@ -13,3 +13,9 @@ luajit calcularDigitosVerificarCpf.lua c 0
 ```shell
 luajit calcularDigitosVerificarCpf.lua v 0
 ```
+
+## Demo
+
+```shell
+luajit calcularDigitosVerificarCpf.lua demo
+```
