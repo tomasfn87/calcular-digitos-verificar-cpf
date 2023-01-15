@@ -62,24 +62,24 @@ function CalcularDigito(digitos)
         return 0 end
     return 11 - resto end
 
--- CPF inválido p/ verificação (sem números)
--- a = "a"
--- print(Verificar(a)) -- expected: false
--- print(CalcularDigitos(a))
-
--- CPF válido p/ verificacão (o número é inválido)
--- print()
--- b = "123a"
--- print(Verificar(b)) -- expected: false
--- print(CalcularDigitos(b))
-
--- CPF válido p/ verificação (o número é válido)
--- print()
--- c = "123-60"
--- print(Verificar(c)) -- expected: true
--- print(CalcularDigitos(c))
-
 if params[1] == 'c' then
     print(CalcularDigitos(params[2])) end
 if params[1] == 'v' then
     print(Verificar(params[2])) end
+if params[1] == 'demo' then
+    -- CPF inválido p/ verificação (sem números)
+    a = "a"
+    print(Verificar(a)) -- expected: false
+    print(CalcularDigitos(a))
+
+   -- CPF válido p/ verificacão (o número é inválido)
+    print()
+    b = "123a"
+    print(Verificar(b)) -- expected: false
+    print(CalcularDigitos(b))
+
+    -- CPF válido p/ verificação (o número é válido)
+    print()
+    c = "123-60"
+    print(Verificar(c)) -- expected: true
+    print(CalcularDigitos(c)) end
