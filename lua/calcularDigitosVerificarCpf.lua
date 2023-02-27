@@ -2,7 +2,12 @@
 local params = {...}
 
 function Verificar(cpf)
-    print("               CPF:", cpf)
+    c = ReterNumeros(cpf, 11)
+    Cpf = string.sub(c, 1, 3)
+        .."."..string.sub(c, 4, 6)
+        .."."..string.sub(c, 7, 9)
+        .."-"..string.sub(c, 10, 11)
+    print("               CPF:", Cpf)
     digitos = ObterDigitos(cpf, 11)
     if table.getn(digitos) == 0 then
         return false end
