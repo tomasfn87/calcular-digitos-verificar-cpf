@@ -1,3 +1,6 @@
+# vim swap
+*.swp
+
 # typescript
 /typescript/node_modules
 /typescript/package-lock.json
@@ -13,3 +16,6 @@
 
 # rust target
 rust/target/
+
+# C output binaries
+*.o
