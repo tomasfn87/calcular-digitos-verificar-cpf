@@ -24,27 +24,41 @@ const char* reterNumeros(char cpf[], int n, bool loud) {
         sprintf(ASCIIDigito, "%d", cpf[i]);
         if (strcmp(ASCIIDigito, "47") > 0
             && strcmp(ASCIIDigito, "58") < 0) {
-            digitos[(n - 1) - contadorDigitos] = cpf[i];
             contadorDigitos++;}}
     if (contadorDigitos == 0) {
-        if (loud == true)
-            printf("nenhum dígito recebido.\n");
+        if (loud)
+            printf("- nenhum dígito recebido.\n");
         return "";}
+    int limit;
+    if (contadorDigitos > n) {
+        limit = n - 1;
+        if (loud)
+            printf("- dígitos = %d (%d a mais).\n", contadorDigitos, (contadorDigitos-n));
+    } else
+        limit = strlen(cpf);
+    int posDigito = n - 1;
+    for (int i = limit; i >= 0; i--) {
+        char ASCIIDigito[3];
+        sprintf(ASCIIDigito, "%d", cpf[i]);
+        if (strcmp(ASCIIDigito, "47") > 0
+            && strcmp(ASCIIDigito, "58") < 0) {
+            digitos[posDigito] = cpf[i];
+            posDigito--;}}
     if (contadorDigitos < n) {
-        if (loud == true)
-            printf("menos de %d dígitos recebidos.\n", n);
+        if (loud)
+            printf("- dígitos = %d de %d.\n", contadorDigitos, n);
         int missingNums = n - contadorDigitos;
         for (int i = 0; i < missingNums; i++)
             digitos[i] = "0"[0];}
-    if (loud == true)
+    if (loud)
         for (int i = 0; i < n; i++)
-            printf("digitos[%d] = %c\n", i, digitos[i]);
-    if (loud == true && n == 11)
-        printf("CPF = %c%c%c.%c%c%c.%c%c%c-%c%c\n", digitos[0],
+            printf("- digitos[%d] = %c\n", i, digitos[i]);
+    if (loud && n == 11)
+        printf("- CPF = %c%c%c.%c%c%c.%c%c%c-%c%c\n", digitos[0],
         digitos[1], digitos[2], digitos[3], digitos[4], digitos[5],
         digitos[6], digitos[7], digitos[8], digitos[9], digitos[10]);
-    if (loud == true)
-        printf("digitos = %s\n", digitos);
+    if (loud)
+        printf("- digitos = %s\n", digitos);
     char* d;
     d = (char *) malloc((n+1) * sizeof (char));
     strcpy(d, digitos);
