@@ -16,10 +16,12 @@ public class Cpf {
         else
             this.cpf = "";
     }
-    public String toString(String marcador1, String marcador2) {
-        marcador1 = marcador1.substring(0, 1);
-        marcador2 = marcador2.substring(0, 1);
-        return String.format("%s%s%s%s%s%s%s",
+    public String toString(char marcador1, char marcador2) {
+        if (marcador1 == ' ')
+            marcador1 = '.';
+        if (marcador2 == ' ')
+            marcador2 = '-';
+        return String.format("%s%c%s%c%s%c%s",
             this.cpf.substring(0, 3), marcador1,
             this.cpf.substring(3, 6), marcador1,
             this.cpf.substring(6, 9), marcador2,
