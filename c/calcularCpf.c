@@ -44,15 +44,15 @@ int main(int argc, char* argv[]) {
 struct DigitosVerificadoresCPF calcularDigitos(char cpf[], bool loud) {
     struct Digitos digitosCpf = obterDigitos(cpf, 9, false);
     struct DigitosVerificadoresCPF dvs;
+    dvs.valores[0] = 0;
+    dvs.valores[1] = 0;
     int multiplicador = 10;
     int resto, soma = 0;
     for (int i = 0; i < 9; i++) {
         soma = soma + (digitosCpf.valores[i] * multiplicador);
         multiplicador--;}
     resto = soma % 11;
-    if (resto < 2)
-       dvs.valores[0] = 0;
-    else
+    if (resto > 1)
        dvs.valores[0] = 11 - resto;
     if (loud)
         printf("- primeiro dígito = %d\n", dvs.valores[0]);
