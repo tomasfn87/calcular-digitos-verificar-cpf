@@ -1,4 +1,6 @@
 const std = @import("std");
+const assert = @import("std").debug.assert;
+const print = @import("std").debug.print;
 
 pub fn main() !void {
     var general_purpose_allocator = std.heap.GeneralPurposeAllocator(.{}){};
@@ -6,16 +8,50 @@ pub fn main() !void {
     const args = try std.process.argsAlloc(gpa);
     defer std.process.argsFree(gpa, args);
     const sIOwriter = std.io.getStdOut().writer();
-    try sIOwriter.print("{!s}\n", .{reterNumeros(args[1], 11)});
-    // var dvs = calcularCpf(args[1]);
-    // try sIOwriter.print("{!s}\n", .{dvs});
+    var digitosVerificadores = calcularCpf(args[1]);
+    try sIOwriter.print("{!d}\n", .{digitosVerificadores});
 }
 
-// fn calcularCpf(cpf: []const u8) [2]u8 {
-// var nums = reterNumeros(cpf, 11);
-// std.debug.print("{!s}\n", .{nums});
-// return [2]u8{ '0', '0' };
-// }
+fn calcularCpf(cpf: []u8) [2]u16 {
+    var DVS = [2]u16{ 0, 0 };
+    var nums = reterNumeros(cpf, 9);
+    var numsLength: u8 = 0;
+    for (nums) |_| {
+        numsLength += 1;
+    }
+    var multiplicador = numsLength + 1;
+    var soma: u16 = 0;
+    for (nums) |n| {
+        var ASCIICode = n - 48;
+        soma += multiplicador * ASCIICode;
+        multiplicador -= 1;
+    }
+    var resto = soma % 11;
+    if (resto > 1) {
+        DVS[0] = 11 - resto;
+    }
+    multiplicador = numsLength + 2;
+    soma = 0;
+    for (nums) |n| {
+        var ASCIICode = n - 48;
+        soma += multiplicador * ASCIICode;
+        multiplicador -= 1;
+    }
+    soma += DVS[0] * multiplicador;
+    resto = soma % 11;
+    if (resto > 1) {
+        DVS[1] = 11 - resto;
+    }
+    var CPF = [_]u8{'0'} ** 9;
+    var indice = 9 - numsLength;
+    for (nums) |n| {
+        CPF[indice] = n;
+        indice += 1;
+    }
+    print("{s}.{s}.{s}-{d}{d}\n", .{ CPF[0..3], CPF[3..6], CPF[6..9], DVS[0], DVS[1] });
+    print("{s}{d}{d}\n", .{ CPF, DVS[0], DVS[1] });
+    return DVS;
+}
 
 fn reterNumeros(cpf: []u8, n: u8) []u8 {
     var numCounter: usize = 0;
