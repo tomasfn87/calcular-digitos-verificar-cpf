@@ -49,7 +49,7 @@ struct DigitosVerificadoresCPF calcularDigitos(char cpf[], bool loud) {
     int multiplicador = 10;
     int resto, soma = 0;
     for (int i = 0; i < 9; i++) {
-        soma = soma + (digitosCpf.valores[i] * multiplicador);
+        soma += digitosCpf.valores[i] * multiplicador;
         multiplicador--;}
     resto = soma % 11;
     if (resto > 1)
@@ -59,9 +59,9 @@ struct DigitosVerificadoresCPF calcularDigitos(char cpf[], bool loud) {
     multiplicador = 11;
     soma = 0;
     for (int i = 0; i < 9; i++) {
-        soma = soma + (digitosCpf.valores[i] * multiplicador);
+        soma += digitosCpf.valores[i] * multiplicador;
         multiplicador--;}
-    soma = soma + (dvs.valores[0] * multiplicador);
+    soma += dvs.valores[0] * multiplicador;
     resto = soma % 11;
     if (resto < 2)
        dvs.valores[1] = 0;
@@ -69,6 +69,12 @@ struct DigitosVerificadoresCPF calcularDigitos(char cpf[], bool loud) {
        dvs.valores[1] = 11 - resto;
     if (loud)
         printf("- segundo dígito = %d\n", dvs.valores[1]);
+    if (loud)
+        printf("- CPF = %d%d%d.%d%d%d.%d%d%d-%d%d\n", digitosCpf.valores[0],
+            digitosCpf.valores[1], digitosCpf.valores[2], digitosCpf.valores[4],
+            digitosCpf.valores[4], digitosCpf.valores[5], digitosCpf.valores[6],
+            digitosCpf.valores[7], digitosCpf.valores[8], dvs.valores[0],
+            dvs.valores[1]);
     return dvs;}
 
 struct Digitos obterDigitos(char cpf[], int n, bool loud) {
