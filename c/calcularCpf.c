@@ -69,12 +69,15 @@ struct DigitosVerificadoresCPF calcularDigitos(char cpf[], bool loud) {
        dvs.valores[1] = 11 - resto;
     if (loud)
         printf("- segundo dígito = %d\n", dvs.valores[1]);
-    if (loud)
-        printf("- CPF = %d%d%d.%d%d%d.%d%d%d-%d%d\n", digitosCpf.valores[0],
-            digitosCpf.valores[1], digitosCpf.valores[2], digitosCpf.valores[4],
-            digitosCpf.valores[4], digitosCpf.valores[5], digitosCpf.valores[6],
-            digitosCpf.valores[7], digitosCpf.valores[8], dvs.valores[0],
-            dvs.valores[1]);
+    if (loud) {
+        printf("- CPF = ");
+        for (int i = 0; i < 9; i++) {
+            if (i == 3 || i == 6)
+                printf(".");
+            printf("%d", digitosCpf.valores[i]);
+        }
+        printf("-%d%d\n", dvs.valores[0], dvs.valores[1]);
+    }
     return dvs;}
 
 struct Digitos obterDigitos(char cpf[], int n, bool loud) {
@@ -97,10 +100,9 @@ const char* reterNumeros(char cpf[], int n, bool loud) {
     char* d;
     digitos[n] = 0;
     for (int i = 0 ; i < strlen(cpf); i++) {
-        char ASCIIDigito[3];
-        sprintf(ASCIIDigito, "%d", cpf[i]);
-        if (strcmp(ASCIIDigito, "47") > 0
-            && strcmp(ASCIIDigito, "58") < 0) {
+        char ASCIICode[3];
+        sprintf(ASCIICode, "%d", cpf[i]);
+        if (strcmp(ASCIICode, "47") > 0 && strcmp(ASCIICode, "58") < 0) {
             contadorDigitos++;
             if (contadorDigitos == n)
                 posicaoUltimoNumero = i;}};
@@ -118,10 +120,10 @@ const char* reterNumeros(char cpf[], int n, bool loud) {
         limite = strlen(cpf);
     posDigito = n - 1;
     for (int i = limite; i >= 0; i--) {
-        char ASCIIDigito[3];
-        sprintf(ASCIIDigito, "%d", cpf[i]);
-        if (strcmp(ASCIIDigito, "47") > 0
-            && strcmp(ASCIIDigito, "58") < 0) {
+        char ASCIICode[3];
+        sprintf(ASCIICode, "%d", cpf[i]);
+        if (strcmp(ASCIICode, "47") > 0
+            && strcmp(ASCIICode, "58") < 0) {
             digitos[posDigito] = cpf[i];
             posDigito--;}}
     if (contadorDigitos < n) {
@@ -133,10 +135,15 @@ const char* reterNumeros(char cpf[], int n, bool loud) {
     if (loud)
         for (int i = 0; i < n; i++)
             printf("- digitos[%d] = %c (char)\n", i, digitos[i]);
-    if (loud && n == 11)
-        printf("- CPF = %c%c%c.%c%c%c.%c%c%c-%c%c\n", digitos[0],
-            digitos[1], digitos[2], digitos[3], digitos[4], digitos[5],
-            digitos[6], digitos[7], digitos[8], digitos[9], digitos[10]);
+    if (loud && n == 11) {
+        printf("- CPF = ");
+        for (int i = 0; i < 11; i++) {
+            if (i == 3 || i == 6)
+                printf(".");
+            else if (i == 9)
+                printf("-");
+            printf("%c", digitos[i]);}
+        printf("\n");}
     if (loud)
         printf("- digitos = %s\n", digitos);
     d = (char *) malloc((n+1) * sizeof (char));
