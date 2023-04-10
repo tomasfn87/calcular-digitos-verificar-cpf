@@ -3,11 +3,11 @@
 #include <string.h>
 #include <stdbool.h>
 
-struct Digitos{
-    int valores[11];};
-
 struct DigitosVerificadoresCPF{
     int valores[2];};
+
+struct Digitos{
+    int valores[11];};
 
 struct DigitosVerificadoresCPF calcularDigitos(
     char cpf[],
@@ -25,27 +25,12 @@ const char* reterNumeros(
 
 int main(int argc, char* argv[]) {
     if (argc > 1) {
-        printf("reterNumeros(cpf = \"%s\", n = 11, loud = true):\n", argv[1]);
-        reterNumeros(argv[1], 11, true);
-        printf("\n");
-        printf("reterNumeros(cpf = \"%s\", n = 9, loud = true):\n", argv[1]);
-        reterNumeros(argv[1], 9, true);
-        printf("\n");
-        printf("obterDigitos(cpf = \"%s\", n = 11, loud = true):\n", argv[1]);
-        obterDigitos(argv[1], 11, true);
-        printf("\n");
-        printf("obterDigitos(cpf = \"%s\", n = 9, loud = true):\n", argv[1]);
-        obterDigitos(argv[1], 9, true);
-        printf("\n");
-        printf("calcularDigitos(cpf = \"%s\", loud = true):\n", argv[1]);
         calcularDigitos(argv[1], true);}
     return 0;}
 
 struct DigitosVerificadoresCPF calcularDigitos(char cpf[], bool loud) {
     struct Digitos digitosCpf = obterDigitos(cpf, 9, false);
-    struct DigitosVerificadoresCPF dvs;
-    dvs.valores[0] = 0;
-    dvs.valores[1] = 0;
+    struct DigitosVerificadoresCPF dvs = { 0 };
     int multiplicador = 10;
     int resto, soma = 0;
     for (int i = 0; i < 9; i++) {
@@ -54,8 +39,6 @@ struct DigitosVerificadoresCPF calcularDigitos(char cpf[], bool loud) {
     resto = soma % 11;
     if (resto > 1)
        dvs.valores[0] = 11 - resto;
-    if (loud)
-        printf("- primeiro dígito = %d\n", dvs.valores[0]);
     multiplicador = 11;
     soma = 0;
     for (int i = 0; i < 9; i++) {
@@ -63,21 +46,21 @@ struct DigitosVerificadoresCPF calcularDigitos(char cpf[], bool loud) {
         multiplicador--;}
     soma += dvs.valores[0] * multiplicador;
     resto = soma % 11;
-    if (resto < 2)
-       dvs.valores[1] = 0;
-    else
+    if (resto > 1)
        dvs.valores[1] = 11 - resto;
     if (loud)
-        printf("- segundo dígito = %d\n", dvs.valores[1]);
+        printf("- Dígitos verificadores = [ %d, %d ]\n", dvs.valores[0], dvs.valores[1]);
     if (loud) {
         printf("- CPF = ");
         for (int i = 0; i < 9; i++) {
             if (i == 3 || i == 6)
                 printf(".");
-            printf("%d", digitosCpf.valores[i]);
-        }
+            printf("%d", digitosCpf.valores[i]);}
         printf("-%d%d\n", dvs.valores[0], dvs.valores[1]);
-    }
+        printf("        ");
+        for (int i = 0; i < 9; i++) {
+            printf("%d", digitosCpf.valores[i]);}
+        printf("%d%d\n", dvs.valores[0], dvs.valores[1]);}
     return dvs;}
 
 struct Digitos obterDigitos(char cpf[], int n, bool loud) {
@@ -100,9 +83,7 @@ const char* reterNumeros(char cpf[], int n, bool loud) {
     char* d;
     digitos[n] = 0;
     for (int i = 0 ; i < strlen(cpf); i++) {
-        char ASCIICode[3];
-        sprintf(ASCIICode, "%d", cpf[i]);
-        if (strcmp(ASCIICode, "47") > 0 && strcmp(ASCIICode, "58") < 0) {
+        if (cpf[i] > 47 && cpf[i] < 58) {
             contadorDigitos++;
             if (contadorDigitos == n)
                 posicaoUltimoNumero = i;}};
@@ -120,10 +101,7 @@ const char* reterNumeros(char cpf[], int n, bool loud) {
         limite = strlen(cpf);
     posDigito = n - 1;
     for (int i = limite; i >= 0; i--) {
-        char ASCIICode[3];
-        sprintf(ASCIICode, "%d", cpf[i]);
-        if (strcmp(ASCIICode, "47") > 0
-            && strcmp(ASCIICode, "58") < 0) {
+        if (cpf[i] > 47 && cpf[i] < 58) {
             digitos[posDigito] = cpf[i];
             posDigito--;}}
     if (contadorDigitos < n) {
@@ -131,7 +109,7 @@ const char* reterNumeros(char cpf[], int n, bool loud) {
             printf("- dígitos = %d de %d.\n", contadorDigitos, n);
         numsFaltantes = n - contadorDigitos;
         for (int i = 0; i < numsFaltantes; i++)
-            digitos[i] = "0"[0];}
+            digitos[i] = '0';}
     if (loud)
         for (int i = 0; i < n; i++)
             printf("- digitos[%d] = %c (char)\n", i, digitos[i]);
