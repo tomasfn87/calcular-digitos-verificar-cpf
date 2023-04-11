@@ -22,3 +22,7 @@ rust/target/
 
 # java bytecode
 *.class
+
+# c/zig executables
+c/calcularCpf
+zig/calcular_cpf
