@@ -22,8 +22,8 @@ fn calcularCpf(cpf: []u8) [2]u16 {
     var multiplicador = numsLength + 1;
     var soma: u16 = 0;
     for (nums) |n| {
-        var ASCIICode = n - 48;
-        soma += multiplicador * ASCIICode;
+        var NumericCharIntValue = n - 48;
+        soma += multiplicador * NumericCharIntValue;
         multiplicador -= 1;
     }
     var resto = soma % 11;
@@ -33,8 +33,8 @@ fn calcularCpf(cpf: []u8) [2]u16 {
     multiplicador = numsLength + 2;
     soma = 0;
     for (nums) |n| {
-        var ASCIICode = n - 48;
-        soma += multiplicador * ASCIICode;
+        var NumericCharIntValue = n - 48;
+        soma += multiplicador * NumericCharIntValue;
         multiplicador -= 1;
     }
     soma += DVS[0] * multiplicador;
