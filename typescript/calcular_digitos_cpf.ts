@@ -50,9 +50,9 @@ export const calcular_dv = (
     }
     let soma = calculo_dv.reduce(((a, b) => a + b), 0);
     let resto = soma % 11;
-    if (resto < 2)
-        return 0;
-    return 11 - resto
+    if (resto > 1)
+        return 11 - resto;
+    return 0
 }
 
 const obter_dvs = (
@@ -71,7 +71,7 @@ const obter_dvs = (
 */
     let digitos_cpf:lista_digitos_cpf = obter_lista_digitos(Cpf, 9, info);
     let cpf_informado = `${digitos_cpf.slice(0,3).join("")}.${digitos_cpf.slice(3,6).join("")}.${digitos_cpf.slice(6,9).join("")}`;
-    if (info.toLowerCase() === 'i' || info.toLowerCase() === 'a') 
+    if (info.toLowerCase() === 'i' || info.toLowerCase() === 'a')
         console.log(`CPF informado: ${cpf_informado}`);
     let dv_1:digito_verificador_cpf = calcular_dv(digitos_cpf);
     digitos_cpf.push(dv_1);
