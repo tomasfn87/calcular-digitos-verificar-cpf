@@ -48,19 +48,18 @@ struct DigitosVerificadoresCPF calcularDigitos(char cpf[], bool loud) {
     resto = soma % 11;
     if (resto > 1)
        dvs.valores[1] = 11 - resto;
-    if (loud)
-        printf("- Dígitos verificadores = [ %d, %d ]\n", dvs.valores[0], dvs.valores[1]);
     if (loud) {
-        printf("- CPF = ");
+        printf("CPF completo = ");
         for (int i = 0; i < 9; i++) {
             if (i == 3 || i == 6)
                 printf(".");
             printf("%d", digitosCpf.valores[i]);}
         printf("-%d%d\n", dvs.valores[0], dvs.valores[1]);
-        printf("        ");
+        printf("               ");
         for (int i = 0; i < 9; i++) {
             printf("%d", digitosCpf.valores[i]);}
-        printf("%d%d\n", dvs.valores[0], dvs.valores[1]);}
+        printf("%d%d\n", dvs.valores[0], dvs.valores[1]);
+        printf("%d, %d\n", dvs.valores[0], dvs.valores[1]);}
     return dvs;}
 
 struct Digitos obterDigitos(char cpf[], int n, bool loud) {
