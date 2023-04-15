@@ -63,9 +63,9 @@ function CalcularDigito(digitos)
         soma = soma + (multiplicador * digitos[i])
         multiplicador = multiplicador - 1 end
     resto = soma % 11
-    if resto < 2 then
-        return 0 end
-    return 11 - resto end
+    if resto > 1 then
+        return 11 - resto end
+    return 0 end
 
 if params[1] == 'c' then
     print(CalcularDigitos(params[2])) end
