@@ -46,7 +46,7 @@ func (c *Cpf) CalcularDigitosCpf(loud bool) [2]int {
 	digitosBaseCpf := c.ObterDigitosCpf()
 	var digitosCpf [10]int
 	copy(digitosCpf[:], digitosBaseCpf[:])
-	var DVsCpf [2]int
+	DVsCpf := [2]int{0, 0}
 	DVsCpf[0] = calcularPrimeiroDV(digitosBaseCpf)
 	digitosCpf[9] = DVsCpf[0]
 	DVsCpf[1] = calcularSegundoDV(digitosCpf)
@@ -87,10 +87,10 @@ func calcularDVCpf(digitosCpf []int) int {
 		multiplicador -= 1
 	}
 	resto := soma % 11
-	if resto < 2 {
-		return 0
+	if resto > 1 {
+		return 11 - resto
 	}
-	return 11 - resto
+	return 0
 }
 
 func calcularPrimeiroDV(digitosCpf [9]int) int {
