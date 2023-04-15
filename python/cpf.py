@@ -18,9 +18,9 @@ class Cpf:
         for j in calculo_dv:
             soma += j
         resto = soma % 11
-        if resto < 2:
-            return 0
-        return 11 - resto
+        if resto > 1:
+            return 11 - resto
+        return 0
 
     def obter_dvs(cpf):
         cpf = Cpf.reter_numeros(cpf, True)
@@ -59,7 +59,7 @@ class Cpf:
         for d in numero:
             if texto_numerico == "" and d == "-":
                 texto_numerico += d
-            if 48 <= ord(d) <= 57:
+            if 47 < ord(d) < 58:
                 texto_numerico += d
             elif d in [".", ","] and not real and accept_float:
                 texto_numerico += "."
