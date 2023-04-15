@@ -105,8 +105,8 @@ fn calcular_digito_verificador(digitos: &[u16]) -> u16 {
         multiplicador -= 1
     }
     let resto: u16 = soma % 11;
-    if resto < 2 {
-        return 0
+    if resto > 1 {
+        return 11 - resto
     }
-    11 - resto
+    0
 }
