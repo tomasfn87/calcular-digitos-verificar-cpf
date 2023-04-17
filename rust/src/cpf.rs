@@ -2,6 +2,7 @@ use lazy_static::lazy_static;
 use pad::{PadStr, Alignment};
 use regex::Regex;
 use std::vec::IntoIter;
+use substring::Substring;
 
 
 pub fn verificar(cpf: &str) -> bool {
@@ -11,6 +12,10 @@ pub fn verificar(cpf: &str) -> bool {
         serão comparados com os dígitos calculados a partir dos 9
         primeiros dígitos.
     */
+    if reter_numeros(cpf, 1) == "" {
+         println!("ERRO: informe um CPF válido para verificação");
+         return false
+    }
     let mut digitos_recebidos = vec![];
     let mut c: u8 = 0;
     for d in obter_digitos(cpf, 11) {
@@ -19,7 +24,8 @@ pub fn verificar(cpf: &str) -> bool {
         }
         c += 1
     }
-    let digitos_calculados: [u16; 2] = calcular_digitos(&cpf);
+    let cpf_calculo = reter_numeros(cpf, 11).to_string();
+    let digitos_calculados: [u16; 2] = calcular_digitos(&cpf_calculo.substring(0, 9));
     if digitos_recebidos[0] == digitos_calculados[0]
         && digitos_recebidos[1] == digitos_calculados[1] {
         return true
