@@ -74,7 +74,7 @@ pub fn calcular_digitos(cpf: &str) -> [u16; 2] {
 
 pub fn reter_numeros(cpf: &str, n: usize) -> String {
     /*
-    - cpf: ponteiro para string com números que serão isolados
+    - cpf: referência para string com números que serão isolados
         de caracteres não numéricos, e então preenchidos com zeros,
         para que a string tenha o mesmo comprimento que 'n'; caso
         não existam caracteres numéricos, será devolvida uma
