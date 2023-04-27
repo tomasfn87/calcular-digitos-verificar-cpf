@@ -45,6 +45,12 @@ function CalcularDigitos(cpf)
     dv1 = CalcularDigito(digitos)
     table.insert(digitos, dv1)
     dv2 = CalcularDigito(digitos)
+    Cpf = ReterNumeros(cpf, 9)
+    dvs = string.format("%d%d", dv1, dv2)
+    print(string.sub(Cpf, 1, 3)
+        .."."..string.sub(Cpf, 4, 6)
+        .."."..string.sub(Cpf, 7, 9).."-"..dvs)
+    print(Cpf..dvs)
     return dv1, dv2 end
 
 function ParseInt(str)
