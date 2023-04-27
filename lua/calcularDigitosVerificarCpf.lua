@@ -67,11 +67,11 @@ function CalcularDigito(digitos)
         return 11 - resto end
     return 0 end
 
-if params[1] == 'c' then
+if params[1] == '-c' then
     print(CalcularDigitos(params[2])) end
-if params[1] == 'v' then
+if params[1] == '-v' then
     print(Verificar(params[2])) end
-if params[1] == 'demo' then
+if params[1] == '--demo' then
     -- CPF inválido p/ verificação (sem números)
     a = "a"
     print(Verificar(a)) -- expected: false
