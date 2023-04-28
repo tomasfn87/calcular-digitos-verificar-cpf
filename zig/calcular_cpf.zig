@@ -1,3 +1,5 @@
+// zig version: 0.11.0-dev.1929+4ea2f441d
+
 const std = @import("std");
 const assert = @import("std").debug.assert;
 const print = @import("std").debug.print;
