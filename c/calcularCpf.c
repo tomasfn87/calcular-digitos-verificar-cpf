@@ -38,7 +38,7 @@ struct DigitosVerificadoresCPF calcularDigitos(char cpf[], bool loud) {
         multiplicador--;}
     resto = soma % 11;
     if (resto > 1)
-       dvs.valores[0] = 11 - resto;
+        dvs.valores[0] = 11 - resto;
     multiplicador = 11;
     soma = 0;
     for (int i = 0; i < 9; i++) {
@@ -47,7 +47,7 @@ struct DigitosVerificadoresCPF calcularDigitos(char cpf[], bool loud) {
     soma += dvs.valores[0] * multiplicador;
     resto = soma % 11;
     if (resto > 1)
-       dvs.valores[1] = 11 - resto;
+        dvs.valores[1] = 11 - resto;
     if (loud) {
         for (int i = 0; i < 9; i++) {
             if (i == 3 || i == 6)
@@ -93,8 +93,8 @@ const char* reterNumeros(char cpf[], int n, bool loud) {
     if (contadorDigitos > n) {
         limite = posicaoUltimoNumero;
         if (loud)
-            printf("- dígitos = %d (%d a mais).\n", contadorDigitos, (contadorDigitos-n));
-    } else
+            printf("- dígitos = %d (%d a mais).\n", contadorDigitos, (contadorDigitos-n));}
+    else
         limite = strlen(cpf);
     posDigito = n - 1;
     for (int i = limite; i >= 0; i--) {
