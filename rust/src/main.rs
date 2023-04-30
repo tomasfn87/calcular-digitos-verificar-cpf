@@ -23,8 +23,7 @@ fn main() {
             println!("        CPF A,  9 : digitos = {:?}", digitos_a2);
             print!("Digitos verificadores CPF A = [ ");
             for d in cpf::calcular_digitos(A) {
-                print!("{} ", d)
-            }
+                print!("{} ", d)}
             println!("]");
             print!("          Verificação CPF A = ");
             println!("{}", cpf::verificar(A));
@@ -36,21 +35,15 @@ fn main() {
             println!("        CPF B,  9 : digitos = {:?}", digitos_b2);
             print!("Digitos verificadores CPF B = [ ");
             for d in cpf::calcular_digitos(B) {
-                print!("{} ", d)
-            }
+                print!("{} ", d)}
             println!("]");
             print!("          Verificação CPF B = ");
-            println!("{}", cpf::verificar(B));
-        } else if &args[1] != "" {
+            println!("{}", cpf::verificar(B));}
+        else if &args[1] != "" {
             if cpf::verificar(&args[1]) {
-                println!("O CPF é válido.");
-            } else {
-                println!("O CPF é inválido.");
-            }
-        }
-    }
+                println!("O CPF é válido.");}
+            else {
+                println!("O CPF é inválido.");}}}
     else {
         println!("Digite um CPF para executar a verificação;");
-        println!("Digite 'demo' para ver algumas funções do projeto em ação.");
-    }
-}
+        println!("Digite 'demo' para ver algumas funções do projeto em ação.");}}
