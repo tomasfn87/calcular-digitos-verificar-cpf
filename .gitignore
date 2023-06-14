@@ -26,3 +26,9 @@ rust/target/
 # c/zig executables
 c/calcularCpf
 zig/calcular_cpf
+
+# C# executables
+*.exe
+
+# Odin executables
+*.bin
