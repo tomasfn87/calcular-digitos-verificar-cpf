@@ -1,15 +1,25 @@
-# CPF - Cálculo dígitos verificadores
+# CPF - Cálculo dígitos verificadores / Verificação
 
 ## Como usar
 
 ### Compilar
 
-```shell
-gcc calcularCpf.c -o calcularCpf
+```console
+gcc cpf.c -o cpf
 ```
 
 ### Executar
 
-```shell
-./calcularCpf 123.456.789-XX
+#### Cálculo Dígitos Verificadores
+
+```console
+./cpf -c 123.456.789-XX
+./cpf --calcular 123.456.789-XX
+```
+
+#### Verificação
+
+```console
+./cpf -v 123.456.789-09
+./cpf --verificar 123.456.789-90
 ```
