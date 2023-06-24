@@ -3,32 +3,57 @@
 #include <string.h>
 #include <stdbool.h>
 
-struct DigitosVerificadoresCPF{
-    int valores[2];};
+struct DigitosVerificadoresCPF{int valores[2];};
 
-struct Digitos{
-    int valores[11];};
+struct Digitos{int valores[11];};
 
-struct DigitosVerificadoresCPF calcularDigitos(
-    char cpf[],
-    bool loud);
+bool verificar(char cpf[], bool loud);
 
-struct Digitos obterDigitos(
-    char cpf[],
-    int n,
-    bool loud);
+struct DigitosVerificadoresCPF calcularDigitos(const char cpf[], bool loud);
 
-const char* reterNumeros(
-    char cpf[],
-    int n,
-    bool loud);
+struct Digitos obterDigitos(const char cpf[], int n, bool loud);
+
+const char* reterNumeros(const char cpf[], int n, bool loud);
 
 int main(int argc, char* argv[]) {
-    if (argc > 1) {
-        calcularDigitos(argv[1], true);}
+    if (argc > 2) {
+        if (strcmp(argv[1], "-c") == 0 || strcmp(argv[1], "--calcular") == 0)
+            calcularDigitos(argv[2], true);
+        else if (strcmp(argv[1], "-v") == 0 || strcmp(argv[1], "--verificar") == 0)
+            verificar(argv[2], true);}
+    else {
+        printf(" * Digite '-c' ou '--calcular' e um número de CPF para calcular os dígitos verificadores do CPF.\n");
+        printf(" * Digite '-v' ou '--verificar' e um número de CPF para verificar o CPF.\n");}
     return 0;}
 
-struct DigitosVerificadoresCPF calcularDigitos(char cpf[], bool loud) {
+bool verificar(char cpf[], bool loud) {
+    struct Digitos digitosCpf = obterDigitos(cpf, 11, false);
+    struct DigitosVerificadoresCPF dvsRecebidos = { 0 };
+    dvsRecebidos.valores[0] = digitosCpf.valores[9];
+    dvsRecebidos.valores[1] = digitosCpf.valores[10];
+    const char* cpfCompleto = reterNumeros(cpf, 11, false);
+    char cpfCalculo[10];
+    strncpy(cpfCalculo, cpfCompleto, 9);
+    cpfCalculo[9] = '\0';
+    struct DigitosVerificadoresCPF dvsCalculados = calcularDigitos(cpfCalculo, false);
+    if (loud) {
+        printf("O CPF ");
+        for (int i = 0; i < 9; i++) {
+            if (i == 3 || i == 6)
+                printf(".");
+            printf("%d", digitosCpf.valores[i]);}
+        printf("-%d%d ", dvsRecebidos.valores[0], dvsRecebidos.valores[1]);
+        printf("é ");}
+    if (dvsRecebidos.valores[0] == dvsCalculados.valores[0] &&
+        dvsRecebidos.valores[1] == dvsCalculados.valores[1]) {
+        if (loud)
+            printf("válido.\n");
+        return true;}
+    if (loud)
+        printf("inválido.\n");
+    return false;}
+
+struct DigitosVerificadoresCPF calcularDigitos(const char cpf[], bool loud) {
     struct Digitos digitosCpf = obterDigitos(cpf, 9, false);
     struct DigitosVerificadoresCPF dvs = { 0 };
     int multiplicador = 10;
@@ -60,17 +85,17 @@ struct DigitosVerificadoresCPF calcularDigitos(char cpf[], bool loud) {
         printf("[ %d, %d ]\n", dvs.valores[0], dvs.valores[1]);}
     return dvs;}
 
-struct Digitos obterDigitos(char cpf[], int n, bool loud) {
+struct Digitos obterDigitos(const char cpf[], int n, bool loud) {
     struct Digitos digitosCpf;
     const char* Cpf = reterNumeros(cpf, n, false);
     for (int i = 0; i < strlen(Cpf); i++) {
-        int d = Cpf[i] - 48;
+        int d = Cpf[i] - '0';
         digitosCpf.valores[i] = d;
         if (loud)
             printf("- digitos[%d] = %d (int)\n", i, d);}
     return digitosCpf;}
 
-const char* reterNumeros(char cpf[], int n, bool loud) {
+const char* reterNumeros(const char cpf[], int n, bool loud) {
     if (n < 1)
         return "";
     int posicaoUltimoNumero = -1;
