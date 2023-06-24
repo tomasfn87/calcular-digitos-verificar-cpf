@@ -4,15 +4,11 @@
 #include <stdbool.h>
 
 struct DigitosVerificadoresCPF{int valores[2];};
-
 struct Digitos{int valores[11];};
 
 bool verificar(char cpf[], bool loud);
-
 struct DigitosVerificadoresCPF calcularDigitos(const char cpf[], bool loud);
-
 struct Digitos obterDigitos(const char cpf[], int n, bool loud);
-
 const char* reterNumeros(const char cpf[], int n, bool loud);
 
 int main(int argc, char* argv[]) {
