@@ -26,10 +26,11 @@ namespace cpf {
                         cpfF += $".{cpf.Substring(3, 3)}";
                         cpfF += $".{cpf.Substring(6, 3)}";
                         cpfF += $"-{cpf.Substring(9, 2)}";
+                        string v = "válido";
                         if (valido) {
-                            Console.WriteLine($"O CPF {cpfF} é válido.");}
+                            Console.WriteLine($"O CPF {cpfF} é {v}.");}
                         else {
-                            Console.WriteLine($"O CPF {cpfF} é inválido.");}}
+                            Console.WriteLine($"O CPF {cpfF} é in{v}.");}}
                     else {
                         Console.WriteLine("ERRO: o CPF deve conter pelo menos um número.");}}}
             else {
