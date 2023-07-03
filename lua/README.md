@@ -3,7 +3,8 @@
 ## Calcular Dígitos CPF
 
 ```shell
-luajit calcularDigitosVerificarCpf.lua -c 0
+luajit cpf.lua -c 0
+luajit cpf.lua --calcular 0
 ```
 
 ---
@@ -11,11 +12,12 @@ luajit calcularDigitosVerificarCpf.lua -c 0
 ## Verificar CPF
 
 ```shell
-luajit calcularDigitosVerificarCpf.lua -v 0
+luajit cpf.lua -v 0
+luajit cpf.lua --verificar 0
 ```
 
 ## Demo
 
 ```shell
-luajit calcularDigitosVerificarCpf.lua --demo
+luajit cpf.lua --demo
 ```
