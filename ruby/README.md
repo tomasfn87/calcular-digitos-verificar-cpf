@@ -5,7 +5,8 @@
 ### Calcular Dígitos CPF
 
 ```shell
-ruby calcular_digitos_verificar_cpf.rb -c 123.456.789
+ruby cpf.rb -c 123.456.789
+ruby cpf.rb --calcular 123.456.789
 ```
 
 ---
@@ -15,13 +16,15 @@ ruby calcular_digitos_verificar_cpf.rb -c 123.456.789
 - *__válido__*
 
 ```shell
-ruby calcular_digitos_verificar_cpf.rb -v 123.456.789-09
+ruby cpf.rb -v 123.456.789-09
+ruby cpf.rb --verificar 123.456.789-09
 ```
 
 - *__inválido__*
 
 ```shell
-ruby calcular_digitos_verificar_cpf.rb -v 123.456.789-19
+ruby cpf.rb -v 123.456.789-19
+ruby cpf.rb --verificar 123.456.789-19
 ```
 
 ---
@@ -29,5 +32,5 @@ ruby calcular_digitos_verificar_cpf.rb -v 123.456.789-19
 ### Demo
 
 ```shell
-ruby calcular_digitos_verificar_cpf.rb --demo
+ruby cpf.rb --demo
 ```

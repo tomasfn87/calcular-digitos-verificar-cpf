@@ -44,7 +44,8 @@ class Cpf
         cpf = ReterNumeros(9)
         if loud 
             puts "#{cpf[0..2]}.#{cpf[3..5]}.#{cpf[6..8]}-#{dvs[0]}#{dvs[1]}"
-            puts "#{cpf[0..8]}#{dvs[0]}#{dvs[1]}" end
+            puts "#{cpf[0..8]}#{dvs[0]}#{dvs[1]}"
+            puts "( #{dvs[0]}, #{dvs[1]} )" end
         return dvs end
 
     def Verificar
@@ -65,24 +66,39 @@ class Cpf
 if __FILE__ == $0
     if ARGV[0] == '--demo'
         cpf1 = Cpf.new
-        cpf1.numero = "123.456"
-        puts cpf1.CalcularDigitos(loud=true)
+        cpf1.numero = "123"
+        puts ' * Cpf("123").CalcularDigitos()'
+        cpf1.CalcularDigitos(loud=true)
+        cpf1.numero = "12360"
+        puts ''
+        puts ' * Cpf("12360").Verificar()'
+        puts cpf1.Verificar()
         puts ''
         cpf2 = Cpf.new
-        cpf2.numero = "654.321"
-        puts cpf2.CalcularDigitos(loud=true)
+        cpf2.numero = "47"
+        puts ' * Cpf("47").CalcularDigitos()'
+        cpf2.CalcularDigitos(loud=true)
+        cpf2.numero = "4774"
+        puts ''
+        puts ' * Cpf("4774").Verificar()'
+        puts cpf2.Verificar()
         puts ''
         cpf3 = Cpf.new
-        cpf3.numero = "000.000.047"
-        puts cpf3.CalcularDigitos(loud=true)
-    elsif ARGV[0] == '-c'
+        cpf3.numero = "2244"
+        puts ' * Cpf("2244").CalcularDigitos()'
+        cpf3.CalcularDigitos(loud=true)
+        cpf2.numero = "224466"
+        puts ''
+        puts ' * Cpf("224466").Verificar()'
+        puts cpf3.Verificar()
+    elsif ARGV[0] == '-c' or ARGV[0] == '--calcular'
         if ARGV[1] == nil
             puts "Informe os 9 primeiros dígitos de um número de CPF para que o cálculo seja feito."
         else
             cpf = Cpf.new
             cpf.numero = ARGV[1]
             cpf.CalcularDigitos(loud=true) end
-    elsif ARGV[0] == '-v'
+    elsif ARGV[0] == '-v' or ARGV[0] == '--verificar'
         if ARGV[1] == nil
             puts "Informe um CPF completo para que a verificação seja feita."
         else
