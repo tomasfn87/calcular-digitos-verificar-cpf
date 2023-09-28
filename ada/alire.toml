@@ -1,0 +1,9 @@
+name = "cpf"
+description = "Shiny new project"
+version = "0.1.0-dev"
+
+authors = ["Tomás Foch Nalle"]
+maintainers = ["Tomás Foch Nalle <tomas.nalle@alumni.usp.br>"]
+maintainers-logins = ["tomasfn87"]
+
+executables = ["cpf"]
