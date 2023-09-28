@@ -19,7 +19,10 @@ procedure Cpf is
             end if;
          end;
       end loop;
-      Ada.Text_IO.Put_Line("Números retidos de """ & Texto & """ = """ & Ada.Strings.Unbounded.To_String(Apenas_Numeros) & """");
+      Ada.Text_IO.Put_Line(
+         "Números retidos de """ & Texto & """ = """ &
+         Ada.Strings.Unbounded.To_String(Apenas_Numeros) &
+         """ (números solicitados:" & Natural'Image(N) & ")");
    end Reter_Numeros;
 begin
    Reter_Numeros("test123", 2);
