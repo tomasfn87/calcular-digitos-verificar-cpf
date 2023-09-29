@@ -1,5 +1,6 @@
-with Ada.Text_IO;
+with Ada.Command_Line;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Text_IO;
 
 procedure Cpf is
    type DVs is array (1 .. 2) of Natural;
@@ -118,32 +119,125 @@ procedure Cpf is
       return Ada.Strings.Unbounded.To_String (Result);
    end Imprimir_DVs;
 
+   Num_Args              : constant Natural := Ada.Command_Line.Argument_Count;
+   Finish                : Boolean                                := False;
+   Invalid_Option        : Boolean                                := True;
+   Digitos_Verificadores : DVs                                    := (0, 0);
+   CPF_Valido            : Boolean                                := False;
+   CPF_Completo          : Ada.Strings.Unbounded.Unbounded_String :=
+     Ada.Strings.Unbounded.Null_Unbounded_String;
 begin
-   Ada.Text_IO.Put_Line
-     ("Verificar (""123.456.789-09"") = " &
-      Boolean'Image (Verificar ("123.456.789-09")));
-   Ada.Text_IO.Put_Line
-     ("Verificar (""123.456.789-08"") = " &
-      Boolean'Image (Verificar ("123.456.789-08")));
-   Ada.Text_IO.Put_Line
-     ("Calcular_Digitos (""123.456.789"") = " &
-      Imprimir_DVs (Calcular_Digitos ("123.456.789")));
-   Ada.Text_IO.Put_Line
-     ("Calcular_Digitos (""123"") = " &
-      Imprimir_DVs (Calcular_Digitos ("123")));
-   Ada.Text_IO.Put_Line
-     ("Formatar (""12345678909"") = " & Formatar ("12345678909"));
-   Ada.Text_IO.Put_Line ("Formatar (""12360"") = " & Formatar ("12360"));
-   Ada.Text_IO.Put_Line
-     ("Reter_Numeros (""test123"", 2)" & " = """ &
-      Reter_Numeros ("test123", 2) & """");
-   Ada.Text_IO.Put_Line
-     ("Reter_Numeros (""test123"", 1)" & " = """ &
-      Reter_Numeros ("test123", 1) & """");
-   Ada.Text_IO.Put_Line
-     ("Reter_Numeros (""test1"", 2)" & " = """ & Reter_Numeros ("test1", 2) &
-      """");
-   Ada.Text_IO.Put_Line
-     ("Reter_Numeros (""test"", 1)" & " = """ & Reter_Numeros ("test", 1) &
-      """");
+   if Num_Args = 1 and then Ada.Command_Line.Argument (1) = "--demo" then
+      Invalid_Option := False;
+      Ada.Text_IO.Put_Line
+        ("Verificar (""123.456.789-09"") = " &
+         Boolean'Image (Verificar ("123.456.789-09")));
+      Ada.Text_IO.Put_Line
+        ("Verificar (""123.456.789-08"") = " &
+         Boolean'Image (Verificar ("123.456.789-08")));
+
+      Ada.Text_IO.Put_Line
+        ("Calcular_Digitos (""123.456.789"") = " &
+         Imprimir_DVs (Calcular_Digitos ("123.456.789")));
+      Ada.Text_IO.Put_Line
+        ("Calcular_Digitos (""123"") = " &
+         Imprimir_DVs (Calcular_Digitos ("123")));
+
+      Ada.Text_IO.Put_Line
+        ("Formatar (""12345678909"") = " & Formatar ("12345678909"));
+      Ada.Text_IO.Put_Line ("Formatar (""12360"") = " & Formatar ("12360"));
+
+      Ada.Text_IO.Put_Line
+        ("Reter_Numeros (""test123"", 2)" & " = """ &
+         Reter_Numeros ("test123", 2) & """");
+      Ada.Text_IO.Put_Line
+        ("Reter_Numeros (""test123"", 1)" & " = """ &
+         Reter_Numeros ("test123", 1) & """");
+      Ada.Text_IO.Put_Line
+        ("Reter_Numeros (""test1"", 2)" & " = """ &
+         Reter_Numeros ("test1", 2) & """");
+      Ada.Text_IO.Put_Line
+        ("Reter_Numeros (""test"", 1)" & " = """ & Reter_Numeros ("test", 1) &
+         """");
+   end if;
+
+   if Num_Args /= 2 then
+      Finish := True;
+   end if;
+
+   if not Finish
+     and then Reter_Numeros (Ada.Command_Line.Argument (2), 1)'Length < 1
+   then
+      Ada.Text_IO.Put_Line ("ERRO: o CPF deve ser um número.");
+      Ada.Text_IO.New_Line;
+      Finish := True;
+   end if;
+
+   if not Finish then
+      if Ada.Command_Line.Argument (1) = "-f"
+        or else Ada.Command_Line.Argument (1) = "--formatar"
+      then
+         Invalid_Option := False;
+         Ada.Text_IO.Put_Line
+           ("CPF formatado: " & Formatar (Ada.Command_Line.Argument (2)));
+
+      elsif Ada.Command_Line.Argument (1) = "-c"
+        or else Ada.Command_Line.Argument (1) = "--calcular"
+      then
+         Invalid_Option        := False;
+         Digitos_Verificadores :=
+           Calcular_Digitos (Ada.Command_Line.Argument (2));
+         Ada.Strings.Unbounded.Append
+           (CPF_Completo, Reter_Numeros (Ada.Command_Line.Argument (2), 9));
+         Ada.Strings.Unbounded.Append
+           (CPF_Completo,
+            Natural'Image (Digitos_Verificadores (1))
+              (2 .. Natural'Image (Digitos_Verificadores (1))'Last));
+         Ada.Strings.Unbounded.Append
+           (CPF_Completo,
+            Natural'Image (Digitos_Verificadores (2))
+              (2 .. Natural'Image (Digitos_Verificadores (2))'Last));
+         Ada.Text_IO.Put_Line
+           ("CPF informado: " &
+            Formatar (Ada.Strings.Unbounded.To_String (CPF_Completo))
+              (1 .. 11));
+         Ada.Text_IO.Put_Line
+           ("CPF completo:  " &
+            Formatar (Ada.Strings.Unbounded.To_String (CPF_Completo)));
+         Ada.Text_IO.Put_Line
+           ("               " &
+            Ada.Strings.Unbounded.To_String (CPF_Completo));
+
+      elsif Ada.Command_Line.Argument (1) = "-v"
+        or else Ada.Command_Line.Argument (1) = "--verificar"
+      then
+         Invalid_Option := False;
+         Ada.Strings.Unbounded.Append
+           (CPF_Completo, Reter_Numeros (Ada.Command_Line.Argument (2), 11));
+         CPF_Valido := Verificar (Ada.Command_Line.Argument (2));
+         if CPF_Valido then
+            Ada.Text_IO.Put_Line
+              ("O CPF " &
+               Formatar (Ada.Strings.Unbounded.To_String (CPF_Completo)) &
+               " é válido.");
+         else
+            Ada.Text_IO.Put_Line
+              ("O CPF " &
+               Formatar (Ada.Strings.Unbounded.To_String (CPF_Completo)) &
+               " é inválido.");
+         end if;
+      end if;
+   end if;
+
+   if Invalid_Option then
+      Ada.Text_IO.Put_Line ("Digite uma das opções abaixo:");
+      Ada.Text_IO.Put_Line
+        (" * '-f' ou '--formatar' e um número de CPF completo para formatá-lo;");
+      Ada.Text_IO.Put_Line
+        (" * '-c' ou '--calcular' e os primeiros 9 dígitos de número de CPF para calcular seus dígitos verificadores;");
+      Ada.Text_IO.Put_Line
+        (" * '-v' ou '--verificar' e um número de CPF completo para verificar sua validez;");
+      Ada.Text_IO.Put_Line
+        (" * '--demo' para visualizar entradas e saídas das funções do programa.");
+   end if;
 end Cpf;
