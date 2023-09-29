@@ -1,7 +1,13 @@
 public class Cpf {
     public static void main(String[] args) {
         if (args.length > 1) {
-            if (args[0].equals("-c") || args[0].equals("--calcular")) {
+            if (args[0].equals("-f") || args[0].equals("--formatar")) {
+                if (isNumeric(args[1])) {
+                    System.out.printf("CPF formatado: %s%n", formatar(args[1], ' ', ' '));}
+                else {
+                    System.out.println(
+                        "ERRO: o segundo argumento deve possuir ao menos um número para formatar como CPF.");}}
+            else if (args[0].equals("-c") || args[0].equals("--calcular")) {
                 if (isNumeric(args[1])) {
                     int[] dvs = calcularDigitos(args[1], true);
                     System.out.printf("{ %d, %d }%n", dvs[0], dvs[1]);}
@@ -20,9 +26,11 @@ public class Cpf {
                         "ERRO: o segundo argumento deve possuir ao menos um número para que seja realizada a verificação do CPF.");}}}
         else {
             System.out.println(
-                "   - digite '-c' ou '--calcular' e um número de CPF para calcular os dígitos verificadores do CPF");
+                "   - digite '-f' ou '--formatar' e um número de CPF para formatar o CPF;");
             System.out.println(
-                "   - digite '-v' ou '--verificar' e um número de CPF para verificar o CPF");}}
+                "   - digite '-c' ou '--calcular' e um número de CPF para calcular os dígitos verificadores do CPF;");
+            System.out.println(
+                "   - digite '-v' ou '--verificar' e um número de CPF para verificar o CPF.");}}
 
     public static boolean isNumeric(String str) {
         if (str.length() < 1) {
