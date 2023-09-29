@@ -1,4 +1,4 @@
-# Calcular Dígitos CPF
+# Calcular Dígitos / Verificar CPF
 
 ## Como usar
 
@@ -9,6 +9,13 @@ javac Cpf.java
 ```
 
 ### Executar
+
+#### Formatar CPF
+
+```console
+java Cpf -f 123.456.789
+java Cpf --formatar 987.654.321
+```
 
 #### Calcular dígitos verificadores CPF
 
