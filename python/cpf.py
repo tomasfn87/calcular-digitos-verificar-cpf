@@ -1,5 +1,5 @@
 class Cpf:
-    def marcar(cpf):
+    def formatar(cpf):
         n_cpf = str(Cpf.reter_numeros(cpf, True))
         if len(n_cpf) != 11:
             return False

@@ -11,8 +11,8 @@ class TestCpf:
         ("11144477735", "111.444.777-35"),
         ("111444777999", False)
     ])
-    def test_cpf_marcar(self, cpf, resultado, C):
-        assert C.marcar(cpf) == resultado
+    def test_cpf_formatar(self, cpf, resultado, C):
+        assert C.formatar(cpf) == resultado
     
     @pytest.mark.parametrize("digitos_cpf, resultado", [
         ([1, 1, 1, 4, 4, 4, 7, 7, 7], 3),
