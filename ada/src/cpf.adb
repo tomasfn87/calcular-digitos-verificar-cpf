@@ -43,11 +43,11 @@ procedure Cpf is
       Resto                 : Natural          := 0;
    begin
       for i in Apenas_Numeros_CPF'Range loop
+         declare
+            Natural_Value : constant Natural :=
+              Character'Pos (Apenas_Numeros_CPF (i)) - Character'Pos ('0');
          begin
-            Soma          :=
-              Soma +
-              ((Character'Pos (Apenas_Numeros_CPF (i)) - Character'Pos ('0')) *
-               Multiplicador);
+            Soma          := Soma + (Natural_Value * Multiplicador);
             Multiplicador := Multiplicador - 1;
          end;
       end loop;
@@ -58,11 +58,11 @@ procedure Cpf is
       Soma          := 0;
       Multiplicador := Num_Digitos_Base + 2;
       for i in Apenas_Numeros_CPF'Range loop
+         declare
+            Natural_Value : constant Natural :=
+              Character'Pos (Apenas_Numeros_CPF (i)) - Character'Pos ('0');
          begin
-            Soma          :=
-              Soma +
-              ((Character'Pos (Apenas_Numeros_CPF (i)) - Character'Pos ('0')) *
-               Multiplicador);
+            Soma          := Soma + (Natural_Value * Multiplicador);
             Multiplicador := Multiplicador - 1;
          end;
       end loop;
@@ -91,6 +91,16 @@ procedure Cpf is
       end if;
       return False;
    end Verificar;
+
+   function Formatar (CPF : String) return String is
+      Apenas_Numeros_CPF : constant String := Reter_Numeros (CPF, 11);
+      CPF_Formatado      : String (1 .. 14);
+   begin
+      CPF_Formatado :=
+        Apenas_Numeros_CPF (1 .. 3) & "." & Apenas_Numeros_CPF (4 .. 6) & "." &
+        Apenas_Numeros_CPF (7 .. 9) & "-" & Apenas_Numeros_CPF (10 .. 11);
+      return CPF_Formatado;
+   end Formatar;
 
    function Imprimir_DVs (Arr : DVs) return String is
       Result : Ada.Strings.Unbounded.Unbounded_String :=
@@ -121,6 +131,9 @@ begin
    Ada.Text_IO.Put_Line
      ("Calcular_Digitos (""123"") = " &
       Imprimir_DVs (Calcular_Digitos ("123")));
+   Ada.Text_IO.Put_Line
+     ("Formatar (""12345678909"") = " & Formatar ("12345678909"));
+   Ada.Text_IO.Put_Line ("Formatar (""12360"") = " & Formatar ("12360"));
    Ada.Text_IO.Put_Line
      ("Reter_Numeros (""test123"", 2)" & " = """ &
       Reter_Numeros ("test123", 2) & """");
