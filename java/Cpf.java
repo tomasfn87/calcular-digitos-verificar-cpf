@@ -12,9 +12,9 @@ public class Cpf {
                 if (isNumeric(args[1])) {
                     boolean valid = verificar(args[1]);
                     if (!valid) {
-                        System.out.printf("O CPF %s é inválido%n", marcar(args[1], ' ', ' '));}
+                        System.out.printf("O CPF %s é inválido%n", formatar(args[1], ' ', ' '));}
                     else {
-                        System.out.printf("O CPF %s é válido%n", marcar(args[1], ' ', ' '));}}
+                        System.out.printf("O CPF %s é válido%n", formatar(args[1], ' ', ' '));}}
                 else {
                     System.out.println(
                         "ERRO: o segundo argumento deve possuir ao menos um número para que seja realizada a verificação do CPF.");}}}
@@ -33,10 +33,11 @@ public class Cpf {
         return false;}
 
     public static int[] calcularDigitos(String cpf, boolean loud) {
-        String cpfRecebido = padLeftAndLimit(cpf.replaceAll("\\D", ""), 9, "0");
+        int numDigitosBase = 9;
+        String cpfRecebido = padLeftAndLimit(cpf.replaceAll("\\D", ""), numDigitosBase, "0");
         int soma = 0;
         int resto = 0;
-        int multiplicador = 10;
+        int multiplicador = numDigitosBase + 1;
         int[] dvs = { 0, 0 };
         for (int i = 0; i < 9; i++) {
             soma += Integer.parseInt(cpfRecebido.substring(i, i+1)) * multiplicador;
@@ -45,7 +46,7 @@ public class Cpf {
         if (resto > 1)
             dvs[0] = 11 - resto;
         soma = 0;
-        multiplicador = 11;
+        multiplicador = numDigitosBase + 2;
         for (int i = 0; i < 9; i++) {
             soma += Integer.parseInt(cpfRecebido.substring(i, i+1)) * multiplicador;
             multiplicador--;}
@@ -72,7 +73,7 @@ public class Cpf {
             return true;
         return false;}
 
-    public static String marcar(String cpf, char marcador1, char marcador2) {
+    public static String formatar(String cpf, char marcador1, char marcador2) {
         cpf = cpf.replaceAll("\\D", "");
         cpf = padLeftAndLimit(cpf, 11, "0");
         if (marcador1 == ' ')
