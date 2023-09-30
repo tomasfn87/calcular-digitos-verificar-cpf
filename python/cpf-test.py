@@ -13,28 +13,28 @@ class TestCpf:
     ])
     def test_cpf_formatar(self, cpf, resultado, C):
         assert C.formatar(cpf) == resultado
-    
+
     @pytest.mark.parametrize("digitos_cpf, resultado", [
         ([1, 1, 1, 4, 4, 4, 7, 7, 7], 3),
         ([1, 1, 1, 4, 4, 4, 7, 7, 7, 3], 5)
     ])
     def test_cpf_calcular_dv(self, digitos_cpf, resultado, C):
         assert C.calcular_dv(digitos_cpf) == resultado
-    
+
     @pytest.mark.parametrize("cpf, resultado", [
         (11144477735, (3, 5)),
         (11144477799, (3, 5)),
     ])
     def test_cpf_obter_dvs(self, cpf, resultado, C):
         assert C.obter_dvs(cpf) == resultado
-    
+
     @pytest.mark.parametrize("cpf, resultado", [
         (11144477735, True),
         (11144477799, False)
     ])
     def test_cpf_verificar(self, cpf, resultado, C):
         assert C.verificar(cpf) == resultado
-        
+
     @pytest.mark.parametrize("numero, resultado", [
         (987654321,   "98765-4321"),
         (999123456,   "99912-3456"),
@@ -84,7 +84,7 @@ class TestCpf:
     ])
     def test_cpf_adicionar_separador_completo(self, numero, posicao, separador, resultado, C):
         assert C.adicionar_separador(numero, posicao, separador) == resultado
-    
+
     @pytest.mark.parametrize("numero, resultado", [
         ("123.456.789-01",                   12345678901),
         ("-123.456.789-01",                  -12345678901),
@@ -103,7 +103,7 @@ class TestCpf:
     ])
     def test_cpf_reter_numeros_simples(self, numero, resultado, C):
         assert C.reter_numeros(numero) == resultado
-    
+
     @pytest.mark.parametrize("numero, literal, resultado", [
         ("1234", True,  "1234"),
         ("0123", True,  "0123"),
@@ -113,10 +113,10 @@ class TestCpf:
     ])
     def test_cpf_reter_numeros_intermediario(self, numero, literal, resultado, C):
         assert C.reter_numeros(numero, literal) == resultado
-        
+
     @pytest.mark.parametrize("numero, literal, accept_float, resultado", [
         ("12.34", True, True, "12.34"),
-        (12.34, True, True, 12.34),
+        (12.34, True, True, "12.34"),
         ("12.34", False, True, 12.34),
         (12.34, False, True, 12.34),
         ("01.23", True, False, "0123"),
@@ -127,15 +127,15 @@ class TestCpf:
     ])
     def test_cpf_reter_numeros_completo(self, numero, literal, accept_float, resultado, C):
         assert C.reter_numeros(numero, literal, accept_float) == resultado
-    
+
     @pytest.mark.parametrize("numero, resultado", [
         ("111444777",   [1, 1, 1, 4, 4, 4, 7, 7, 7]),
         ("11144477735", [1, 1, 1, 4, 4, 4, 7, 7, 7, 3, 5]),
-        ("11144477799", [1, 1, 1, 4, 4, 4, 7, 7, 7, 9, 9]) 
+        ("11144477799", [1, 1, 1, 4, 4, 4, 7, 7, 7, 9, 9])
     ])
     def test_cpf_obter_lista_digitos_simples(self, numero, resultado, C):
         assert C.obter_lista_digitos(numero) == resultado
-    
+
     @pytest.mark.parametrize("numero, limite, resultado", [
         ("111444777",   9,  [1, 1, 1, 4, 4, 4, 7, 7, 7]),
         ("11144477735", 9,  [1, 1, 1, 4, 4, 4, 7, 7, 7]),
@@ -143,4 +143,4 @@ class TestCpf:
     ])
     def test_cpf_obter_lista_digitos_completo(self, numero, limite, resultado, C):
         assert C.obter_lista_digitos(numero, limite) == resultado
-    
+
