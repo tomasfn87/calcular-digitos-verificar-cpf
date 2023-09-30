@@ -11,14 +11,10 @@ class Cpf:
 
     def calcular_dv(digitos_cpf):
         multiplicador = len(digitos_cpf) + 1
-        calculo_dv = []
-        for i in digitos_cpf:
-            i *= multiplicador
-            calculo_dv.append(i)
-            multiplicador -= 1
         soma = 0
-        for j in calculo_dv:
-            soma += j
+        for i in digitos_cpf:
+            soma += i * multiplicador
+            multiplicador -= 1
         resto = soma % 11
         if resto > 1:
             return 11 - resto
