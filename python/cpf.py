@@ -1,8 +1,10 @@
 class Cpf:
     def formatar(cpf):
         n_cpf = Cpf.reter_numeros(cpf, True)
-        if len(n_cpf) != 11:
-            return False
+        if len(n_cpf) > 11:
+            n_cpf = n_cpf[0:11]
+        if len(n_cpf) < 11:
+            n_cpf = n_cpf.rjust(11, '0')
         n_cpf = Cpf.adicionar_separador(n_cpf, 2)
         n_cpf = Cpf.adicionar_separador(n_cpf, 6, ".")
         return Cpf.adicionar_separador(n_cpf, 10, ".")
@@ -34,7 +36,7 @@ class Cpf:
         if not cpf.isdigit():
             return 'NaN'
         if len(cpf) < 11:
-            cpf = cpf.rjust(11,'0')
+            cpf = cpf.rjust(11, '0')
         dvs = Cpf.obter_dvs(cpf)
         if int(cpf[-1]) == dvs[-1] and int(cpf[-2]) == dvs[-2]:
             return True
