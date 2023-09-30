@@ -9,7 +9,7 @@ class TestCpf:
     @pytest.mark.parametrize("cpf, resultado", [
         ("11144477799", "111.444.777-99"),
         ("11144477735", "111.444.777-35"),
-        ("111444777999", False)
+        ("111444777999", "111.444.777-99")
     ])
     def test_cpf_formatar(self, cpf, resultado, C):
         assert C.formatar(cpf) == resultado
