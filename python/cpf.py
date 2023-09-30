@@ -1,6 +1,6 @@
 class Cpf:
     def formatar(cpf):
-        n_cpf = str(Cpf.reter_numeros(cpf, True))
+        n_cpf = Cpf.reter_numeros(cpf, True)
         if len(n_cpf) != 11:
             return False
         n_cpf = Cpf.adicionar_separador(n_cpf, 2)
@@ -54,16 +54,21 @@ class Cpf:
         tipo = type(numero)
         assert tipo in [int, float, str]
         if tipo in [int, float]:
+            if literal:
+                return str(numero)
             return numero
         texto_numerico = ""
         for d in numero:
-            if texto_numerico == "" and d == "-":
+            if not texto_numerico and d == "-":
                 texto_numerico += d
             if 47 < ord(d) < 58:
                 texto_numerico += d
-            elif d in [".", ","] and not real and accept_float:
-                texto_numerico += "."
-                real = True
+            elif d in [".", ","]:
+                if not real and accept_float:
+                    texto_numerico += "."
+                    real = True
+                elif real and accept_float:
+                    continue
         if texto_numerico in ["", "-", "."]:
             return numero
         if literal:
