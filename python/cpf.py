@@ -76,6 +76,8 @@ class Cpf:
         return int(texto_numerico)
 
     def adicionar_separador(numero, posicao_do_final=4, separador="-"):
+        if not numero:
+            return ""
         numero = str(numero)
         if len(numero) <= posicao_do_final:
             return numero + separador
