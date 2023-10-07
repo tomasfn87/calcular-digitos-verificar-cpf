@@ -1,0 +1,16 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/cpf
+cpf.so
+cpf.dylib
+cpf.dll
+cpf.a
+cpf.lib
+cpf-test-*
+*.exe
+*.pdb
+*.o
+*.obj
+*.lst

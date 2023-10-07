@@ -1,0 +1,9 @@
+{
+	"authors": [
+		"Tomas Foch Nalle"
+	],
+	"copyright": "Copyright © 2023, Tomas Foch Nalle",
+	"description": "Cálculo de dígitos verificadores e verificação de números de CPF.",
+	"license": "proprietary",
+	"name": "cpf"
+}
