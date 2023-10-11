@@ -12,9 +12,9 @@ sub main {
         print "             formtar(\"12360\") = \"", formatar("12360"), "\"\n";
         print "------------------------------------------------\n";
         print " * calcular_digitos(CPF)\n\n";
-        print "        calcular_digitos(\"0\") = ", printable_array(calcular_digitos("0")), "\n";
-        print "      calcular_digitos(\"192\") = ", printable_array(calcular_digitos("192")), "\n";
-        print "      calcular_digitos(\"123\") = ", printable_array(calcular_digitos("123")), "\n";
+        print "        calcular_digitos(\"0\") = ", printable_array(0, calcular_digitos("0")), "\n";
+        print "      calcular_digitos(\"192\") = ", printable_array(0, calcular_digitos("192")), "\n";
+        print "      calcular_digitos(\"123\") = ", printable_array(0, calcular_digitos("123")), "\n";
         print "------------------------------------------------\n";
         print " * verificar(CPF)\n\n";
         print "               verificar(\"0\") = ", verificar("0"), "\n";
@@ -34,7 +34,7 @@ sub main {
             print "CPF informado: ", add_color("blue", substr(formatar($cpfCompleto), 0, 11)), "\n";
             print "CPF completo:  ", add_color("yellow", formatar($cpfCompleto)), "\n";
             print "               ", add_color("yellow", reter_numeros($cpfCompleto, 11)), "\n";
-            print printable_array(@dvs), "\n";}}
+            print printable_array(1, @dvs), "\n";}}
     elsif (scalar(@ARGV) == 2 and ($ARGV[0] eq "-v" or $ARGV[0] eq "--verificar")) {
         if (!length(reter_numeros($ARGV[1], 1))) {
             print add_color("red", "ERRO"), ": informe um número de ", add_color("yellow", "CPF"), " para efetuar a verificação.\n";}
@@ -137,10 +137,14 @@ sub add_color {
         return $blue . $text . $reset}}
 
 sub printable_array {
-    my (@arr) = @_;
+    my ($color_on, @arr) = @_;
+    $color_on ||= 0;
     my $p_arr = "(";
     for my $i (0..$#arr) {
-        $p_arr .= " $arr[$i]";
+        if ($color_on > 0) {
+            $p_arr .= add_color("green", " $arr[$i]");}
+        else {
+            $p_arr .= " $arr[$i]";}
         if ($i == $#arr) {
             $p_arr .= " ";
             last;}
