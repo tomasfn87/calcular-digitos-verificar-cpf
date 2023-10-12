@@ -1,5 +1,13 @@
 # Calcular Dígitos / Verificar CPF
 
+## Instalar dependência `autobox::universal` via `cpan`
+
+```shell
+cpan install autobox::universal
+```
+
+---
+
 ## Formatar CPF
 
 ```shell
