@@ -1,32 +1,36 @@
+use autobox::universal qw(type);
 use strict;
 use warnings;
 
 sub main {
     if (scalar(@ARGV) == 1 and $ARGV[0] eq "--demo") {
         print " * reter_numeros(texto, n)\n\n";
-        print "    reter_numeros(\"test1\", 1) = \"",
-            reter_numeros("test1", 1), "\"\n";
-        print "   reter_numeros(\"test1\", 11) = \"",
-            reter_numeros("test1", 11), "\"\n";
+        print "    reter_numeros(\"test1\", 1) = ",
+            color("green", "\"" . reter_numeros("test1", 1) . "\""), "\n";
+        print "   reter_numeros(\"test1\", 11) = ",
+            color("green", "\"" . reter_numeros("test1", 11) . "\""), "\n";
         print "------------------------------------------------\n";
         print " * formatar(CPF)\n\n";
-        print "                formatar(\"0\") = \"",
-            formatar(0, "0"), "\"\n";
-        print "            formatar(\"12360\") = \"",
-            formatar(0, "12360"), "\"\n";
+        print "                formatar(\"0\") = " . color("green", "\""),
+            formatar(2, "0"), color("green", "\""), "\n";
+        print "            formatar(\"12360\") = " . color("green", "\""),
+            formatar(2, "12360"), color("green", "\""), "\n";
         print "------------------------------------------------\n";
         print " * calcular_digitos(CPF)\n\n";
         print "        calcular_digitos(\"0\") = ",
-            printable_array(0, calcular_digitos("0")), "\n";
+            printable_array(1, calcular_digitos("0")), "\n";
         print "      calcular_digitos(\"192\") = ",
-            printable_array(0, calcular_digitos("192")), "\n";
+            printable_array(1, calcular_digitos("192")), "\n";
         print "      calcular_digitos(\"123\") = ",
-            printable_array(0, calcular_digitos("123")), "\n";
+            printable_array(1, calcular_digitos("123")), "\n";
         print "------------------------------------------------\n";
         print " * verificar(CPF)\n\n";
-        print "               verificar(\"0\") = ", verificar("0"), "\n";
-        print "           verificar(\"19293\") = ", verificar("19293"), "\n";
-        print "           verificar(\"12360\") = ", verificar("12360"), "\n";}
+        print "               verificar(\"0\") = ",
+            color("yellow", verificar("0")), "\n";
+        print "           verificar(\"19293\") = ",
+            color("yellow", verificar("19293")), "\n";
+        print "           verificar(\"12360\") = ",
+            color("yellow", verificar("12360")), "\n";}
     elsif (scalar(@ARGV) == 2 and
         ($ARGV[0] eq "-f" or $ARGV[0] eq "--formatar")) {
         if (!length(reter_numeros($ARGV[1], 1))) {
@@ -43,7 +47,7 @@ sub main {
         else {
             my @dvs = calcular_digitos($ARGV[1]);
             my $cpfCompleto = reter_numeros($ARGV[1], 9) . $dvs[0] . $dvs[1];
-            print "CPF informado: ", formatar(2, $cpfCompleto), "\n";
+            print "CPF informado: ", formatar(3, $cpfCompleto), "\n";
             print "CPF completo:  ", formatar(1, $cpfCompleto), "\n";
             print "               ",
                 color("yellow", reter_numeros($cpfCompleto, 11)), "\n";
@@ -71,7 +75,7 @@ sub main {
 sub verificar {
     my ($CPF) = @_;
     my $cpf = reter_numeros($CPF, 11);
-    if (length($cpf) < 1) {
+    if (!length($cpf)) {
         return undef}
     my @dvs_recebidos = (
         int(substr($cpf, 9, 1)),
@@ -87,7 +91,7 @@ sub calcular_digitos {
     my ($CPF) = @_;
     my $num_digitos = 9;
     my $cpf = reter_numeros($CPF, $num_digitos);
-    if (length($cpf) < 1) {
+    if (!length($cpf)) {
         return undef}
     my @dvs = ( 0, 0 );
     my ($soma, $multiplicador) = (0, $num_digitos + 1);
@@ -111,7 +115,7 @@ sub formatar {
     my ($colors_on, $CPF) = @_;
     $colors_on ||= 0;
     my $cpf = reter_numeros($CPF, 11);
-    if (length($cpf) < 1) {
+    if (!length($cpf)) {
         return undef}
     my $cpfF = "";
     if ($colors_on == 1) {
@@ -120,6 +124,11 @@ sub formatar {
             "." . color("yellow", substr($cpf, 6, 3)) .
             "-" . color("yellow", substr($cpf, 9, 2))}
     elsif ($colors_on == 2) {
+        $cpfF = color("green", substr($cpf, 0, 3)) .
+            "." . color("green", substr($cpf, 3, 3)) .
+            "." . color("green", substr($cpf, 6, 3)) .
+            "-" . color("green", substr($cpf, 9, 2))}
+    elsif ($colors_on == 3) {
         $cpfF = color("blue", substr($cpf, 0, 3)) .
             "." . color("blue", substr($cpf, 3, 3)) .
             "." . color("blue", substr($cpf, 6, 3))}
@@ -139,7 +148,7 @@ sub reter_numeros {
             $cont++}
         if ($cont == $n) {
             last}}
-    if (length($apenas_nums) == 0) {
+    if (!length($apenas_nums)) {
         return ""}
     while (length($apenas_nums) < $n) {
         $apenas_nums = "0" . $apenas_nums}
@@ -168,15 +177,25 @@ sub color {
 sub printable_array {
     my ($color_on, @arr) = @_;
     $color_on ||= 0;
-    my $p_arr = "(";
-    for my $i (0..$#arr) {
-        if ($color_on > 0) {
-            $p_arr .= color("green", " $arr[$i]")}
+    if (!scalar(@arr)) {
+        return "()"}
+    my $p_arr = "";
+    if ($color_on) {
+        for my $i (0..($#arr - 1)) {
+            if (type($arr[$i]) eq "STRING") {
+                $p_arr .= " " . color("green", "\"$arr[$i]\"") . ","}
+            else {
+                $p_arr .= " " . color("yellow", "$arr[$i]") . ","}}}
+    else {
+        for my $i (0..($#arr - 1)) {
+            $p_arr .= " $arr[$i],";}}
+    if ($color_on) {
+        if (type($arr[$#arr]) eq "STRING") {
+            $p_arr .= " " . color("green", "\"$arr[$#arr]\"")}
         else {
-            $p_arr .= " $arr[$i]"}
-        if ($i == $#arr) {
-            $p_arr .= " "; last;}
-        $p_arr .= ","}
-    return $p_arr . ")"}
+            $p_arr .= " " . color("yellow", "$arr[$#arr]")}}
+    else {
+        $p_arr .= " $arr[$#arr]"}
+    return "(" . $p_arr . " )"}
 
-main();
+main()
