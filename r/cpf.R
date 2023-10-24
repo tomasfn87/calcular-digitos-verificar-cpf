@@ -4,11 +4,11 @@ reter_numeros <- function(texto, n) {
     apenas_nums <- ""
     cont <- 0
     for (char in strsplit(texto, NULL)[[1]]) {
-        if (cont == n) {
-            break}
+        if (cont == n)
+            break
         char_code <- as.integer(charToRaw(char))
         if (char_code > 47 && char_code < 58) {
-            apenas_nums <- apenas_nums <- char
+            apenas_nums <- paste0(apenas_nums, char)
             cont <- cont + 1}}
     if (cont == 0)
         return("")
@@ -27,7 +27,8 @@ calcular_digitos_verificadores <- function(cpf) {
         soma <- soma + (integer_value * multiplicador)
         multiplicador <- multiplicador - 1}
     resto <- soma %% (num_algarismos_base + 2)
-    if (resto > 1) dvs[1] <- (num_algarismos_base + 2) - resto
+    if (resto > 1)
+        dvs[1] <- (num_algarismos_base + 2) - resto
     multiplicador <- num_algarismos_base + 2
     soma <- 0
     for (num in strsplit(CPF, NULL)[[1]]) {
@@ -36,7 +37,8 @@ calcular_digitos_verificadores <- function(cpf) {
         multiplicador <- multiplicador - 1}
     soma <- soma + (dvs[1] * multiplicador)
     resto <- soma %% (num_algarismos_base + 2)
-    if (resto > 1) dvs[2] <- (num_algarismos_base + 2) - resto
+    if (resto > 1)
+        dvs[2] <- (num_algarismos_base + 2) - resto
     dvs}
 
 verificar <- function(cpf) {
