@@ -1,6 +1,7 @@
 module cpf;
 
-import std.conv;
+import std.conv : to;
+import std.format : format;
 import std.regex;
 
 string reter_numeros(string texto, uint n) {
@@ -50,3 +51,13 @@ bool verificar(string cpf) {
         dvs_calculados[1] == dvs_recebidos[1]) {
         return true;}
     return false;}
+
+string formatar(string cpf) {
+    if (!cpf) return "";
+    string CPF = reter_numeros(cpf, 11);
+    if (!CPF) return "";
+    
+    string cpfF = format("%s.%s.%s-%s",
+            CPF[0 .. 3], CPF[3 .. 6], CPF[6 .. 9], CPF[9 .. 11]);
+
+    return cpfF;}
