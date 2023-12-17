@@ -115,11 +115,12 @@
            DISPLAY "Dígito verificador #1:         ", DV-CALCULADO-1.
       *      Redefinir o valor base do fator para 11, pois agora já
       *    estamos em posse do primeiro dígitos verificador:
+           COMPUTE FACTOR = 11.
       *      Caso o CPF informado tenha menos de 11 números, será feito
       *    um reajuste do fator para que se adeque à situação, pois os
       *    números de CPF podem ser iniciados por zeros, o que também
       *    significa que os zeros podem ser omitidos (tanto do ponto de
-      *    vista computacional quanto semântico).
+      *    vista computacional quanto semântico):
            IF NUM-COUNT LESS THAN 11
              COMPUTE FACTOR = 11 - (11 - NUM-COUNT)
            END-IF.
