@@ -79,7 +79,7 @@
        PROCEDURE DIVISION CHAINING CPF.
       *      Soma para verificação do número de caracteres numéricos
       *    presentes no CPF recebido:
-           PERFORM VARYING I FROM 1 BY 1 UNTIL I GREATER THAN 14
+           PERFORM VARYING I FROM 1 BY 1 UNTIL I > LENGTH OF CPF
              IF CPF(I:1) IS NUMERIC
                ADD 1 TO NUM-COUNT
              END-IF
@@ -97,7 +97,7 @@
            END-IF.
       *      Determinar o valor do primeiro dígito verificador recebido:
            IF DV-REC-1-POS GREATER THAN ZERO
-             PERFORM VARYING I FROM 1 BY 1 UNTIL I GREATER THAN 14
+             PERFORM VARYING I FROM 1 BY 1 UNTIL I > LENGTH OF CPF
                IF CPF(I:1) IS NUMERIC
                  ADD 1 TO TEMP
                  IF TEMP EQUALS DV-REC-1-POS
@@ -106,11 +106,11 @@
                  END-IF
                END-IF
              END-PERFORM
-           END-IF.
       *      Zerar a variável temporária:
-           COMPUTE TEMP = ZERO.
+             COMPUTE TEMP = ZERO
+           END-IF.
       *      Determinar o valor do segundo dígito verificador recebido:
-           PERFORM VARYING I FROM 1 BY 1 UNTIL I GREATER THAN 14
+           PERFORM VARYING I FROM 1 BY 1 UNTIL I > LENGTH OF CPF
              IF CPF(I:1) IS NUMERIC
                ADD 1 TO TEMP
                IF TEMP EQUALS DV-REC-2-POS
@@ -127,7 +127,7 @@
            END-IF.
       *      Multiplicar os números do CPF a partir do valor inicial do
       *    fator, decrescendo 1 do fator a cada iteração:
-           PERFORM VARYING I FROM 1 BY 1 UNTIL I GREATER THAN 14
+           PERFORM VARYING I FROM 1 BY 1 UNTIL I > LENGTH OF CPF
              IF CPF(I:1) IS NUMERIC
                COMPUTE TEMP =
                  TEMP + (FUNCTION NUMVAL(CPF(I:1)) * FACTOR)
@@ -163,7 +163,7 @@
            END-IF.
       *      Multiplicar os números do CPF a partir do novo valor do
       *    fator, descrescendo 1 do fator a cada iteração:
-           PERFORM VARYING I FROM 1 BY 1 UNTIL I GREATER THAN 14
+           PERFORM VARYING I FROM 1 BY 1 UNTIL I > LENGTH OF CPF
              IF CPF(I:1) IS NUMERIC
                COMPUTE TEMP =
                  TEMP + (FUNCTION NUMVAL(CPF(I:1)) * FACTOR)
