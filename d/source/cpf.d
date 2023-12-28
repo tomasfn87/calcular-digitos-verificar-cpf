@@ -56,8 +56,6 @@ string formatar(string cpf) {
     if (!cpf) return "";
     string CPF = reter_numeros(cpf, 11);
     if (!CPF) return "";
-    
     string cpfF = format("%s.%s.%s-%s",
-            CPF[0 .. 3], CPF[3 .. 6], CPF[6 .. 9], CPF[9 .. 11]);
-
+        CPF[0 .. 3], CPF[3 .. 6], CPF[6 .. 9], CPF[9 .. 11]);
     return cpfF;}
