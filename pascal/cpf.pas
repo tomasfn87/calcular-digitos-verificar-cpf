@@ -138,4 +138,3 @@ begin
     writeln('               Verificar("test") -> ',
         Verificar('test'));
 end.
-
