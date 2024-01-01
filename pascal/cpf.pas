@@ -29,10 +29,10 @@ begin
                break;
         end;
     end;
+
     if (Length(result) > 0) and (Length(result) < n) then
-    begin
         result := PadWithZeros(result, n);
-    end;
+
     ReterNumeros := result;
 end;
 
@@ -53,6 +53,7 @@ begin
         writeln('ERRO: o CPF informado não possui nenhum número.');
         Halt;
     end;
+
     for i := 1 to Length(numsCpf) do
     begin
         soma := soma + StrToInt(numsCpf[i]) * fator;
@@ -98,43 +99,116 @@ begin
     dvsCalculados := CalcularDigitos(Copy(numsCpf, 1, 9));
     if (dvsRecebidos.DV1 = dvsCalculados.DV1)
        and (dvsRecebidos.DV2 = dvsCalculados.DV2) then
-    begin
-        Verificar := True;
-    end
+        Verificar := True
     else
-    begin
         Verificar := False;
-    end;
 end;
 
+function Formatar(cpf: String): String;
+var
+    numsCpf: String;
+begin
+    numsCpf := ReterNumeros(cpf, 11);
+    if Length(numsCpf) = 0 then
+    begin
+        writeln('ERRO: o CPF informado não possui nenhum número.');
+        Halt;
+    end;
+    Formatar := Format('%s.%s.%s-%s', [
+        Copy(numsCpf, 1, 3), Copy(numsCpf, 4, 3),
+        Copy(numsCpf, 7, 3), Copy(numsCpf, 10, 2)]);
+end;
+
+procedure PrintHelp();
+begin
+    writeln('Escolha uma das opções abaixo como argumento(s) de linha de comando:');
+    writeln(' * "--c" ou "--calcular" e um número de CPF;');
+    writeln(' * "--f" ou "--formatar" e um número de CPF;');
+    writeln(' * "--v" ou "--verificar" e um número de CPF;');
+    writeln(' * "--demo".');
+end;
+
+procedure Main();
 var
     dvs1: TypeDVs;
     dvs2: TypeDVs;
+    isValid: Boolean;
 begin
-    writeln('ReterNumeros("Hello, world!", 1) -> "',
-        ReterNumeros('Hello, world!', 1), '"');
-    writeln('            ReterNumeros("1", 2) -> "',
-        ReterNumeros('1', 2), '"');
-    writeln('          ReterNumeros("123", 2) -> "',
-        ReterNumeros('123', 2), '"');
+    if ParamCount = 0 then
+    begin
+        PrintHelp();
+        Halt;
+    end;
 
-    writeln();
-    dvs1 := CalcularDigitos('123');
-    writeln('          CalcularDigitos("123") -> ( ',
-        dvs1.DV1, ', ', dvs1.DV2, ' )');
-    dvs2 := CalcularDigitos('192');
-    writeln('          CalcularDigitos("192") -> ( ',
-        dvs2.DV1, ', ', dvs2.DV2, ' )');
+    if ParamStr(1) = '--demo' then
+    begin
+        writeln('ReterNumeros("Hello, world!", 1) -> "',
+            ReterNumeros('Hello, world!', 1), '"');
+        writeln('            ReterNumeros("1", 2) -> "',
+            ReterNumeros('1', 2), '"');
+        writeln('          ReterNumeros("123", 2) -> "',
+            ReterNumeros('123', 2), '"');
 
-    writeln();
-    writeln('              Verificar("19291") -> ',
-        Verificar('19291'));
-    writeln('              Verificar("12370") -> ',
-        Verificar('12370'));
-    writeln('     Verificar("000.000.000-00") -> ',
-        Verificar('000.000.000-00'));
-    writeln('     Verificar("111.444.777-35") -> ',
-        Verificar('111.444.777-35'));
-    writeln('               Verificar("test") -> ',
-        Verificar('test'));
+        writeln();
+        writeln('               Formatar("19291") -> ',
+            Formatar('19291'));
+
+        writeln();
+        dvs1 := CalcularDigitos('123');
+        writeln('          CalcularDigitos("123") -> ( ',
+            dvs1.DV1, ', ', dvs1.DV2, ' )');
+        dvs2 := CalcularDigitos('192');
+        writeln('          CalcularDigitos("192") -> ( ',
+            dvs2.DV1, ', ', dvs2.DV2, ' )');
+
+        writeln();
+        writeln('              Verificar("19291") -> ',
+            Verificar('19291'));
+        writeln('              Verificar("12370") -> ',
+            Verificar('12370'));
+        writeln('     Verificar("000.000.000-00") -> ',
+            Verificar('000.000.000-00'));
+        writeln('     Verificar("111.444.777-35") -> ',
+            Verificar('111.444.777-35'));
+        writeln('               Verificar("test") -> ',
+            Verificar('test'));
+        Halt;
+    end;
+    
+    if (ParamCount < 2) or (Length(ReterNumeros(ParamStr(2), 1)) = 0) then
+    begin
+        PrintHelp();
+        Halt;
+    end;
+
+    if (ParamStr(1) = '-c') or (ParamStr(1) = '--calcular') then
+    begin
+        dvs1 := CalcularDigitos(ParamStr(2));
+        writeln('CPF recebido:  ', Copy(
+            Formatar(ReterNumeros(ParamStr(2), 9) + '00'), 1, 11));
+        writeln('CPF calculado: ', Formatar(Format(
+            '%s%d%d', [ReterNumeros(ParamStr(2), 9), dvs1.DV1, dvs1.DV2])));
+        writeln('               ', Format(
+            '%s%d%d', [ReterNumeros(ParamStr(2), 9), dvs1.DV1, dvs1.DV2]));
+        writeln('( ', dvs1.DV1, ', ', dvs1.DV2, ' )');
+    end
+    else
+    if (ParamStr(1) = '-f') or (ParamStr(1) = '--formatar') then
+    begin
+        writeln('CPF formatado: ', Formatar(ParamStr(2)));
+    end
+    else
+    if (ParamStr(1) = '-v') or (ParamStr(1) = '--verificar') then
+    begin
+        write('O CPF ', Formatar(ParamStr(2)), ' é ');
+        isValid := Verificar(ParamStr(2));
+        if isValid then
+            writeln('válido.')
+        else
+            writeln('inválido.');
+    end;
+end;
+
+begin
+    Main();
 end.
