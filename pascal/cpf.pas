@@ -206,7 +206,9 @@ begin
             writeln('válido.')
         else
             writeln('inválido.');
-    end;
+    end
+    else
+        PrintHelp();
 end;
 
 begin
