@@ -1,7 +1,6 @@
 # CPF
 
 - Cálculo dígitos verificadores;
-- Formatação;
 - Verificação.
 
 ---
@@ -23,39 +22,27 @@ COPYING.
 
 ## Como usar
 
-```console
-gst cpf.st
-```
-
-## Formatar CPF
+### Calcular Dígitos CPF
 
 ```console
-gst cpf.st -f 12345678909
-gst cpf.st --formatar 98765432100
+gst cpf.st -a -c 123456789
+gst cpf.st -a --calcular 987654321
 ```
 
 ---
 
-## Calcular Dígitos CPF
+### Verificar CPF
 
 ```console
-gst cpf.st -c 123456789
-gst cpf.st --calcular 987654321
+gst cpf.st -a -v 12345678909
+gst cpf.st -a --verificar 98765432101
 ```
 
 ---
 
-## Verificar CPF
+### Demo
 
 ```console
-gst cpf.st -v 12345678909
-gst cpf.st --verificar 98765432101
-```
-
----
-
-## Demo
-
-```console
-gst cpf.st --demo
+gst cpf.st -a --demo
+gst cpf.st --smalltalk-args --demo
 ```
