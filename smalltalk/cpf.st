@@ -148,70 +148,130 @@ Object subclass: CPF [
             ].
         ^ false
     ]
+
+    CPF >> printHelp [
+        Transcript show: 'Escolha uma das opções abaixo: '; nl.
+        Transcript show: ' * `-c` ou `--calcular` e um número de CPF;'; nl.
+        "Transcript show: ' * `-f` ou `--formatar` e um número de CPF;'; nl."
+        Transcript show: ' * `-v` ou `--verificar` e um número de CPF.'; nl.
+    ]
 ]
 
+jobDone := False.
+
+arguments := Smalltalk arguments.
 cpf := CPF new.
-cpf setNumero: 'test'.
-cpf setNumeroCompleto: '111.444.777-341'.
 
-numero := cpf getNumero ifNil: [ '' ].
-( numero isEmpty )
+( (arguments at: 1) = '--demo' )
     ifTrue: [
-        Transcript show: 'Número s/ dígitos verificadores ', 
-            'não foi informado.'; nl
-    ]
-    ifFalse: [
-        Transcript show: 'Número s/ dígitos verificadores: '; nl. 
-        Transcript show: ' - ', cpf getNumero; nl
-    ].
-Transcript show: ''; nl.
+        cpf setNumero: 'test'.
+        cpf setNumeroCompleto: '111.444.777-341'.
 
-numeroCompleto := cpf getNumeroCompleto ifNil: [ '' ].
-( numeroCompleto isEmpty )
-    ifTrue: [
+        numero := cpf getNumero ifNil: [ '' ].
+        ( numero isEmpty )
+            ifTrue: [
+                Transcript show: 'Número s/ dígitos verificadores ', 
+                    'não foi informado.'; nl
+            ]
+            ifFalse: [
+                Transcript show: 'Número s/ dígitos verificadores: '; nl. 
+                Transcript show: ' - ', cpf getNumero; nl
+            ].
+        Transcript show: ''; nl.
+
+        numeroCompleto := cpf getNumeroCompleto ifNil: [ '' ].
+        ( numeroCompleto isEmpty )
+            ifTrue: [
+                Transcript show: 'Número c/ dígitos verificadores ', 
+                    'não foi informado.'; nl
+            ]
+            ifFalse: [
+                Transcript show: 'Número c/ dígitos verificadores (um número a mais '.
+                Transcript show: 'foi inserido, propositalmente): '; nl.
+                Transcript show: ' - ', cpf getNumeroCompleto; nl
+            ].
+        Transcript show: ''; nl.
+
         Transcript show: 'Número c/ dígitos verificadores ', 
-            'não foi informado.'; nl
-    ]
-    ifFalse: [
-        Transcript show: 'Número c/ dígitos verificadores (um número a mais '.
-        Transcript show: 'foi inserido, propositalmente): '; nl.
-        Transcript show: ' - ', cpf getNumeroCompleto; nl
+            '(só num., preench. à esq. e com limite tamanho): '; nl.
+        Transcript show: ' - ', (cpf reterNumeros: numeroCompleto quantia: 11); nl.
+        Transcript show: ''; nl.
+
+        Transcript show: 'Dígitos Verificadores a partir do número "',
+            cpf getNumero, '" :'; nl.
+        dvs := cpf calcularDigitos.
+        ( dvs size = 2 )
+            ifTrue: [
+                Transcript show: ' - ( ',
+                    (dvs at: 1) printString, ', ', (dvs at: 2) printString, ' )'; nl
+            ].
+        Transcript show: ''; nl.
+
+        Transcript show: 'CPF: ', ((cpf getNumeroCompleto) copyFrom: 1 to: 14); nl.
+        ( cpf verificar )
+            ifTrue: [
+                Transcript show: ' - O CPF é válido.'; nl.
+            ]
+            ifFalse: [
+                Transcript show: ' - O CPF não é válido.'; nl.
+            ].
+        Transcript show: ''; nl.
+
+        cpf1 := CPF new.
+        cpf1 setNumeroCompleto: '111.444.777-35'.
+
+        Transcript show: 'CPF: ', cpf1 getNumeroCompleto; nl.
+        ( cpf1 verificar )
+            ifTrue: [
+                Transcript show: ' - O CPF é válido.'; nl.
+            ]
+            ifFalse: [
+                Transcript show: ' - O CPF não é válido.'; nl.
+            ].
+        jobDone := True
     ].
-Transcript show: ''; nl.
 
-Transcript show: 'Número c/ dígitos verificadores ', 
-    '(só num., preench. à esq. e com limite tamanho): '; nl.
-Transcript show: ' - ', (cpf reterNumeros: numeroCompleto quantia: 11); nl.
-Transcript show: ''; nl.
-
-Transcript show: 'Dígitos Verificadores a partir do número "',
-    cpf getNumero, '" :'; nl.
-dvs := cpf calcularDigitos.
-( dvs size = 2 )
+( ((arguments at: 1) = '-c') | ((arguments at: 1) = '--calcular') )
     ifTrue: [
-        Transcript show: ' - ( ',
-            (dvs at: 1) printString, ', ', (dvs at: 2) printString, ' )'; nl
+        numCpf := arguments at: 2.
+        numCpf := (cpf reterNumeros: numCpf quantia: 9).
+
+        ( numCpf size = 0 )
+            ifFalse: [
+                cpf setNumero: numCpf.
+                dvs := cpf calcularDigitos.
+                ( dvs size = 2 )
+                    ifTrue: [
+                        Transcript show: ' - ( ',
+                            (dvs at: 1) printString, ', ',
+                            (dvs at: 2) printString, ' )'; nl
+                    ].
+                jobDone := True
+            ].
     ].
-Transcript show: ''; nl.
 
-Transcript show: 'CPF: ', ((cpf getNumeroCompleto) copyFrom: 1 to: 14); nl.
-( cpf verificar )
+( ((arguments at: 1) = '-v') | ((arguments at: 1) = '--verificar') )
     ifTrue: [
-        Transcript show: ' - O CPF é válido.'; nl.
-    ]
-    ifFalse: [
-        Transcript show: ' - O CPF não é válido.'; nl.
+        numCpf := arguments at: 2.
+        numCpf := (cpf reterNumeros: numCpf quantia: 11).
+
+        ( numCpf size = 0 )
+            ifFalse: [
+                cpf setNumeroCompleto: numCpf.
+                ( cpf verificar )
+                    ifTrue: [
+                        Transcript show: ''; nl.
+                        Transcript show: 'O CPF é válido.'; nl
+                    ]
+                    ifFalse: [
+                        Transcript show: ''; nl.
+                        Transcript show: 'O CPF não é válido.'; nl
+                    ].
+                jobDone := True
+            ].
     ].
-Transcript show: ''; nl.
 
-cpf1 := CPF new.
-cpf1 setNumeroCompleto: '111.444.777-35'.
-
-Transcript show: 'CPF: ', cpf1 getNumeroCompleto; nl.
-( cpf1 verificar )
-    ifTrue: [
-        Transcript show: ' - O CPF é válido.'; nl.
-    ]
+( jobDone = True )
     ifFalse: [
-        Transcript show: ' - O CPF não é válido.'; nl.
+        cpf printHelp
     ].
