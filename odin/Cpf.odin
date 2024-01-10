@@ -1,5 +1,3 @@
-// odin version dev-2023-04-nightly:adcaace0
-
 package main
 
 import "core:fmt"
@@ -16,7 +14,8 @@ main :: proc() {
             else if args[1] == "-v" || args[1] == "--verificar" {
                 valid : bool = verificar(args[2])
                 cpf : string = reterNumeros(args[2], 11)
-                fmt.printf("O CPF %s.%s.%s-%s é ", cpf[0:3], cpf[3:6], cpf[6:9], cpf[9:11])
+                fmt.printf("O CPF %s.%s.%s-%s é ",
+                    cpf[0:3], cpf[3:6], cpf[6:9], cpf[9:11])
                 if (!valid) {
                     fmt.print("in")}
                 fmt.println("válido.")}
@@ -27,23 +26,23 @@ main :: proc() {
     else {
         imprimirInstrucoes()}}
 
-reterNumeros :: proc(cpf: string, n: int) -> string {
+reterNumeros :: proc(text: string, n: int) -> string {
     total : int = 0
-    Cpf : string = ""
-    for i := 0; i < len(cpf); i += 1 {
-        if cpf[i] >= '0' && cpf[i] <= '9' {
-            Cpf = strings.join({ Cpf, cpf[i:i+1] }, "")
+    onlyNums : string = ""
+    for i := 0; i < len(text); i += 1 {
+        if text[i] >= '0' && text[i] <= '9' {
+            onlyNums = strings.join({ onlyNums, text[i:i+1] }, "")
             total += 1}
         if total == n {
             break}}
-    for len(Cpf) < n {
-        Cpf = strings.join({ "0", Cpf }, "")}
-    return Cpf}
+    for len(onlyNums) < n {
+        onlyNums = strings.join({ "0", onlyNums }, "")}
+    return onlyNums}
 
 calcularDigitos :: proc(cpf: string) -> [2]u16 {
     if len(reterNumeros(cpf, 1)) < 1 {
         return [2]u16{}}
-    dvs := [2]u16{ ---, --- }
+    dvs := [2]u16{ 0, 0 }
     multiplicador, resto, soma : u16 = 10, 0, 0
     Cpf := reterNumeros(cpf, 9)
     for i := 0; i < 9; i += 1 {
@@ -77,5 +76,8 @@ verificar :: proc(cpf: string) -> bool {
     return false}
 
 imprimirInstrucoes :: proc() {
-    fmt.println(` * Digite '-c' ou '--calcular' e um número de CPF para verificar o CPF.`)
-    fmt.println(` * Digite '-v' ou '--verificar' e um número de CPF para verificar o CPF.`)}
+    fmt.print(` * Digite '-c' ou '--calcular' e um número de CPF sem os `) 
+    fmt.print(`dígitos verificadores (9 números) para calcular os `)
+    fmt.println(`dígitos verificadores do CPF.`)
+    fmt.print(` * Digite '-v' ou '--verificar' e um número de CPF `)
+    fmt.println(`completo (11 números) para verificar o CPF.`)}
