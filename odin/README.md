@@ -1,5 +1,9 @@
 # Calcular Dígitos / Verificar CPF
 
+```console
+odin version dev-2024-01-nightly:5961d4b3
+```
+
 ## Como usar
 
 ### Compilar
@@ -13,13 +17,13 @@ odin build Cpf.odin -file
 #### Calcular Dígitos Verificadores
 
 ```console
-./Cpf.bin -c 123.456.789
-./Cpf.bin --calcular 987.654.321
+./Cpf -c 123.456.789
+./Cpf --calcular 987.654.321
 ```
 
 #### Verificar
 
 ```console
-./Cpf.bin -v 123.456.789-00
-./Cpf.bin --verificar 987.654.321-00
+./Cpf -v 123.456.789-00
+./Cpf --verificar 987.654.321-00
 ```
