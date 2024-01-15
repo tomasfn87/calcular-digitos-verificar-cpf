@@ -98,7 +98,7 @@ begin
     dvsRecebidos.DV2 := StrToInt(numsCpf[11]);
     dvsCalculados := CalcularDigitos(Copy(numsCpf, 1, 9));
     if (dvsRecebidos.DV1 = dvsCalculados.DV1)
-       and (dvsRecebidos.DV2 = dvsCalculados.DV2) then
+        and (dvsRecebidos.DV2 = dvsCalculados.DV2) then
         Verificar := True
     else
         Verificar := False;
