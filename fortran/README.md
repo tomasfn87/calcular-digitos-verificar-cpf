@@ -19,8 +19,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ## Como compilar
 
 ```console
-gfortran -c cpf.f90
-gfortran main.f90 cpf.o -o cpf
+gfortran -c cpf.f90 && gfortran main.f90 cpf.o -o cpf
 ```
 
 ## Como usar
