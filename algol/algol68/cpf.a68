@@ -1,0 +1,5 @@
+(   # `(` -> short version for `BEGIN` #
+
+    print(("Hello, World!", newline))
+
+)   # `)` -> short version for `END` #
