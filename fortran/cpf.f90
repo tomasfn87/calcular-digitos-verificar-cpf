@@ -1,15 +1,16 @@
 module cpf_module
     implicit none
 
-    character(len=14) :: cpf_completo
-    character(len=11) :: cpf
+    ! character(len=14) :: cpf_completo
+    ! character(len=11) :: cpf_incompleto
 
 contains
 
     function reter_numeros(text, n) result(only_nums)
         character(len=*), intent(in) :: text
-        character(len=:), allocatable :: only_nums
         integer, intent(in) :: n
+
+        character(len=:), allocatable :: only_nums
         integer :: i, count
 
         allocate(character(n) :: only_nums)
@@ -33,5 +34,51 @@ contains
             only_nums = repeat('0', n - count) // trim(only_nums)
         end if
     end function reter_numeros
+
+    function calcular_digitos(cpf) result(digitos_verificadores)
+        character(len=*), intent(in) :: cpf
+
+        integer, dimension(2) :: digitos_verificadores
+        character(len=:), allocatable :: nums_cpf
+        character(len=1) :: char
+
+        write(*,*) '     (from calcular_digitos) cpf  ->  "', cpf, '"'
+        nums_cpf = reter_numeros(cpf, 9)
+        write(*,*) '(from calcular_digitos) nums_cpf  ->  "', nums_cpf, '"'
+
+        digitos_verificadores = [ 0, 0 ]
+        digitos_verificadores(1) = calcular_digito_verificador(nums_cpf)
+        write(*, '(A,I0,A,I0,A)') &
+            '            digitos_verificadores  ->  [ ', &
+            digitos_verificadores(1), ', ', digitos_verificadores(2), ' ]'
+
+        write(char, '(I0)') digitos_verificadores(1)
+        nums_cpf = nums_cpf // char
+        write(*,*) '(from calcular_digitos) nums_cpf  ->  "', nums_cpf, '"'
+
+        digitos_verificadores(2) = calcular_digito_verificador(nums_cpf)
+    end function calcular_digitos
+
+    function calcular_digito_verificador(nums_cpf) result(digito_verificador)
+        character(len=*), intent(in) :: nums_cpf
+
+        integer :: digito_verificador, sum, factor, remainder
+        integer :: integer_value, i
+
+        digito_verificador = 0
+        factor = len(nums_cpf) + 1
+        sum = 0
+
+        do i = 1, len(nums_cpf), 1
+            read(nums_cpf(i:i), *) integer_value
+            sum = sum + (factor * integer_value)
+            factor = factor - 1
+        end do
+
+        remainder = MOD(sum, 11)
+        if (remainder > 1) then
+            digito_verificador = 11 - remainder
+        end if
+    end function
 
 end module cpf_module

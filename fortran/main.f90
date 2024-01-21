@@ -2,16 +2,41 @@ program main_program
     use cpf_module
 
     implicit none
-    character(len=:), allocatable :: t0, t1, t2, t3
+    character(len=:), allocatable :: rn_result
+    integer, dimension(2) :: cd_result
 
-    t0 = reter_numeros('test', 2)
-    t1 = reter_numeros('test123', 2)
-    t2 = reter_numeros('test123', 3)
-    t3 = reter_numeros('test123', 4)
+    rn_result = reter_numeros('test', 2)
+    write(*,*) &
+        '        reter_numeros("test", 2)  ->  "', rn_result, '"'
 
-    write(*,*) '   reter_numeros("test", 2)  ->  "', t0, '"'
-    write(*,*) 'reter_numeros("test123", 2)  ->  "', t1, '"'
-    write(*,*) 'reter_numeros("test123", 3)  ->  "', t2, '"'
-    write(*,*) 'reter_numeros("test123", 4)  ->  "', t3, '"'
+    rn_result = reter_numeros('test123', 2)
+    write(*,*) &
+        '     reter_numeros("test123", 2)  ->  "', rn_result, '"'
+
+    rn_result = reter_numeros('test123', 3)
+    write(*,*) &
+        '     reter_numeros("test123", 3)  ->  "', rn_result, '"'
+
+    rn_result = reter_numeros('test123', 4)
+    write(*,*) &
+        '     reter_numeros("test123", 4)  ->  "', rn_result, '"'
+    write(*,*) ''
+
+    cd_result = calcular_digitos('test123')
+    write(*, '(A,I0,A,I0,A)') &
+        '      calcular_digitos("test123")  ->  [ ', &
+            cd_result(1), ', ', cd_result(2), ' ]'
+    write(*,*) ''
+
+    cd_result = calcular_digitos('987.654.321')
+    write(*, '(A,I0,A,I0,A)') &
+        '  calcular_digitos("987.654.321")  ->  [ ', &
+            cd_result(1), ', ', cd_result(2), ' ]'
+    write(*,*) ''
+    
+    cd_result = calcular_digitos('111.444.777')
+    write(*, '(A,I0,A,I0,A)') &
+        '  calcular_digitos("111.444.777")  ->  [ ', &
+            cd_result(1), ', ', cd_result(2), ' ]'
 
 end program main_program  
