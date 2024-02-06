@@ -24,19 +24,7 @@ the GNU General Public License. This program has absolutely no warranty.
 
 <br><br>
 
-## Como traduzir
-
-### De `Algol 60` `->` `C`
-
-```console
-marst cpf.a60 -o cpf.c
-```
-
----
-
-<br><br>
-
-## Como compilar
+## Como traduzir e compilar
 
 ### Pré-requisito: incluir caminho do `LD_LIBRARY_PATH`
 
@@ -46,17 +34,16 @@ export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 
 > Executar o comando acima, e caso tudo funcione bem, incluir no seu arquivo de inicialização do shell (`.bashrc`, `.zshrc`, etc.).
 
+### Traduzir de `Algol 60` `->` `C`
+
+```console
+marst cpf.a60 -o cpf.c
+```
 
 ### Usando `gcc`
 
 ```console
 gcc cpf.c -lalgol -lm -o cpf
-```
-
-### Usando `zig`
-
-```console
-zig cc cpf.c -lalgol -lm -o cpf
 ```
 
 ---

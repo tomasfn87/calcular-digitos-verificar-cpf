@@ -1,1 +1,32 @@
-begin outstring(1, "Hello, world!\n") end
+begin
+    integer procedure sumArray(arr);
+    integer array arr[0:8];
+    begin
+        integer result, i;
+        result := 0;
+
+        for i := 0 step 1 until 8 do
+        begin
+            result := result + arr[i]
+        end;
+
+        sumArray := result
+    end;
+
+    integer sum;
+    integer array cpf[0:8];
+
+    cpf[0] := 1;
+    cpf[1] := 2;
+    cpf[2] := 3;
+    cpf[3] := 4;
+    cpf[4] := 5;
+    cpf[5] := 6;
+    cpf[6] := 7;
+    cpf[7] := 8;
+    cpf[8] := 9;
+    sum := sumArray(cpf);
+
+    outinteger(1, sum);
+    outstring(1, "\n")
+end
