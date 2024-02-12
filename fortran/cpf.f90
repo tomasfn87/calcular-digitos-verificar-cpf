@@ -32,31 +32,6 @@ contains
         end if
     end function reter_numeros
 
-    function verificar(cpf) result(validez)
-        character(len=*), intent(in) :: cpf
-
-        integer, dimension(2) :: digitos_calculados
-        integer, dimension(2) :: digitos_recebidos
-        character(len=:), allocatable :: nums_cpf
-        integer :: i, integer_value, validez
-        
-        digitos_recebidos = [ 0, 0 ]
-        nums_cpf = reter_numeros(cpf, 11)
-        read(nums_cpf(10:10), *) integer_value
-        digitos_recebidos(1) = integer_value
-        read(nums_cpf(11:11), *) integer_value
-        digitos_recebidos(2) = integer_value
-        
-        digitos_calculados = calcular_digitos(nums_cpf(1:9))
-        
-        validez = 1
-        do i = 1, 2, 1
-            if (digitos_calculados(i) /= digitos_recebidos(i)) then
-                validez = 0
-            end if
-        end do
-    end function verificar
-
     function calcular_digitos(cpf) result(digitos_verificadores)
         character(len=*), intent(in) :: cpf
 
@@ -64,20 +39,12 @@ contains
         character(len=:), allocatable :: nums_cpf
         character(len=1) :: char
 
-        write(*,*) '     (from calcular_digitos) cpf  ->  "', cpf, '"'
         nums_cpf = reter_numeros(cpf, 9)
-        write(*,*) '(from calcular_digitos) nums_cpf  ->  "', nums_cpf, '"'
-
         digitos_verificadores = [ 0, 0 ]
-        digitos_verificadores(1) = calcular_digito_verificador(nums_cpf)
-        write(*, '(A,I0,A,I0,A)') &
-            '            digitos_verificadores  ->  [ ', &
-            digitos_verificadores(1), ', ', digitos_verificadores(2), ' ]'
 
+        digitos_verificadores(1) = calcular_digito_verificador(nums_cpf)
         write(char, '(I0)') digitos_verificadores(1)
         nums_cpf = nums_cpf // char
-        write(*,*) '(from calcular_digitos) nums_cpf  ->  "', nums_cpf, '"'
-
         digitos_verificadores(2) = calcular_digito_verificador(nums_cpf)
     end function calcular_digitos
 
@@ -102,5 +69,28 @@ contains
             digito_verificador = 11 - remainder
         end if
     end function
+
+    function verificar(cpf) result(validez)
+        character(len=*), intent(in) :: cpf
+
+        integer, dimension(2) :: digitos_calculados, digitos_recebidos
+        character(len=:), allocatable :: nums_cpf
+        integer :: i, validez
+
+        digitos_recebidos = [ 0, 0 ]
+        nums_cpf = reter_numeros(cpf, 11)
+        do i = 1, 2, 1
+            read(nums_cpf(i+9:i+9), *) digitos_recebidos(i)
+        end do
+
+        digitos_calculados = calcular_digitos(nums_cpf(1:9))
+        validez = 1
+        do i = 1, 2, 1
+            if (digitos_calculados(i) /= digitos_recebidos(i)) then
+                validez = 0
+                exit
+            end if
+        end do
+    end function verificar
 
 end module cpf_module

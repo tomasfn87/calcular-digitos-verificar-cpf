@@ -7,59 +7,54 @@ program main_program
     integer :: vf_result
 
     rn_result = reter_numeros('test', 2)
-    write(*,*) &
-        '        reter_numeros("test", 2)  ->  "', rn_result, '"'
+    write(*, '(A,A,A)') &
+        '       reter_numeros("test", 2)  ->  "', rn_result, '"'
 
     rn_result = reter_numeros('test123', 2)
-    write(*,*) &
-        '     reter_numeros("test123", 2)  ->  "', rn_result, '"'
+    write(*, '(A,A,A)') &
+        '    reter_numeros("test123", 2)  ->  "', rn_result, '"'
 
     rn_result = reter_numeros('test123', 3)
-    write(*,*) &
-        '     reter_numeros("test123", 3)  ->  "', rn_result, '"'
+    write(*, '(A,A,A)') &
+        '    reter_numeros("test123", 3)  ->  "', rn_result, '"'
 
     rn_result = reter_numeros('test123', 4)
-    write(*,*) &
-        '     reter_numeros("test123", 4)  ->  "', rn_result, '"'
+    write(*, '(A,A,A)') &
+        '    reter_numeros("test123", 4)  ->  "', rn_result, '"'
     write(*,*) ''
+
 
     cd_result = calcular_digitos('test123')
     write(*, '(A,I0,A,I0,A)') &
-        '      calcular_digitos("test123")  ->  [ ', &
+        '    calcular_digitos("test123")  ->  [ ', &
             cd_result(1), ', ', cd_result(2), ' ]'
-    write(*,*) ''
-
 
     cd_result = calcular_digitos('987.654.321')
     write(*, '(A,I0,A,I0,A)') &
-        '  calcular_digitos("987.654.321")  ->  [ ', &
+        'calcular_digitos("987.654.321")  ->  [ ', &
             cd_result(1), ', ', cd_result(2), ' ]'
-    write(*,*) ''
-    
+
     cd_result = calcular_digitos('111.444.777')
     write(*, '(A,I0,A,I0,A)') &
-        '  calcular_digitos("111.444.777")  ->  [ ', &
+        'calcular_digitos("111.444.777")  ->  [ ', &
             cd_result(1), ', ', cd_result(2), ' ]'
     write(*,*) ''
-    
+
 
     vf_result = verificar('0')
     write(*, '(A,I0,A)') &
-        '                   verificar("0")  ->  ', vf_result
-    write(*,*) ''
+        '                 verificar("0")  ->  ', vf_result
     
     vf_result = verificar('19291')
     write(*, '(A,I0,A)') &
-        '               verificar("19291")  ->  ', vf_result
-    write(*,*) ''
+        '             verificar("19291")  ->  ', vf_result
     
     vf_result = verificar('12359')
     write(*, '(A,I0,A)') &
-        '               verificar("12359")  ->  ', vf_result
-    write(*, *) ''
+        '             verificar("12359")  ->  ', vf_result
     
-    vf_result = verificar('12360')
+    vf_result = verificar('11144477735')
     write(*, '(A,I0,A)') &
-        '               verificar("12360")  ->  ', vf_result
+        '       verificar("11144477735")  ->  ', vf_result
 
 end program main_program  
