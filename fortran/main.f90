@@ -4,6 +4,7 @@ program main_program
     implicit none
     character(len=:), allocatable :: rn_result
     integer, dimension(2) :: cd_result
+    integer :: vf_result
 
     rn_result = reter_numeros('test', 2)
     write(*,*) &
@@ -28,6 +29,7 @@ program main_program
             cd_result(1), ', ', cd_result(2), ' ]'
     write(*,*) ''
 
+
     cd_result = calcular_digitos('987.654.321')
     write(*, '(A,I0,A,I0,A)') &
         '  calcular_digitos("987.654.321")  ->  [ ', &
@@ -38,5 +40,26 @@ program main_program
     write(*, '(A,I0,A,I0,A)') &
         '  calcular_digitos("111.444.777")  ->  [ ', &
             cd_result(1), ', ', cd_result(2), ' ]'
+    write(*,*) ''
+    
+
+    vf_result = verificar('0')
+    write(*, '(A,I0,A)') &
+        '                   verificar("0")  ->  ', vf_result
+    write(*,*) ''
+    
+    vf_result = verificar('19291')
+    write(*, '(A,I0,A)') &
+        '               verificar("19291")  ->  ', vf_result
+    write(*,*) ''
+    
+    vf_result = verificar('12359')
+    write(*, '(A,I0,A)') &
+        '               verificar("12359")  ->  ', vf_result
+    write(*, *) ''
+    
+    vf_result = verificar('12360')
+    write(*, '(A,I0,A)') &
+        '               verificar("12360")  ->  ', vf_result
 
 end program main_program  

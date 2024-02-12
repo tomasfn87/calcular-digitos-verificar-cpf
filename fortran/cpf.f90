@@ -1,9 +1,6 @@
 module cpf_module
     implicit none
 
-    ! character(len=14) :: cpf_completo
-    ! character(len=11) :: cpf_incompleto
-
 contains
 
     function reter_numeros(text, n) result(only_nums)
@@ -34,6 +31,31 @@ contains
             only_nums = repeat('0', n - count) // trim(only_nums)
         end if
     end function reter_numeros
+
+    function verificar(cpf) result(validez)
+        character(len=*), intent(in) :: cpf
+
+        integer, dimension(2) :: digitos_calculados
+        integer, dimension(2) :: digitos_recebidos
+        character(len=:), allocatable :: nums_cpf
+        integer :: i, integer_value, validez
+        
+        digitos_recebidos = [ 0, 0 ]
+        nums_cpf = reter_numeros(cpf, 11)
+        read(nums_cpf(10:10), *) integer_value
+        digitos_recebidos(1) = integer_value
+        read(nums_cpf(11:11), *) integer_value
+        digitos_recebidos(2) = integer_value
+        
+        digitos_calculados = calcular_digitos(nums_cpf(1:9))
+        
+        validez = 1
+        do i = 1, 2, 1
+            if (digitos_calculados(i) /= digitos_recebidos(i)) then
+                validez = 0
+            end if
+        end do
+    end function verificar
 
     function calcular_digitos(cpf) result(digitos_verificadores)
         character(len=*), intent(in) :: cpf
