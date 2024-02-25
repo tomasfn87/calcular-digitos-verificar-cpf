@@ -1,5 +1,76 @@
-(   # `(` -> short version for `BEGIN` #
+PROC reter_numeros = (STRING text, INT n) STRING: (
+    STRING only_nums := "0" * n;
+    BOOL done := FALSE;
+    INT num pos := 1;
+    INT count := 0;
 
-    print(("Hello, World!", newline))
+    # Counting numeric character in `text` and storing into `count` #
+    FOR i FROM LWB text TO UPB text DO
+        IF NOT done THEN
+            IF text[i] >= "0" AND text[i] <= "9" THEN
+                count +:= 1 FI;
+            IF count = n THEN
+                done := TRUE FI FI OD;
 
-)   # `)` -> short version for `END` #
+    # Attributing numeric characters to `only_nums` in the correct position #
+    done := FALSE;
+    IF count > 0 THEN
+        IF count < n THEN
+            num pos +:= n - count FI;
+        count := 0;
+        FOR i FROM LWB text TO UPB text DO
+            IF NOT done THEN
+                IF text[i] >= "0" AND text[i] <= "9" THEN
+                    only_nums[num pos] := text[i];
+                    num pos +:= 1;
+                    count +:= 1 FI;
+                IF count = n THEN
+                    done := TRUE FI FI OD FI;
+
+    # If no numeric character is found, return empty string #
+    IF (count = 0) THEN
+        only_nums := "" FI;
+
+    only_nums
+);
+
+PROC demo = VOID: (
+    STRING result := "";
+    STRING text := "";
+    INT n := 0;
+
+    print(("reter_numeros(STRING text, INT n)", newline));
+
+    # 1.1 - reter_numeros #
+    text := "test";           n := 1;
+    result := reter_numeros(text, n);
+    print(("- reter_numeros('", text, "'          , "));
+    printf(($%d$, n)); print((" ) -> '", result, "'", newline));
+
+    # 1.2 - reter_numeros #
+    text := "test123";        n := 3;
+    result := reter_numeros(text, n);
+    print(("- reter_numeros('", text, "'       , "));
+    printf(($%d$, n)); print((" ) -> '", result, "'", newline));
+
+    # 1.3 - reter_numeros #
+    text := "test192";        n := 4;
+    result := reter_numeros(text, n);
+    print(("- reter_numeros('", text, "'       , "));
+    printf(($%d$, n)); print((" ) -> '", result, "'", newline));
+
+    # 1.4 - reter_numeros #
+    text := "123.456.789-00"; n := 9;
+    result := reter_numeros(text, n);
+    print(("- reter_numeros('", text, "', "));
+    printf(($%d$, n)); print((" ) -> '", result, "'", newline));
+
+    # 1.5 - reter_numeros #
+    text := "123.456.789-00"; n := 11;
+    result := reter_numeros(text, n);
+    print(("- reter_numeros('", text, "', "));
+    printf(($%d$, n)); print((") -> '", result, "'", newline))#;#
+    # print(newline) #
+);
+
+demo
