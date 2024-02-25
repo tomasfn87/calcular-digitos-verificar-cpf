@@ -4,7 +4,7 @@ PROC reter_numeros = (STRING text, INT n) STRING: (
     INT num pos := 1;
     INT count := 0;
 
-    # Counting numeric character in `text` and storing into `count` #
+    # Counting numeric characters in `text` and storing into `count` #
     FOR i FROM LWB text TO UPB text DO
         IF NOT done THEN
             IF text[i] >= "0" AND text[i] <= "9" THEN
@@ -34,43 +34,129 @@ PROC reter_numeros = (STRING text, INT n) STRING: (
     only_nums
 );
 
+PROC num_char_to_int = (CHAR c) INT: (
+    BOOL done := FALSE;
+    INT num := -1;
+    WHILE NOT done DO
+        IF c = "0" THEN num := 0; done := TRUE FI;
+        IF c = "1" THEN num := 1; done := TRUE FI;
+        IF c = "2" THEN num := 2; done := TRUE FI;
+        IF c = "3" THEN num := 3; done := TRUE FI;
+        IF c = "4" THEN num := 4; done := TRUE FI;
+        IF c = "5" THEN num := 5; done := TRUE FI;
+        IF c = "6" THEN num := 6; done := TRUE FI;
+        IF c = "7" THEN num := 7; done := TRUE FI;
+        IF c = "8" THEN num := 8; done := TRUE FI;
+        IF c = "9" THEN num := 9 FI;
+        done := TRUE OD;
+    num
+);
+
+PROC int_to_num_char = (INT i) CHAR: (
+    BOOL done := FALSE;
+    CHAR char := " ";
+    WHILE NOT done DO
+        IF i = 0 THEN char := "0"; done := TRUE FI; 
+        IF i = 1 THEN char := "1"; done := TRUE FI;
+        IF i = 2 THEN char := "2"; done := TRUE FI;
+        IF i = 3 THEN char := "3"; done := TRUE FI;
+        IF i = 4 THEN char := "4"; done := TRUE FI;
+        IF i = 5 THEN char := "5"; done := TRUE FI;
+        IF i = 6 THEN char := "6"; done := TRUE FI;
+        IF i = 7 THEN char := "7"; done := TRUE FI;
+        IF i = 8 THEN char := "8"; done := TRUE FI;
+        IF i = 9 THEN char := "9" FI;
+        done := TRUE OD;
+    char
+);
+
+PROC calcular_digito_verificador = (STRING cpf) INT: (
+    INT factor, remainder, result, count, sum;
+    result := 0; count := 0; sum := 0;
+
+    FOR i FROM LWB cpf TO UPB cpf DO
+        IF cpf[i] >= "0" AND cpf[i] <= "9" THEN
+            count +:= 1 FI OD;
+
+    factor := count + 1;
+    FOR i FROM LWB cpf TO UPB cpf DO
+        sum +:= num_char_to_int(cpf[i]) * factor;
+        factor -:= 1 OD;
+
+    remainder := sum MOD 11;
+    IF remainder > 1 THEN
+        result := 11 - remainder
+    FI;
+
+    result
+);
+
+PROC calcular_digitos = (STRING cpf) []INT: (
+    [1:2]INT dvs;
+    STRING only_nums;
+
+    only_nums := reter_numeros(cpf, 9);
+    dvs[1] := calcular_digito_verificador(only_nums);
+
+    only_nums := only_nums + int_to_num_char(dvs[1]);
+    dvs[2] := calcular_digito_verificador(only_nums);
+
+    dvs
+);
+
 PROC demo = VOID: (
-    STRING result := "";
-    STRING text := "";
-    INT n := 0;
+    STRING str_result, text;
+    [1:2]INT int_arr_result;
+    INT n;
 
-    print(("reter_numeros(STRING text, INT n)", newline));
+    print(("reter_numeros(STRING text, INT n): STRING", newline));
 
-    # 1.1 - reter_numeros #
     text := "test";           n := 1;
-    result := reter_numeros(text, n);
+    str_result := reter_numeros(text, n);
     print(("- reter_numeros('", text, "'          , "));
-    printf(($%d$, n)); print((" ) -> '", result, "'", newline));
+    printf(($%d$, n)); print((" ) -> '", str_result, "'", newline));
 
-    # 1.2 - reter_numeros #
     text := "test123";        n := 3;
-    result := reter_numeros(text, n);
+    str_result := reter_numeros(text, n);
     print(("- reter_numeros('", text, "'       , "));
-    printf(($%d$, n)); print((" ) -> '", result, "'", newline));
+    printf(($%d$, n)); print((" ) -> '", str_result, "'", newline));
 
-    # 1.3 - reter_numeros #
     text := "test192";        n := 4;
-    result := reter_numeros(text, n);
+    str_result := reter_numeros(text, n);
     print(("- reter_numeros('", text, "'       , "));
-    printf(($%d$, n)); print((" ) -> '", result, "'", newline));
+    printf(($%d$, n)); print((" ) -> '", str_result, "'", newline));
 
-    # 1.4 - reter_numeros #
     text := "123.456.789-00"; n := 9;
-    result := reter_numeros(text, n);
+    str_result := reter_numeros(text, n);
     print(("- reter_numeros('", text, "', "));
-    printf(($%d$, n)); print((" ) -> '", result, "'", newline));
+    printf(($%d$, n)); print((" ) -> '", str_result, "'", newline));
 
-    # 1.5 - reter_numeros #
     text := "123.456.789-00"; n := 11;
-    result := reter_numeros(text, n);
+    str_result := reter_numeros(text, n);
     print(("- reter_numeros('", text, "', "));
-    printf(($%d$, n)); print((") -> '", result, "'", newline))#;#
-    # print(newline) #
+    printf(($%d$, n)); print((") -> '", str_result, "'", newline));
+    print(newline);
+
+
+    print(("calcular_digitos(STRING cpf)     : []INT", newline));
+
+    text := "test123";
+    int_arr_result := calcular_digitos(text);
+    print(("- calcular_digitos('", text, "')         -> "));
+    print("( "); printf(($d$, int_arr_result[1])); print(", ");
+    printf(($d$, int_arr_result[2])); print((" )", newline));
+
+    text := "111.444.777";
+    int_arr_result := calcular_digitos(text);
+    print(("- calcular_digitos('", text, "')     -> "));
+    print("( "); printf(($d$, int_arr_result[1])); print(", ");
+    printf(($d$, int_arr_result[2])); print((" )", newline));
+
+    text := "000.000.000";
+    int_arr_result := calcular_digitos(text);
+    print(("- calcular_digitos('", text, "')     -> "));
+    print("( "); printf(($d$, int_arr_result[1])); print(", ");
+    printf(($d$, int_arr_result[2])); print((" )", newline))
 );
 
 demo
