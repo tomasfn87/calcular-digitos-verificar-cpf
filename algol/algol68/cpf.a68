@@ -4,7 +4,7 @@ PROC reter_numeros = (STRING text, INT n) STRING: (
     INT num pos := 1;
     INT count := 0;
 
-    # Counting numeric characters in `text` and storing into `count` #
+    # Counting numeric characters in text and storing into count #
     FOR i FROM LWB text TO UPB text DO
         IF NOT done THEN
             IF text[i] >= "0" AND text[i] <= "9" THEN
@@ -12,7 +12,7 @@ PROC reter_numeros = (STRING text, INT n) STRING: (
             IF count = n THEN
                 done := TRUE FI FI OD;
 
-    # Attributing numeric characters to `only_nums` in the correct position #
+    # Attributing numeric characters to only_nums in the correct position #
     done := FALSE;
     IF count > 0 THEN
         IF count < n THEN
@@ -34,7 +34,29 @@ PROC reter_numeros = (STRING text, INT n) STRING: (
     only_nums
 );
 
-PROC num_char_to_int = (CHAR c) INT: (
+PROC exponential = (INT base, INT exp) INT: (
+    INT result := 0;
+    INT limit := exp - 1;
+    IF exp = 0 THEN result := 1 FI;
+    IF exp > 0 THEN result := base FI;
+    IF exp > 1 THEN
+        FOR i FROM 1 TO limit DO
+            result *:= base OD FI;
+    result
+);
+
+PROC parse_int = (STRING s, INT numeric sys) INT: (
+    INT count := 0;
+    INT int := 0;
+    FOR i FROM LWB s TO UPB s DO
+        IF s[i] >= "0" AND s[i] <= "9" THEN
+            count +:= 1 FI OD;
+    FOR i FROM LWB s TO UPB s DO
+        int +:= char_to_int(s[i]) * exponential(numeric sys, count - i) OD;
+    int
+);
+
+PROC char_to_int = (CHAR c) INT: (
     BOOL done := FALSE;
     INT num := -1;
     WHILE NOT done DO
@@ -52,7 +74,7 @@ PROC num_char_to_int = (CHAR c) INT: (
     num
 );
 
-PROC int_to_num_char = (INT i) CHAR: (
+PROC int_to_char = (INT i) CHAR: (
     BOOL done := FALSE;
     CHAR char := " ";
     WHILE NOT done DO
@@ -80,7 +102,7 @@ PROC calcular_digito_verificador = (STRING cpf) INT: (
 
     factor := count + 1;
     FOR i FROM LWB cpf TO UPB cpf DO
-        sum +:= num_char_to_int(cpf[i]) * factor;
+        sum +:= parse_int(cpf[i], 10) * factor;
         factor -:= 1 OD;
 
     remainder := sum MOD 11;
@@ -98,7 +120,7 @@ PROC calcular_digitos = (STRING cpf) []INT: (
     only_nums := reter_numeros(cpf, 9);
     dvs[1] := calcular_digito_verificador(only_nums);
 
-    only_nums := only_nums + int_to_num_char(dvs[1]);
+    only_nums := only_nums + int_to_char(dvs[1]);
     dvs[2] := calcular_digito_verificador(only_nums);
 
     dvs
