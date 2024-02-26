@@ -1,10 +1,22 @@
-PROC reter_numeros = (STRING text, INT n) STRING: (
-    STRING only_nums := "0" * n;
-    BOOL done := FALSE;
-    INT num pos := 1;
-    INT count := 0;
+PROC calcular_digitos = (STRING cpf) []INT: (
+    [1:2]INT dvs;
+    STRING only nums;
 
-    # Counting numeric characters in text and storing into count #
+    only nums := reter_numeros(cpf, 9);
+    dvs[1] := calcular_digito_verificador(only nums);
+
+    only nums := only nums + int_to_char(dvs[1]);
+    dvs[2] := calcular_digito_verificador(only nums);
+
+    dvs
+);
+
+PROC reter_numeros = (STRING text, INT n) STRING: (
+    STRING only nums := "0" * n;
+    BOOL done := FALSE;
+    INT num pos, count; num pos := 1; count := 0;
+
+    # Counting numeric characters in `text` and storing into `count` #
     FOR i FROM LWB text TO UPB text DO
         IF NOT done THEN
             IF text[i] >= "0" AND text[i] <= "9" THEN
@@ -12,7 +24,7 @@ PROC reter_numeros = (STRING text, INT n) STRING: (
             IF count = n THEN
                 done := TRUE FI FI OD;
 
-    # Attributing numeric characters to only_nums in the correct position #
+    # Attributing numeric characters to `only nums` in the correct position #
     done := FALSE;
     IF count > 0 THEN
         IF count < n THEN
@@ -21,7 +33,7 @@ PROC reter_numeros = (STRING text, INT n) STRING: (
         FOR i FROM LWB text TO UPB text DO
             IF NOT done THEN
                 IF text[i] >= "0" AND text[i] <= "9" THEN
-                    only_nums[num pos] := text[i];
+                    only nums[num pos] := text[i];
                     num pos +:= 1;
                     count +:= 1 FI;
                 IF count = n THEN
@@ -29,67 +41,9 @@ PROC reter_numeros = (STRING text, INT n) STRING: (
 
     # If no numeric character is found, return empty string #
     IF (count = 0) THEN
-        only_nums := "" FI;
+        only nums := "" FI;
 
-    only_nums
-);
-
-PROC exponential = (INT base, INT exp) INT: (
-    INT result := 0;
-    INT limit := exp - 1;
-    IF exp = 0 THEN result := 1 FI;
-    IF exp > 0 THEN result := base FI;
-    IF exp > 1 THEN
-        FOR i FROM 1 TO limit DO
-            result *:= base OD FI;
-    result
-);
-
-PROC parse_int = (STRING s, INT numeric sys) INT: (
-    INT count := 0;
-    INT int := 0;
-    FOR i FROM LWB s TO UPB s DO
-        IF s[i] >= "0" AND s[i] <= "9" THEN
-            count +:= 1 FI OD;
-    FOR i FROM LWB s TO UPB s DO
-        int +:= char_to_int(s[i]) * exponential(numeric sys, count - i) OD;
-    int
-);
-
-PROC char_to_int = (CHAR c) INT: (
-    BOOL done := FALSE;
-    INT num := -1;
-    WHILE NOT done DO
-        IF c = "0" THEN num := 0; done := TRUE FI;
-        IF c = "1" THEN num := 1; done := TRUE FI;
-        IF c = "2" THEN num := 2; done := TRUE FI;
-        IF c = "3" THEN num := 3; done := TRUE FI;
-        IF c = "4" THEN num := 4; done := TRUE FI;
-        IF c = "5" THEN num := 5; done := TRUE FI;
-        IF c = "6" THEN num := 6; done := TRUE FI;
-        IF c = "7" THEN num := 7; done := TRUE FI;
-        IF c = "8" THEN num := 8; done := TRUE FI;
-        IF c = "9" THEN num := 9 FI;
-        done := TRUE OD;
-    num
-);
-
-PROC int_to_char = (INT i) CHAR: (
-    BOOL done := FALSE;
-    CHAR char := " ";
-    WHILE NOT done DO
-        IF i = 0 THEN char := "0"; done := TRUE FI; 
-        IF i = 1 THEN char := "1"; done := TRUE FI;
-        IF i = 2 THEN char := "2"; done := TRUE FI;
-        IF i = 3 THEN char := "3"; done := TRUE FI;
-        IF i = 4 THEN char := "4"; done := TRUE FI;
-        IF i = 5 THEN char := "5"; done := TRUE FI;
-        IF i = 6 THEN char := "6"; done := TRUE FI;
-        IF i = 7 THEN char := "7"; done := TRUE FI;
-        IF i = 8 THEN char := "8"; done := TRUE FI;
-        IF i = 9 THEN char := "9" FI;
-        done := TRUE OD;
-    char
+    only nums
 );
 
 PROC calcular_digito_verificador = (STRING cpf) INT: (
@@ -113,17 +67,58 @@ PROC calcular_digito_verificador = (STRING cpf) INT: (
     result
 );
 
-PROC calcular_digitos = (STRING cpf) []INT: (
-    [1:2]INT dvs;
-    STRING only_nums;
+PROC int_to_char = (INT i) CHAR: (
+    BOOL done := FALSE; CHAR char := " ";
+    WHILE NOT done DO
+        IF i = 0 THEN char := "0"; done := TRUE FI; 
+        IF i = 1 THEN char := "1"; done := TRUE FI;
+        IF i = 2 THEN char := "2"; done := TRUE FI;
+        IF i = 3 THEN char := "3"; done := TRUE FI;
+        IF i = 4 THEN char := "4"; done := TRUE FI;
+        IF i = 5 THEN char := "5"; done := TRUE FI;
+        IF i = 6 THEN char := "6"; done := TRUE FI;
+        IF i = 7 THEN char := "7"; done := TRUE FI;
+        IF i = 8 THEN char := "8"; done := TRUE FI;
+        IF i = 9 THEN char := "9" FI;
+        done := TRUE OD;
+    char
+);
 
-    only_nums := reter_numeros(cpf, 9);
-    dvs[1] := calcular_digito_verificador(only_nums);
+PROC parse_int = (STRING s, INT numeric sys) INT: (
+    INT count, int; count := 0; int := 0;
+    FOR i FROM LWB s TO UPB s DO
+        IF s[i] >= "0" AND s[i] <= "9" THEN
+            count +:= 1 FI OD;
+    FOR i FROM LWB s TO UPB s DO
+        int +:= char_to_int(s[i]) * exponential(numeric sys, count - i) OD;
+    int
+);
 
-    only_nums := only_nums + int_to_char(dvs[1]);
-    dvs[2] := calcular_digito_verificador(only_nums);
+PROC char_to_int = (CHAR c) INT: (
+    BOOL done := FALSE; INT num := -1;
+    WHILE NOT done DO
+        IF c = "0" THEN num := 0; done := TRUE FI;
+        IF c = "1" THEN num := 1; done := TRUE FI;
+        IF c = "2" THEN num := 2; done := TRUE FI;
+        IF c = "3" THEN num := 3; done := TRUE FI;
+        IF c = "4" THEN num := 4; done := TRUE FI;
+        IF c = "5" THEN num := 5; done := TRUE FI;
+        IF c = "6" THEN num := 6; done := TRUE FI;
+        IF c = "7" THEN num := 7; done := TRUE FI;
+        IF c = "8" THEN num := 8; done := TRUE FI;
+        IF c = "9" THEN num := 9 FI;
+        done := TRUE OD;
+    num
+);
 
-    dvs
+PROC exponential = (INT base, INT exp) INT: (
+    INT result, limit; result := 0; limit := exp - 1;
+    IF exp = 0 THEN result := 1 FI;
+    IF exp > 0 THEN result := base FI;
+    IF exp > 1 THEN
+        FOR i FROM 1 TO limit DO
+            result *:= base OD FI;
+    result
 );
 
 PROC demo_main = VOID: (
@@ -186,7 +181,6 @@ PROC demo_aux = VOID: (
     CHAR char_result, char;
     INT int_result, int_1, int_2;
 
-
     print(("int_to_char(INT i)                  : CHAR", newline));
 
     int_1 := 7; char_result := int_to_char(int_1);
@@ -220,41 +214,41 @@ PROC demo_aux = VOID: (
 
     print(("exponential(INT base, INT exp)      : INT", newline));
 
-    int_1 := 2; int_2 := 5;
+    int_1 := 2;   int_2 := 5;
     int_result := exponential(int_1, int_2);
     print("- exponential("); printf(($%d$, int_1)); print("  , ");
     printf(($%d$, int_2)); print(")                 -> ");
     printf(($%d$, int_result)); print(newline);
 
-    int_1 := 3; int_2 := 4;
+    int_1 := 3;   int_2 := 4;
     int_result := exponential(int_1, int_2);
     print("- exponential("); printf(($%d$, int_1)); print("  , ");
-    printf(($%d$, int_2)); print(")                 -> "); printf(($%d$, int_result));
-    print(newline);
+    printf(($%d$, int_2)); print(")                 -> ");
+    printf(($%d$, int_result)); print(newline);
 
     int_1 := 100; int_2 := 2;
     int_result := exponential(int_1, int_2);
     print("- exponential("); printf(($%d$, int_1)); print(", ");
-    printf(($%d$, int_2)); print(")                 -> "); printf(($%d$, int_result));
-    print((newline, newline));
+    printf(($%d$, int_2)); print(")                 -> ");
+    printf(($%d$, int_result)); print((newline, newline));
 
 
     print(("parse_int(STRING s, INT numeric sys): INT", newline));
 
-    text := "12"; int_1 := 10; int_result := parse_int(text, int_1);
+    text := "10";   int_1 := 10; int_result := parse_int(text, int_1);
     print("- parse_int('"); print(text); print("'  , ");
-    printf(($%d$, int_1)); print(")               -> "); printf(($%d$, int_result));
-    print(newline);
+    printf(($%d$, int_1)); print(")               -> ");
+    printf(($%d$, int_result)); print(newline);
 
-    text := "1010"; int_1 := 2; int_result := parse_int(text, int_1);
+    text := "1010"; int_1 := 2;  int_result := parse_int(text, int_1);
     print("- parse_int('"); print(text); print("', ");
-    printf(($%d$, int_1)); print(" )               -> "); printf(($%d$, int_result));
-    print(newline);
+    printf(($%d$, int_1)); print(" )               -> ");
+    printf(($%d$, int_result)); print(newline);
 
-    text := "100"; int_1 := 8; int_result := parse_int(text, int_1);
-    print("- parse_int('"); print(text); print("' , ");
-    printf(($%d$, int_1)); print(" )               -> "); printf(($%d$, int_result));
-    print(newline)
+    text := "12";   int_1 := 8;  int_result := parse_int(text, int_1);
+    print("- parse_int('"); print(text); print("'  , ");
+    printf(($%d$, int_1)); print(" )               -> ");
+    printf(($%d$, int_result)); print(newline)
 );
 
 demo_aux;
