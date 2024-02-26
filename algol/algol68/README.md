@@ -43,5 +43,4 @@ a68g cpf.a68 --verificar 98765432101
 
 ```console
 a68g cpf.a68 --demo
-gst cpf.st --smalltalk-args --demo
 ```
