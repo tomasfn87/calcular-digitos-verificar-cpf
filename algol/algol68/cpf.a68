@@ -126,12 +126,12 @@ PROC calcular_digitos = (STRING cpf) []INT: (
     dvs
 );
 
-PROC demo = VOID: (
+PROC demo_main = VOID: (
     STRING str_result, text;
     [1:2]INT int_arr_result;
     INT n;
 
-    print(("reter_numeros(STRING text, INT n): STRING", newline));
+    print(("reter_numeros(STRING text, INT n)   : STRING", newline));
 
     text := "test";           n := 1;
     str_result := reter_numeros(text, n);
@@ -160,11 +160,11 @@ PROC demo = VOID: (
     print(newline);
 
 
-    print(("calcular_digitos(STRING cpf)     : []INT", newline));
+    print(("calcular_digitos(STRING cpf)        : []INT", newline));
 
     text := "test123";
     int_arr_result := calcular_digitos(text);
-    print(("- calcular_digitos('", text, "')         -> "));
+    print(("- calcular_digitos('", text, "'    )     -> "));
     print("( "); printf(($d$, int_arr_result[1])); print(", ");
     printf(($d$, int_arr_result[2])); print((" )", newline));
 
@@ -181,4 +181,82 @@ PROC demo = VOID: (
     printf(($d$, int_arr_result[2])); print((" )", newline))
 );
 
-demo
+PROC demo_aux = VOID: (
+    STRING text_result, text;
+    CHAR char_result, char;
+    INT int_result, int_1, int_2;
+
+
+    print(("int_to_char(INT i)                  : CHAR", newline));
+
+    int_1 := 7; char_result := int_to_char(int_1);
+    print("- int_to_char("); printf(($%d$, int_1));
+    print(")                      -> '"); print((char_result, "'", newline));
+
+    int_1 := 4; char_result := int_to_char(int_1);
+    print("- int_to_char("); printf(($%d$, int_1));
+    print(")                      -> '"); print((char_result, "'", newline));
+
+    int_1 := 1; char_result := int_to_char(int_1);
+    print("- int_to_char("); printf(($%d$, int_1));
+    print(")                      -> '"); print((char_result, "'", newline));
+    print(newline);
+
+
+    print(("char_to_int(CHAR c)                 : INT", newline));
+
+    char := "1"; int_result := char_to_int(char);
+    print(("- char_to_int('", char, "')                    -> "));
+    printf(($%d$, int_result)); print(newline);
+
+    char := "4"; int_result := char_to_int(char);
+    print(("- char_to_int('", char, "')                    -> "));
+    printf(($%d$, int_result)); print(newline);
+
+    char := "7"; int_result := char_to_int(char);
+    print(("- char_to_int('", char, "')                    -> "));
+    printf(($%d$, int_result)); print((newline, newline));
+
+
+    print(("exponential(INT base, INT exp)      : INT", newline));
+
+    int_1 := 2; int_2 := 5;
+    int_result := exponential(int_1, int_2);
+    print("- exponential("); printf(($%d$, int_1)); print("  , ");
+    printf(($%d$, int_2)); print(")                 -> ");
+    printf(($%d$, int_result)); print(newline);
+
+    int_1 := 3; int_2 := 4;
+    int_result := exponential(int_1, int_2);
+    print("- exponential("); printf(($%d$, int_1)); print("  , ");
+    printf(($%d$, int_2)); print(")                 -> "); printf(($%d$, int_result));
+    print(newline);
+
+    int_1 := 100; int_2 := 2;
+    int_result := exponential(int_1, int_2);
+    print("- exponential("); printf(($%d$, int_1)); print(", ");
+    printf(($%d$, int_2)); print(")                 -> "); printf(($%d$, int_result));
+    print((newline, newline));
+
+
+    print(("parse_int(STRING s, INT numeric sys): INT", newline));
+
+    text := "12"; int_1 := 10; int_result := parse_int(text, int_1);
+    print("- parse_int('"); print(text); print("'  , ");
+    printf(($%d$, int_1)); print(")               -> "); printf(($%d$, int_result));
+    print(newline);
+
+    text := "1010"; int_1 := 2; int_result := parse_int(text, int_1);
+    print("- parse_int('"); print(text); print("', ");
+    printf(($%d$, int_1)); print(" )               -> "); printf(($%d$, int_result));
+    print(newline);
+
+    text := "100"; int_1 := 8; int_result := parse_int(text, int_1);
+    print("- parse_int('"); print(text); print("' , ");
+    printf(($%d$, int_1)); print(" )               -> "); printf(($%d$, int_result));
+    print(newline)
+);
+
+demo_aux;
+print(newline);
+demo_main
