@@ -1,6 +1,6 @@
 # calcular-digitos-verificar-cpf
 
-_Como calcular os dígitos verificadores de um_ __CPF__; _em_ `Python`, `Typescript`, `Go`, `Rust`, `Lua`, `Java`, `C#`, `C`, `Zig`, `Ruby`, `PHP`, `Odin`, `Julia`, `Perl`, `Ada`, `Elixir`, `R`, `D`, `COBOL`, `Pascal`, `Smalltalk` e `Lisp`.
+_Como calcular os dígitos verificadores de um_ __CPF__; _em_ `Python`, `Typescript`, `Go`, `Rust`, `Lua`, `Java`, `C#`, `C`, `Zig`, `Ruby`, `PHP`, `Odin`, `Julia`, `Perl`, `Ada`, `Elixir`, `R`, `D`, `COBOL`, `Pascal`, `Smalltalk`, `Lisp`, `Fotran 90` e `Algol 68`.
 
 ---
 
