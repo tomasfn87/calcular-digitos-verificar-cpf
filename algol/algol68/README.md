@@ -24,8 +24,8 @@ See the GNU General Public License for more details.
 ### Calcular Dígitos CPF
 
 ```console
-a68g cpf.a68 -c 123456789
-a68g cpf.a68 --calcular 987654321
+a68g --script cpf.a68 -c 123456789
+a68g --script cpf.a68 --calcular 987654321
 ```
 
 ---
@@ -33,8 +33,8 @@ a68g cpf.a68 --calcular 987654321
 ### Verificar CPF
 
 ```console
-a68g cpf.a68 -v 12345678909
-a68g cpf.a68 --verificar 98765432101
+a68g --script cpf.a68 -v 12345678909
+a68g --script cpf.a68 --verificar 98765432101
 ```
 
 ---
@@ -42,5 +42,5 @@ a68g cpf.a68 --verificar 98765432101
 ### Demo
 
 ```console
-a68g cpf.a68 --demo
+a68g --script cpf.a68 --demo
 ```
