@@ -1,14 +1,32 @@
-PROC calcular_digitos = (STRING cpf) []INT: (
-    [1:2]INT dvs;
+OP LENGTH = (STRING s) INT: ( UPB s + 1 ) - LWB s;
+
+OP ** = (INT base, INT exponential) INT: (
+    INT result, limit; result := 0; limit := exponential - 1;
+    IF exponential = 0 THEN result := 1 FI;
+    IF exponential > 0 THEN result := base FI;
+    IF exponential > 1 THEN
+        FOR i FROM 1 TO limit DO
+            result *:= base OD FI;
+    result
+);
+
+PROC verificar = (STRING cpf) BOOL: (
+    [1:2]INT dvs recebidos, dvs calculados;
     STRING only nums;
+    BOOL done, valid; done := FALSE; valid := TRUE;
 
-    only nums := reter_numeros(cpf, 9);
-    dvs[1] := calcular_digito_verificador(only nums);
+    only nums := reter_numeros(cpf, 11);
+    dvs calculados := calcular_digitos(reter_numeros(only nums, 9));
 
-    only nums := only nums + int_to_char(dvs[1]);
-    dvs[2] := calcular_digito_verificador(only nums);
+    dvs recebidos[1] := parse_int(only nums[10], 10);
+    dvs recebidos[2] := parse_int(only nums[11], 10);
 
-    dvs
+    FOR i FROM 1 TO 2 DO
+        IF NOT done THEN
+            IF dvs calculados[i] /= dvs recebidos[i] THEN
+                valid := FALSE; done := TRUE FI FI OD;
+
+    valid
 );
 
 PROC reter_numeros = (STRING text, INT n) STRING: (
@@ -44,6 +62,19 @@ PROC reter_numeros = (STRING text, INT n) STRING: (
         only nums := "" FI;
 
     only nums
+);
+
+PROC calcular_digitos = (STRING cpf) []INT: (
+    [1:2]INT dvs;
+    STRING only nums;
+
+    only nums := reter_numeros(cpf, 9);
+    dvs[1] := calcular_digito_verificador(only nums);
+
+    only nums := only nums + int_to_char(dvs[1]);
+    dvs[2] := calcular_digito_verificador(only nums);
+
+    dvs
 );
 
 PROC calcular_digito_verificador = (STRING cpf) INT: (
@@ -90,7 +121,7 @@ PROC parse_int = (STRING s, INT numeric sys) INT: (
         IF s[i] >= "0" AND s[i] <= "9" THEN
             count +:= 1 FI OD;
     FOR i FROM LWB s TO UPB s DO
-        int +:= char_to_int(s[i]) * exponential(numeric sys, count - i) OD;
+        int +:= char_to_int(s[i]) * (numeric sys ** (count - i)) OD;
     int
 );
 
@@ -111,47 +142,38 @@ PROC char_to_int = (CHAR c) INT: (
     num
 );
 
-PROC exponential = (INT base, INT exp) INT: (
-    INT result, limit; result := 0; limit := exp - 1;
-    IF exp = 0 THEN result := 1 FI;
-    IF exp > 0 THEN result := base FI;
-    IF exp > 1 THEN
-        FOR i FROM 1 TO limit DO
-            result *:= base OD FI;
-    result
-);
-
 PROC demo_main = VOID: (
-    STRING str_result, text;
+    STRING text_result, text;
     [1:2]INT int_arr_result;
+    BOOL boolean_result;
     INT n;
 
     print(("reter_numeros(STRING text, INT n)   : STRING", newline));
 
     text := "test";           n := 1;
-    str_result := reter_numeros(text, n);
+    text_result := reter_numeros(text, n);
     print(("- reter_numeros('", text, "'          , "));
-    printf(($%d$, n)); print((" ) -> '", str_result, "'", newline));
+    printf(($%d$, n)); print((" ) -> '", text_result, "'", newline));
 
     text := "test123";        n := 3;
-    str_result := reter_numeros(text, n);
+    text_result := reter_numeros(text, n);
     print(("- reter_numeros('", text, "'       , "));
-    printf(($%d$, n)); print((" ) -> '", str_result, "'", newline));
+    printf(($%d$, n)); print((" ) -> '", text_result, "'", newline));
 
     text := "test192";        n := 4;
-    str_result := reter_numeros(text, n);
+    text_result := reter_numeros(text, n);
     print(("- reter_numeros('", text, "'       , "));
-    printf(($%d$, n)); print((" ) -> '", str_result, "'", newline));
+    printf(($%d$, n)); print((" ) -> '", text_result, "'", newline));
 
     text := "123.456.789-00"; n := 9;
-    str_result := reter_numeros(text, n);
+    text_result := reter_numeros(text, n);
     print(("- reter_numeros('", text, "', "));
-    printf(($%d$, n)); print((" ) -> '", str_result, "'", newline));
+    printf(($%d$, n)); print((" ) -> '", text_result, "'", newline));
 
     text := "123.456.789-00"; n := 11;
-    str_result := reter_numeros(text, n);
+    text_result := reter_numeros(text, n);
     print(("- reter_numeros('", text, "', "));
-    printf(($%d$, n)); print((") -> '", str_result, "'", newline));
+    printf(($%d$, n)); print((") -> '", text_result, "'", newline));
     print(newline);
 
 
@@ -173,13 +195,67 @@ PROC demo_main = VOID: (
     int_arr_result := calcular_digitos(text);
     print(("- calcular_digitos('", text, "')     -> "));
     print("( "); printf(($d$, int_arr_result[1])); print(", ");
-    printf(($d$, int_arr_result[2])); print((" )", newline))
+    printf(($d$, int_arr_result[2])); print((" )", newline, newline));
+
+
+    print(("verificar(STRING cpf)               : BOOL", newline));
+
+    text := "test123";
+    boolean_result := verificar(text);
+    print(("- verificar('", text, "'       )         -> "));
+    print((boolean_result, newline));
+
+    text := "111.444.777-35";
+    boolean_result := verificar(text);
+    print(("- verificar('", text, "')         -> "));
+    print((boolean_result, newline));
+
+    text := "111.444.777-33";
+    boolean_result := verificar(text);
+    print(("- verificar('", text, "')         -> "));
+    print((boolean_result, newline))
 );
 
 PROC demo_aux = VOID: (
     STRING text_result, text;
     CHAR char_result, char;
     INT int_result, int_1, int_2;
+
+    print(("LENGTH STRING s                     : INT", newline));
+
+    text := "nights"; int_result := LENGTH text;
+    print(("- LENGTH '", text, "'                     -> "));
+    printf(($%d$, int_result)); print(newline);
+
+    text := "over"; int_result := LENGTH text;
+    print(("- LENGTH '", text, "'                       -> "));
+    printf(($%d$, int_result)); print(newline);
+
+    text := "egypt"; int_result := LENGTH text;
+    print(("- LENGTH '", text, "'                      -> "));
+    printf(($%d$, int_result)); print((newline, newline));
+
+
+    print(("INT base ** INT exp                 : INT", newline));
+
+    int_1 := 2;   int_2 := 5;
+    int_result := int_1 ** int_2;
+    print("- "); printf(($%d$, int_1)); print("   ** ");
+    printf(($%d$, int_2)); print("                            -> ");
+    printf(($%d$, int_result)); print(newline);
+
+    int_1 := 3;   int_2 := 4;
+    int_result := int_1 ** int_2;
+    print("- "); printf(($%d$, int_1)); print("   ** ");
+    printf(($%d$, int_2)); print("                            -> ");
+    printf(($%d$, int_result)); print(newline);
+
+    int_1 := 100; int_2 := 2;
+    int_result := int_1 ** int_2;
+    print("- "); printf(($%d$, int_1)); print(" ** ");
+    printf(($%d$, int_2)); print("                            -> ");
+    printf(($%d$, int_result)); print((newline, newline));
+
 
     print(("int_to_char(INT i)                  : CHAR", newline));
 
@@ -212,27 +288,6 @@ PROC demo_aux = VOID: (
     printf(($%d$, int_result)); print((newline, newline));
 
 
-    print(("exponential(INT base, INT exp)      : INT", newline));
-
-    int_1 := 2;   int_2 := 5;
-    int_result := exponential(int_1, int_2);
-    print("- exponential("); printf(($%d$, int_1)); print("  , ");
-    printf(($%d$, int_2)); print(")                 -> ");
-    printf(($%d$, int_result)); print(newline);
-
-    int_1 := 3;   int_2 := 4;
-    int_result := exponential(int_1, int_2);
-    print("- exponential("); printf(($%d$, int_1)); print("  , ");
-    printf(($%d$, int_2)); print(")                 -> ");
-    printf(($%d$, int_result)); print(newline);
-
-    int_1 := 100; int_2 := 2;
-    int_result := exponential(int_1, int_2);
-    print("- exponential("); printf(($%d$, int_1)); print(", ");
-    printf(($%d$, int_2)); print(")                 -> ");
-    printf(($%d$, int_result)); print((newline, newline));
-
-
     print(("parse_int(STRING s, INT numeric sys): INT", newline));
 
     text := "10";   int_1 := 10; int_result := parse_int(text, int_1);
@@ -251,6 +306,45 @@ PROC demo_aux = VOID: (
     printf(($%d$, int_result)); print(newline)
 );
 
-demo_aux;
-print(newline);
-demo_main
+PROC show_help = VOID: (
+    print(("Digite uma das opções abaixo:", newline));
+    print(" * '-c' ou '--calcular' e um número de CPF sem os dígitos ");
+    print(("verificadores;", newline));
+    print((" * '-v' ou '--verificar' e um número de CPF completo;", newline));
+    print((" * '--demo'.", newline))
+);
+
+PROC main = VOID: (
+    [1:2]INT int_arr_result;
+    BOOL boolean_result;
+ 
+    IF argc > 3 THEN
+        IF argv(4) = "--demo" THEN
+            demo_aux;
+            print(newline);
+            demo_main
+        ELSE
+        IF argv(4) = "-v" OR argv(4) = "--verificar" THEN
+            IF LENGTH reter_numeros(argv(5), 1) > 0 THEN
+                boolean_result := verificar(argv(5));
+                print("CPF ");
+                IF boolean_result = FALSE THEN
+                     print("in") FI;
+                print(("válido", newline))
+            ELSE
+                show_help FI
+        ELSE
+        IF argv(4) = "-c" OR argv(4) = "--calcular" THEN
+            IF LENGTH reter_numeros(argv(5), 1) > 0 THEN
+                int_arr_result := calcular_digitos(argv(5));
+                print("( "); printf(($d$, int_arr_result[1])); print(", ");
+                printf(($d$, int_arr_result[2])); print((" )", newline))
+            ELSE
+                show_help FI
+        ELSE
+            show_help FI FI FI
+    ELSE
+        show_help FI
+);
+
+main
