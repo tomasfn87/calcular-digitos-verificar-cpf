@@ -1,0 +1,33 @@
+struct Cpf:
+    var numero: String
+    var numeroCompleto: String
+
+    fn __init__(inout self, numero: String, numeroCompleto: String):
+        self.numero = numero
+        self.numeroCompleto = numeroCompleto
+
+    fn reter_numeros(self, texto: String, n: Int) -> String:
+        var result: String = ""
+        var count: Int = 0
+
+        for i in range(0, len(texto)):
+            if ord(texto[i]) >= ord("0") and ord(texto[i]) <= ord("9"):
+                result += texto[i]
+                count += 1
+            if count == n:
+                break
+
+        if count == 0:
+            return result
+
+        while len(result) < n:
+            result = "0" + result
+
+        return result
+
+fn main():
+    var c = Cpf("123", "123-60")
+    print(c.reter_numeros("test", 1))
+    print(c.reter_numeros("test123", 2))
+    print(c.reter_numeros("test123", 3))
+    print(c.reter_numeros("test123", 4))
