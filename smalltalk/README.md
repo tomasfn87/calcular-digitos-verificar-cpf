@@ -22,6 +22,15 @@ COPYING.
 
 ## Como usar
 
+### Dica
+
+- Algumas distribuições linux usam um `alias` conflitante com o executável `gst` para o comando `git status`, impedindo assim a execução do `GNU/Smalltalk`;
+- Para contornar esse problema, basta executar o comando abaixo:
+
+```console
+unalias gst
+```
+
 ### Calcular Dígitos CPF
 
 ```console
