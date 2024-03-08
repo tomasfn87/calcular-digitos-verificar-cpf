@@ -1,12 +1,15 @@
 struct Cpf:
     var numero: String
-    var numeroCompleto: String
+    var numero_completo: String
 
-    fn __init__(inout self, numero: String, numeroCompleto: String):
+    fn __init__(inout self, numero: String, numero_completo: String):
         self.numero = numero
-        self.numeroCompleto = numeroCompleto
+        self.numero_completo = numero_completo
 
-    fn reter_numeros(self, texto: String, n: Int) -> String:
+    fn set_numero(inout self, numero: String):
+        self.numero = numero
+
+    fn reter_numeros(self, owned texto: String, owned n: Int) -> String:
         var result: String = ""
 
         for i in range(0, len(texto)):
@@ -47,15 +50,33 @@ struct Cpf:
             return 11 - mod
 
         return 0
+    
+    fn verificar(self) -> Bool:
+        var only_nums = self.reter_numeros(self.numero_completo, 11)
+        var cpf: Cpf = Cpf(self.reter_numeros(only_nums, 9), "")
+
+        var dvs_calculados = cpf.calcular_digitos()
+        var dvs_recebidos = DynamicVector[Int]()
+    
+        dvs_recebidos.append(ord(only_nums[9])-ord("0"))
+        dvs_recebidos.append(ord(only_nums[10])-ord("0"))
+
+        for i in range(0, 1):
+            if dvs_calculados[i] != dvs_recebidos[i]:
+                return False
+
+        return True
 
 fn main():
     var c = Cpf("123", "123-60")
+    var dvs = c.calcular_digitos()
+    var valid = c.verificar()
 
     print("   reter_numeros('test', 1) ->", c.reter_numeros("test", 1))
     print("reter_numeros('test123', 2) ->", c.reter_numeros("test123", 2))
     print("reter_numeros('test123', 3) ->", c.reter_numeros("test123", 3))
     print("reter_numeros('test123', 4) ->", c.reter_numeros("test123", 4))
     print()
-
-    var dvs = c.calcular_digitos()
-    print("calcular_digitos('123') -> [", String(dvs[0])+",", dvs[1], "]")
+    print("    calcular_digitos('123') -> [", String(dvs[0])+",", dvs[1], "]")
+    print()
+    print("        verificar('123-60') ->", valid)
