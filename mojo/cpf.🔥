@@ -8,16 +8,14 @@ struct Cpf:
 
     fn reter_numeros(self, texto: String, n: Int) -> String:
         var result: String = ""
-        var count: Int = 0
 
         for i in range(0, len(texto)):
             if ord(texto[i]) >= ord("0") and ord(texto[i]) <= ord("9"):
                 result += texto[i]
-                count += 1
-            if count == n:
+            if len(result) == n:
                 break
 
-        if count == 0:
+        if len(result) == 0:
             return result
 
         while len(result) < n:
@@ -25,9 +23,39 @@ struct Cpf:
 
         return result
 
+    fn calcular_digitos(self) -> DynamicVector[Int]:
+        var only_nums: String = self.reter_numeros(self.numero, 9)
+        var dvs = DynamicVector[Int]()
+
+        dvs.append(self.calcular_digito_verificador(only_nums))
+        only_nums += dvs[0]
+        dvs.append(self.calcular_digito_verificador(only_nums^))
+
+        return dvs
+
+    fn calcular_digito_verificador(self, owned only_nums: String) -> Int:
+        var factor: Int = len(only_nums) + 1
+        var sum: Int = 0
+        var mod: Int = 0
+
+        for i in range(0, len(only_nums)):
+            sum += factor * (ord(only_nums[i]) - ord("0"))
+            factor -= 1
+
+        mod = sum % 11
+        if mod > 1:
+            return 11 - mod
+
+        return 0
+
 fn main():
     var c = Cpf("123", "123-60")
-    print(c.reter_numeros("test", 1))
-    print(c.reter_numeros("test123", 2))
-    print(c.reter_numeros("test123", 3))
-    print(c.reter_numeros("test123", 4))
+
+    print("   reter_numeros('test', 1) ->", c.reter_numeros("test", 1))
+    print("reter_numeros('test123', 2) ->", c.reter_numeros("test123", 2))
+    print("reter_numeros('test123', 3) ->", c.reter_numeros("test123", 3))
+    print("reter_numeros('test123', 4) ->", c.reter_numeros("test123", 4))
+    print()
+
+    var dvs = c.calcular_digitos()
+    print("calcular_digitos('123') -> [", String(dvs[0])+",", dvs[1], "]")
