@@ -8,8 +8,14 @@ struct Cpf:
         self.numero = numero
         self.numero_completo = numero_completo
 
+    fn get_numero(self) -> String:
+        return self.numero
+
     fn set_numero(inout self, owned numero: String):
         self.numero = numero
+
+    fn get_numero_completo(self) -> String:
+        return self.numero_completo
 
     fn set_numero_completo(inout self, owned numero_completo: String):
         self.numero_completo = numero_completo
@@ -72,6 +78,18 @@ struct Cpf:
 
         return True
 
+    fn formatar(self, cpf: String, completo: Bool=True) -> String:
+        var only_nums: String
+        if completo:
+            only_nums = self.reter_numeros(cpf, 11)
+        else:
+            only_nums = self.reter_numeros(cpf, 9)
+        if completo:
+            return only_nums[0:3]+"."+only_nums[3:6]
+                +"."+only_nums[6:9]+"-"+only_nums[9:11]
+
+        return only_nums[0:3]+"."+only_nums[3:6]+"."+only_nums[6:9]
+
 fn help_user():
     print("Digite uma das opções abaixo:")
     print("- '-v' ou '--verificar' e um número de CPF")
@@ -90,22 +108,26 @@ fn demo():
     print("c1 = Cpf('123'        , '123-60')")
     print("c2 = Cpf('111.444.777', '111.444.777-36')")
     print()
-    print("           reter_numeros('test', 1) ->", c1.reter_numeros("test", 1))
-    print("        reter_numeros('test123', 2) ->", c1.reter_numeros("test123", 2))
-    print("        reter_numeros('test123', 3) ->", c1.reter_numeros("test123", 3))
-    print("        reter_numeros('test123', 4) ->", c1.reter_numeros("test123", 4))
+    print("           c1.reter_numeros('test', 1) ->", c1.reter_numeros("test", 1))
+    print("        c1.reter_numeros('test123', 2) ->", c1.reter_numeros("test123", 2))
+    print("        c1.reter_numeros('test123', 3) ->", c1.reter_numeros("test123", 3))
+    print("        c1.reter_numeros('test123', 4) ->", c1.reter_numeros("test123", 4))
     print()
-    print("    reter_numeros('111.444.777', 9) ->",
+    print("    c2.reter_numeros('111.444.777', 9) ->",
         c2.reter_numeros("111.444.777", 9))
-    print("reter_numeros('111.444.777-36', 11) ->",
+    print("c2.reter_numeros('111.444.777-36', 11) ->",
         c2.reter_numeros("111.444.777-36", 11))
     print()
-    print("              c1.calcular_digitos() -> [", String(dvs1[0])+",",
+    print("                 c1.calcular_digitos() -> [", String(dvs1[0]) + ",",
         dvs1[1], "]")
-    print("              c2.calcular_digitos() -> [", String(dvs2[0])+",",
+    print("                 c2.calcular_digitos() -> [", String(dvs2[0]) + ",",
         dvs2[1], "]")
-    print("                     c1.verificar() ->", valid1)
-    print("                     c2.verificar() ->", valid2)
+    print()
+    print("                        c1.verificar() ->", valid1)
+    print("                        c2.verificar() ->", valid2)
+    print()
+    print("       c2.formatar(c2.numero_completo) ->", c2.formatar(c2.numero_completo))
+    print("c2.formatar(c2.numero, completo=False) ->", c2.formatar(c2.numero, completo=False))
 
 fn main():
     if len(argv()) < 2:
@@ -127,12 +149,16 @@ fn main():
     if option == "-c" or option == "--calcular":
         c.set_numero(cpf^)
         var dvs = c.calcular_digitos()
-        print("[", String(dvs[0])+",", dvs[1], "]")
+        var cpf_completo = c.reter_numeros(c.get_numero(), 9) + dvs[0] + dvs[1]
+        print("CPF informado:", c.formatar(c.get_numero(), completo=False))
+        print("CPF completo :", c.formatar(cpf_completo))
+        print("              ", cpf_completo)
+        print("[", String(dvs[0]) + ",", dvs[1], "]")
     elif option == "-v" or option == "--verificar":
-        c.set_numero_completo(cpf^) 
+        c.set_numero_completo(cpf^)
+        var validez: String = "válido"
         if not c.verificar():
-            print("O CPF é inválido.")
-        else:
-            print("O CPF é válido.")
+            validez = "in" + validez
+        print("O CPF", c.formatar(c.get_numero_completo()), "é", validez + ".")
     else:
         help_user()
