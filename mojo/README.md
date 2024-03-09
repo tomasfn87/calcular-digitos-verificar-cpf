@@ -15,11 +15,17 @@ mojo 24.1.0 (55ec12d6)
 
 ## Como usar
 
+### Compilar
+
+```console
+mojo build cpf.🔥
+```
+
 ### Calcular Dígitos CPF
 
 ```console
-mojo cpf.🔥 -c 123456789
-mojo cpf.🔥 --calcular 987654321
+./cpf.🔥 -c 123456789
+./cpf.🔥 --calcular 987654321
 ```
 
 ---
@@ -27,8 +33,8 @@ mojo cpf.🔥 --calcular 987654321
 ### Verificar CPF
 
 ```console
-mojo cpf.🔥 -v 12345678909
-mojo cpf.🔥 --verificar 98765432101
+./cpf.🔥 -v 12345678909
+./cpf.🔥 --verificar 98765432101
 ```
 
 ---
@@ -36,5 +42,5 @@ mojo cpf.🔥 --verificar 98765432101
 ### Demo
 
 ```console
-mojo cpf.🔥 --demo
+./cpf.🔥 --demo
 ```
