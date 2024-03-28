@@ -1,22 +1,45 @@
 func main
     demo()
 
-func demo
-    see "reter_numeros(texto, n)" + nl
-    see '- reter_numeros("test"   , 1) = "'
-    see reter_numeros("test", 1) + '"' + nl
-    see '- reter_numeros("test123", 2) = "'
-    see reter_numeros("test123", 2) + '"' + nl
-    see '- reter_numeros("test123", 3) = "'
-    see reter_numeros("test123", 3) + '"' + nl
-    see '- reter_numeros("test123", 4) = "'
-    see reter_numeros("test123", 4) + '"' + nl + nl
+func listar_dvs dvs
+    s = "[ "
+    s += dvs[1]
+    s += ", "
+    s += dvs[2]
+    return s + " ]"
 
-    see "calcular_digito_verificador(only_nums)" + nl
-    see '- calcular_digito_verificador("0")   = '
+func demo
+    see "RETER_NUMEROS TEXTO, N" + nl
+    see "- reter_numeros('test'   , 1)        = '"
+    see reter_numeros("test", 1) + "'" + nl
+    see "- reter_numeros('test123', 2)        = '"
+    see reter_numeros("test123", 2) + "'" + nl
+    see "- reter_numeros('test123', 3)        = '"
+    see reter_numeros("test123", 3) + "'" + nl
+    see "- reter_numeros('test123', 4)        = '"
+    see reter_numeros("test123", 4) + "'" + nl + nl
+
+    see "CALCULAR_DIGITO_VERIFICADOR ONLY_NUMS" + nl
+    see "- calcular_digito_verificador('0'  ) = "
     see calcular_digito_verificador("0") + nl
-    see '- calcular_digito_verificador("123") = '
-    see calcular_digito_verificador("123") + nl
+    see "- calcular_digito_verificador('123') = "
+    see calcular_digito_verificador("123") + nl + nl
+
+    see "CALCULAR_DIGITOS CPF" + nl 
+    see "- calcular_digitos('0')              = "
+    see listar_dvs(calcular_digitos("0")) + nl
+    see "- calcular_digitos('123')            = "
+    see listar_dvs(calcular_digitos("123")) + nl
+
+func calcular_digitos cpf
+    only_nums = reter_numeros(cpf, 9)
+    if !len(only_nums)
+        return False ok
+    dvs = [ 0, 0 ]
+    dvs[1] = calcular_digito_verificador(only_nums)
+    only_nums += String(dvs[1])
+    dvs[2] = calcular_digito_verificador(only_nums)
+    return dvs
 
 func calcular_digito_verificador only_nums
    sum = 0
