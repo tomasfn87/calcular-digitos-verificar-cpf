@@ -1,5 +1,34 @@
 func main
-    demo()
+    index_diff = 0
+    if sysargv[1] = "ring"
+        index_diff++ ok
+
+    if len(sysargv) < (2 + index_diff)
+        help_user()
+        return ok
+
+    option = sysargv[(2 + index_diff)]
+    if option = "--demo"
+        demo()
+        return ok
+
+    if len(sysargv) < (3 + index_diff)
+        help_user() ok
+
+    cpf = sysargv[(3 + index_diff)]
+    if !len(reter_numeros(cpf, 1))
+        help_user()
+        return ok
+
+    if option = "-v" or option = "--verificar" 
+        valid = verificar(cpf)
+        see "O CPF " + formatar(cpf) + " é "
+        if !valid
+            see "in" ok
+        see "válido." + nl 
+    but option = "-c" or option "--calcular"
+        dvs = calcular_digitos(cpf)
+        see listar_dvs(dvs) + nl ok
 
 func listar_dvs dvs
     s = "[ "
@@ -18,6 +47,12 @@ func demo
     see reter_numeros("test123", 3) + "'" + nl
     see "- reter_numeros('test123', 4)        = '"
     see reter_numeros("test123", 4) + "'" + nl + nl
+
+    see "FORMATAR CPF" + nl
+    see "- formatar('12360')                  = '"
+    see formatar("12360") + "'" + nl
+    see "- formatar('12345678909')            = '"
+    see formatar("12345678909") + "'" + nl + nl
 
     see "CALCULAR_DIGITO_VERIFICADOR ONLY_NUMS" + nl
     see "- calcular_digito_verificador('0'  ) = "
@@ -40,6 +75,22 @@ func demo
     see verificar("111.444.777-35") + nl
     see "- verificar('111.444.777-34')        = "
     see verificar("111.444.777-34") + nl
+
+func help_user
+    see "Digite uma das opções abaixo:" + nl
+    see "- '-v' ou '--verificar' e um número de CPF;" + nl
+    see "- '-c' ou '--calcular' e um número de CPF;" + nl
+    see "- '--demo'." + nl
+
+func formatar cpf
+    only_nums = reter_numeros(cpf, 11)
+    if !len(only_nums)
+        return "" ok
+    cpf1 = substr(only_nums, 1, 3)
+    cpf2 = substr(only_nums, 4, 3)
+    cpf3 = substr(only_nums, 7, 3)
+    cpf4 = substr(only_nums, 10, 2)
+    return cpf1+"."+cpf2+"."+cpf3+"-"+cpf4
 
 func verificar cpf
     only_nums = reter_numeros(cpf, 11)
