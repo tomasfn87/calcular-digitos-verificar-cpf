@@ -29,7 +29,28 @@ func demo
     see "- calcular_digitos('0')              = "
     see listar_dvs(calcular_digitos("0")) + nl
     see "- calcular_digitos('123')            = "
-    see listar_dvs(calcular_digitos("123")) + nl
+    see listar_dvs(calcular_digitos("123")) + nl + nl
+
+    see "VERIFICAR CPF" + nl 
+    see "- verificar('0')                     = "
+    see verificar("0") + nl
+    see "- verificar('12360')                 = "
+    see verificar("12360") + nl
+    see "- verificar('111.444.777-35')        = "
+    see verificar("111.444.777-35") + nl
+    see "- verificar('111.444.777-34')        = "
+    see verificar("111.444.777-34") + nl
+
+func verificar cpf
+    only_nums = reter_numeros(cpf, 11)
+    if !len(only_nums)
+        return False ok
+    dvs_recebidos = [Number(only_nums[10]), Number(only_nums[11])]
+    dvs_calculados = calcular_digitos(reter_numeros(only_nums, 9))
+    for i = 1 to 2
+        if dvs_recebidos[i] != dvs_calculados[i]
+            return False ok next
+    return True
 
 func calcular_digitos cpf
     only_nums = reter_numeros(cpf, 9)
