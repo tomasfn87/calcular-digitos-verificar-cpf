@@ -26,8 +26,12 @@ func main
         if !valid
             see "in" ok
         see "válido." + nl 
-    but option = "-c" or option "--calcular"
+    but option = "-c" or option = "--calcular"
         dvs = calcular_digitos(cpf)
+        cpf_completo = reter_numeros(cpf, 9) + dvs[1] + dvs[2]
+        see "CPF informado: " + substr(formatar(cpf_completo), 1, 11) + nl
+        see "CPF completo:  " + formatar(cpf_completo) + nl
+        see "               " + reter_numeros(cpf_completo, 11) + nl
         see listar_dvs(dvs) + nl ok
 
 func listar_dvs dvs
