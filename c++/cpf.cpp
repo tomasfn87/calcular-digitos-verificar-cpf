@@ -1,34 +1,79 @@
+#include <cctype>
+#include <cstring>
 #include <iostream>
 #include <string>
 
 using namespace std;
 
-class Sayer {
-    private: string what, toWhom, punctuation;
+class Cpf {
+    private:
+        string cpf, completeCpf;
     public:
-        Sayer(
-            string what = "Hello",
-            string toWhom = "World",
-            string punctuation = "!"):
-                what(what), toWhom(toWhom), punctuation(punctuation) {}
-        ~Sayer() {}
-        void hello() {
-            cout << what << ", " << toWhom << punctuation << endl;}};
+        Cpf(string cpf="", string completeCpf=""):
+            cpf(cpf), completeCpf(completeCpf) {}
 
-int main() {
-    // no args
-    Sayer* h =  new Sayer;
-    h->hello();
-    delete h;
-    //  1 arg
-    Sayer* h1 = new Sayer("Stop spinning");
-    h1->hello();
-    delete h1;
-    //  2 args
-    Sayer* h2 = new Sayer("There's nothing to worry about", "buddy");
-    h2->hello();
-    delete h2;
-    //  3 args
-    Sayer* h3 = new Sayer("Please listen", "my friend", "...");
-    h3->hello();
+        ~Cpf() {}
+
+        string removeNonNumChars(string s) {
+            string onlyNums;
+            for (char c : s) {
+                if (isdigit(c)) {
+                    onlyNums += c;}}
+            return onlyNums;}
+ 
+        void data() {
+            cout << "- Data                 : \"" << cpf << "\"/\"";
+            cout << completeCpf << "\"" << endl;}
+ 
+        void testRemoveNonNumChars() {
+            cout << "- testRemoveNonNumChars: \"" << removeNonNumChars(cpf);
+            cout << "\"/\"" << removeNonNumChars(completeCpf) << "\"";
+            cout << endl;}};
+
+void demo(string option) {
+    Cpf* cpf = new Cpf();
+    cout << "Cpf()" << endl;
+    cpf->data();
+    cout << "- MemAddress           : " << cpf << endl;
+    cout << "- Size                 : " << sizeof(cpf) << endl;
+    cpf->testRemoveNonNumChars();
+    if (option == "--delete-test") {
+        cout << "- deleting " << "cpf" << endl;
+        cpf = nullptr;
+        delete cpf;}
+    cout << endl;
+
+    Cpf* cpf1 = new Cpf("test...1...2...3", "testing...1...2...3");
+    cout << "Cpf(\"test...1...2...3\", \"testing...1...2...3\")" << endl;
+    cpf1->data();
+    cout << "- MemAddress           : " << cpf1 << endl;
+    cout << "- Size                 : " << sizeof(cpf1) << endl;
+    cpf1->testRemoveNonNumChars();
+    if (option == "--delete-test") {
+        cout << "- deleting " << "cpf1" << endl;
+        cpf1 = nullptr;
+        delete cpf1;}
+    cout << endl;
+
+    Cpf* cpf2 = new Cpf("111.444.777", "111.444.777-35");
+    cout << "Cpf(\"111.444.777\", \"111.444.777-35\")" << endl;
+    cpf2->data();
+    cout << "- MemAddress           : " << cpf2 << endl;
+    cout << "- Size                 : " << sizeof(cpf2) << endl;
+    cpf2->testRemoveNonNumChars();}
+
+int main(int argc, char* argv[]) {
+    cout << "CLI args: " << endl;
+    for (int i = 0; i < argc; i++) {
+        cout << "- " << i+1 <<  ") " << argv[i] << endl;}
+    cout << endl;
+
+    string option1;
+    string option2;
+    if (argc > 1)
+        option1 = argv[1];
+    if (argc > 2 && option1 == "--demo")
+        option2 = argv[2];
+    if (option1 == "--demo")
+        demo(option2);
     return 0;}

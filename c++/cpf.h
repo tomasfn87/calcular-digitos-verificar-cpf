@@ -3,14 +3,14 @@
 
 #include <string>
 
-class Sayer {
-    private: std::string what, toWhom, punctuation;
+class Cpf {
+    private:
+        std::string cpf, completeCpf;
     public:
-        Sayer(
-            std::string what = "Hello",
-            std::string toWhom = "World",
-            std::string punctuation = "!");
-        ~Sayer();
-        void hello();};
+        Cpf(std::string cpf="", std::string completeCpf="");
+        ~Cpf();
+        std::string removeNonNumChars(std::string s);
+        void data();
+        void testRemoveNonNumChars();};
 
 #endif
