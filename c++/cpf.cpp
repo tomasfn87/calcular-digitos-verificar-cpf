@@ -10,69 +10,101 @@ class Cpf {
         string cpf, completeCpf;
 
         void data() {
-            cout << "- Data                 : \"" << cpf << "\"/\""
+            cout << "- Data                           : \"" << cpf << "\"/\""
                 << completeCpf << "\"" << endl;}
 
-        void memAddressAndSize() {
-            cout << "- MemAddress           : " << this << endl
-                <<  "- PointerSize          : " << sizeof(this) << endl
-                <<  "- ObjectSize           : " << sizeof(*this) << endl;}
+        void memAddressAndSizes() {
+            cout << "- MemAddress                     : " << this << endl
+                <<  "- PointerSize                    : " << sizeof(this)
+                << " bytes" << endl 
+                <<  "- ObjectSize                     : " << sizeof(*this)
+                << " bytes" << endl;}
+
+        int calculateVerificationDigit(string onlyNums) {
+            int sum = 0;
+            int factor, mod;
+            factor = onlyNums.length() + 1;
+            for (char c : onlyNums) {
+                sum += (c - '0') * factor;
+                --factor;}
+            mod = sum % 11;
+            if (mod > 1) 
+                return 11 - mod;
+            return 0;};
 
         void testRemoveNonNumChars() {
-            cout << "- testRemoveNonNumChars: \"" << removeNonNumChars(cpf)
-                << "\"/\"" << removeNonNumChars(completeCpf) << "\"" << endl;}
+            cout << "- testRemoveNonNumChars(cpf, 5)  : \""
+                << removeNonNumChars(cpf, 5) << "\"/\""
+                << removeNonNumChars(completeCpf, 5) << "\"" << endl;}
     public:
         Cpf(string cpf="", string completeCpf=""):
             cpf(cpf), completeCpf(completeCpf) {}
 
         ~Cpf() {}
 
-        string removeNonNumChars(string s) {
+        string removeNonNumChars(string s, int n) {
             string onlyNums;
+            int count = 0;
             for (char c : s) {
                 if (isdigit(c)) {
-                    onlyNums += c;}}
+                    onlyNums += c;
+                    ++count;}
+                if (count == n)
+                    break;}
             return onlyNums;}
 
-        void testClass() {
+        int* calculateVerificationDigits() {
+            static int verificationDigits[2] = { -1, -1 };
+            string onlyNums = removeNonNumChars(cpf, 9);
+            if (!onlyNums.length())
+                return verificationDigits;
+            verificationDigits[0] = calculateVerificationDigit(onlyNums);
+            onlyNums += to_string(verificationDigits[0]);
+            verificationDigits[1] = calculateVerificationDigit(onlyNums);
+            return verificationDigits;};
+
+        void debugClass() {
             data();
-            memAddressAndSize();
-            testRemoveNonNumChars();}};
+            memAddressAndSizes();
+            testRemoveNonNumChars();
+            int* vds = this->calculateVerificationDigits();
+            if (vds[0] != -1) 
+                cout << "- testCalculateVerificationDigits: { " 
+                    << vds[0] << ", " << vds[1] << " }" << endl;}};
 
 void demo(string option) {
     Cpf* cpf = new Cpf();
-    cout << "Cpf()" << endl;
-    cpf->testClass();
+    cout << "new Cpf()" << endl;
+    cpf->debugClass();
     if (option == "--delete-test") {
-        cout << "- deleting " << "cpf" << endl;
+        cout << "- deleting `cpf`" << endl;
         delete cpf;
         cpf = nullptr;}
     cout << endl;
 
     Cpf* cpf1 = new Cpf("test...1...2...3", "testing...1...2...3");
-    cout << "Cpf(\"test...1...2...3\", \"testing...1...2...3\")" << endl;
-    cpf1->testClass();
+    cout << "new Cpf(\"test...1...2...3\", \"testing...1...2...3\")" << endl;
+    cpf1->debugClass();
     if (option == "--delete-test") {
-        cout << "- deleting " << "cpf1" << endl;
+        cout << "- deleting `cpf1`" << endl;
         delete cpf1;
         cpf1 = nullptr;}
     cout << endl;
 
     Cpf* cpf2 = new Cpf("111.444.777", "111.444.777-35");
-    cout << "Cpf(\"111.444.777\", \"111.444.777-35\")" << endl;
-    cpf2->testClass();}
+    cout << "new Cpf(\"111.444.777\", \"111.444.777-35\")" << endl;
+    cpf2->debugClass();}
 
 int main(int argc, char* argv[]) {
-    cout << "CLI args: " << endl;
-    for (int i = 0; i < argc; i++) {
-        cout << "- " << i+1 <<  ") " << argv[i] << endl;}
-    cout << endl;
-
     string option1, option2;
     if (argc > 1)
         option1 = argv[1];
     if (argc > 2 && option1 == "--demo")
         option2 = argv[2];
-    if (option1 == "--demo")
-        demo(option2);
+    if (option1 == "--demo") {
+        cout << "CLI args: " << endl;
+        for (int i = 0; i < argc; i++) {
+            cout << "- " << i+1 <<  ") " << argv[i] << endl;}
+        cout << endl;
+        demo(option2);};
     return 0;}

@@ -7,12 +7,14 @@ class Cpf {
     private:
         std::string cpf, completeCpf;
         void data();
-        void memAddressAndSize(Cpf* cpf);
+        void memAddressAndSizes();
         void testRemoveNonNumChars();
+        int calculateVerificationDigit(std::string onlyNums);
     public:
         Cpf(std::string cpf="", std::string completeCpf="");
         ~Cpf();
         std::string removeNonNumChars(std::string s);
-        void testClass();};
+        int* calculateVerificationDigits();
+        void debugClass();};
 
 #endif
