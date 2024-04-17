@@ -32,3 +32,17 @@ g++ -std=c++20 -I. cpf.cpp -o cpf
 ./cpf -v 123.456.789-09
 ./cpf --verificar 123.456.789-90
 ```
+
+#### Demo
+
+```console
+./cpf --demo
+```
+
+##### `--delete-test` option
+
+```console
+./cpf --demo --delete-test
+```
+
+- The `--delete-test` option deletes the first 2/3 objects (note the memory address changes).
