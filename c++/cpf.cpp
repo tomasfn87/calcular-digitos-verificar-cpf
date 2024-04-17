@@ -6,36 +6,6 @@
 using namespace std;
 
 class Cpf {
-    private:
-        string cpf, completeCpf;
-
-        void data() {
-            cout << "- Data                           : \"" << cpf << "\"/\""
-                << completeCpf << "\"" << endl;}
-
-        void memAddressAndSizes() {
-            cout << "- MemAddress                     : " << this << endl
-                <<  "- PointerSize                    : " << sizeof(this)
-                << " bytes" << endl 
-                <<  "- ObjectSize                     : " << sizeof(*this)
-                << " bytes" << endl;}
-
-        int calculateVerificationDigit(string onlyNums) {
-            int sum = 0;
-            int factor, mod;
-            factor = onlyNums.length() + 1;
-            for (char c : onlyNums) {
-                sum += (c - '0') * factor;
-                --factor;}
-            mod = sum % 11;
-            if (mod > 1) 
-                return 11 - mod;
-            return 0;};
-
-        void testRemoveNonNumChars() {
-            cout << "- testRemoveNonNumChars(cpf, 5)  : \""
-                << removeNonNumChars(cpf, 5) << "\"/\""
-                << removeNonNumChars(completeCpf, 5) << "\"" << endl;}
     public:
         Cpf(string cpf="", string completeCpf=""):
             cpf(cpf), completeCpf(completeCpf) {}
@@ -70,7 +40,38 @@ class Cpf {
             int* vds = this->calculateVerificationDigits();
             if (vds[0] != -1) 
                 cout << "- testCalculateVerificationDigits: { " 
-                    << vds[0] << ", " << vds[1] << " }" << endl;}};
+                    << vds[0] << ", " << vds[1] << " }" << endl;}
+
+    private:
+        string cpf, completeCpf;
+
+        int calculateVerificationDigit(string onlyNums) {
+            int sum = 0;
+            int factor, mod;
+            factor = onlyNums.length() + 1;
+            for (char c : onlyNums) {
+                sum += (c - '0') * factor;
+                --factor;}
+            mod = sum % 11;
+            if (mod > 1) 
+                return 11 - mod;
+            return 0;};
+
+        void data() {
+            cout << "- Data                           : \"" << cpf << "\"/\""
+                << completeCpf << "\"" << endl;}
+
+        void memAddressAndSizes() {
+            cout << "- MemAddress                     : " << this << endl
+                <<  "- PointerSize                    : " << sizeof(this)
+                << " bytes" << endl 
+                <<  "- ObjectSize                     : " << sizeof(*this)
+                << " bytes" << endl;}
+
+        void testRemoveNonNumChars() {
+            cout << "- testRemoveNonNumChars(cpf, 5)  : \""
+                << removeNonNumChars(cpf, 5) << "\"/\""
+                << removeNonNumChars(completeCpf, 5) << "\"" << endl;}};
 
 void demo(string option) {
     Cpf* cpf = new Cpf();
