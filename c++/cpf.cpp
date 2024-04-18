@@ -1,5 +1,4 @@
 #include <cctype>
-#include <cstring>
 #include <iostream>
 #include <memory>
 #include <sstream>
@@ -162,11 +161,11 @@ void demo(string option) {
 
 void help_user() {
     cout << "Digite uma das opções abaixo:" << endl
-        << "'-c' ou '--calcular' e um número de CPF;" << endl
-        << "'-f' ou '--formatar' e um número de CPF;" << endl
-        << "'-v' ou '--verificar' e um número de CPF;" << endl
-        << "'--demo --delete-test';" << endl
-        << "'--demo'." << endl;}
+        << "- '--calcular'  ou '-c' e um número de CPF;" << endl
+        << "- '--formatar'  ou '-f' e um número de CPF;" << endl
+        << "- '--verificar' ou '-v' e um número de CPF;" << endl
+        << "- '--demo';" << endl
+        << "- '--demo --delete-test'." << endl;}
 
 int main(int argc, char* argv[]) {
     string option1, option2;
@@ -182,10 +181,11 @@ int main(int argc, char* argv[]) {
         demo(option2);
         return 0;}
     unique_ptr<Cpf> aux(new Cpf());
-    if(option1 == "--calcular"  || option1 == "-c") {
-        if (!aux->filterNumsAndFillWithZeroes(option2, 1).length()) {
-            help_user();
-            return 1;}
+    if (!aux->filterNumsAndFillWithZeroes(option2, 1).length()) {
+        cout << "ERRO: o CPF informado não possui números." << endl << endl;
+        help_user();
+        return 1;}
+    if (option1 == "--calcular" || option1 == "-c") {
         unique_ptr<Cpf> cpf(new Cpf(option2, ""));
         int* dvs = cpf->calculateVerificationDigits();
         string cCpf = cpf->format(false);
@@ -195,20 +195,17 @@ int main(int argc, char* argv[]) {
             <<  "               "
             << cpf->filterNumsAndFillWithZeroes(cCpf, 11) << endl
             << "{ " << dvs[0] << ", " << dvs[1] << " }" << endl;}
-    else if(option1 == "--formatar"  || option1 == "-f") {
-        if (!aux->filterNumsAndFillWithZeroes(option2, 1).length()) {
-            help_user();
-            return 1;}
+    else if (option1 == "--formatar" || option1 == "-f") {
         unique_ptr<Cpf> cpf(new Cpf("", option2));
         cout << "CPF formatado: " << cpf->format() << endl;}
-    else if(option1 == "--verificar" || option1 == "-v") {
-        if (!aux->filterNumsAndFillWithZeroes(option2, 1).length()) {
-            help_user();
-            return 1;}
+    else if (option1 == "--verificar" || option1 == "-v") {
         unique_ptr<Cpf> cpf(new Cpf("", option2));
         bool v = cpf->verify();
         cout << "O CPF " << cpf->format() << " é " << (v ? "" : "in")
-            << "válido." << endl;}
+            << "válido." << endl;
+        if (!v)
+            return 2;}
     else {
-        help_user();}
+        help_user();
+        return 1;}
     return 0;}
