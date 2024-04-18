@@ -9,6 +9,7 @@ class Cpf {
         ~Cpf();
         std::string removeNonNumChars(std::string s);
         int* calculateVerificationDigits();
+        bool verify();
         void debugClass();
     private:
         std::string cpf, completeCpf;

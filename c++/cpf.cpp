@@ -1,6 +1,7 @@
 #include <cctype>
 #include <cstring>
 #include <iostream>
+#include <memory>
 #include <string>
 
 using namespace std;
@@ -33,6 +34,26 @@ class Cpf {
             verificationDigits[1] = calculateVerificationDigit(onlyNums);
             return verificationDigits;};
 
+        bool verify() {
+            string onlyNums = removeNonNumChars(completeCpf, 11);
+            if (!onlyNums.length())
+                return false;
+            if (onlyNums == "0" || onlyNums == "00")
+                return true;
+            if (onlyNums.length() <= 2)
+                return false;
+            const int numOfVds = 2;
+            int receivedVds[numOfVds] = { 
+                onlyNums[onlyNums.length() - 2] - '0',
+                onlyNums[onlyNums.length() - 1] - '0'};
+            string receivedCpf = onlyNums.erase(onlyNums.size() - numOfVds);
+            unique_ptr<Cpf> cpf(new Cpf(receivedCpf, ""));
+            int* calculatedVds = cpf->calculateVerificationDigits();
+            for (int i = 0; i < numOfVds; ++i)
+                if (receivedVds[i] != calculatedVds[i])
+                    return false;
+            return true;}
+
         void debugClass() {
             data();
             memAddressAndSizes();
@@ -40,7 +61,9 @@ class Cpf {
             int* vds = this->calculateVerificationDigits();
             if (vds[0] != -1) 
                 cout << "- testCalculateVerificationDigits: { " 
-                    << vds[0] << ", " << vds[1] << " }" << endl;}
+                    << vds[0] << ", " << vds[1] << " }" << endl;
+            bool v = this->verify();
+            cout << "- CPF is " << (v ? "" : "in") << "valid." << endl;}
 
     private:
         string cpf, completeCpf;
@@ -83,8 +106,8 @@ void demo(string option) {
         cpf = nullptr;}
     cout << endl;
 
-    Cpf* cpf1 = new Cpf("test...1...2...3", "testing...1...2...3");
-    cout << "new Cpf(\"test...1...2...3\", \"testing...1...2...3\")" << endl;
+    Cpf* cpf1 = new Cpf("0", "00");
+    cout << "new Cpf(\"0\", \"00\")" << endl;
     cpf1->debugClass();
     if (option == "--delete-test") {
         cout << "- deleting `cpf1`" << endl;
@@ -92,9 +115,18 @@ void demo(string option) {
         cpf1 = nullptr;}
     cout << endl;
 
-    Cpf* cpf2 = new Cpf("111.444.777", "111.444.777-35");
+    Cpf* cpf2 = new Cpf("test...1...2...3", "testing...1...2...3");
+    cout << "new Cpf(\"test...1...2...3\", \"testing...1...2...3\")" << endl;
+    cpf2->debugClass();
+    if (option == "--delete-test") {
+        cout << "- deleting `cpf2`" << endl;
+        delete cpf2;
+        cpf2 = nullptr;}
+    cout << endl;
+
+    Cpf* cpf3 = new Cpf("111.444.777", "111.444.777-35");
     cout << "new Cpf(\"111.444.777\", \"111.444.777-35\")" << endl;
-    cpf2->debugClass();}
+    cpf3->debugClass();}
 
 int main(int argc, char* argv[]) {
     string option1, option2;
