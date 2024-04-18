@@ -78,17 +78,17 @@ class Cpf {
         void debugClass() {
             data();
             memAddressAndSizes();
-            testRemoveNonNumChars();
+            testfilterNumsAndFillWithZeroes();
             int* vds = this->calculateVerificationDigits();
             if (vds[0] != -1) 
-                cout << "- testCalculateVerificationDigits: { " 
+                cout << "- testCalculateVerificationDigits      : { " 
                     << vds[0] << ", " << vds[1] << " }" << endl;
-            bool v = this->verify();
-            cout << "- CPF is " << (v ? "" : "in") << "valid." << endl;
             string cpfF  = this->format(false);
             string cCpfF  = this->format();
-            cout << "- Incomplete CPF: " << cpfF << endl
-                <<  "- Complete   CPF: " << cCpfF << endl;}
+            cout << "- Format Incomplete CPF              : " << cpfF << endl
+                <<  "- Format Complete   CPF              : " << cCpfF << endl;
+            bool v = this->verify();
+            cout << "- CPF is " << (v ? "" : "in") << "valid." << endl;}
 
     private:
         string cpf, completeCpf;
@@ -106,18 +106,18 @@ class Cpf {
             return 0;};
 
         void data() {
-            cout << "- Data                           : \"" << cpf << "\"/\""
+            cout << "- Data                               : \"" << cpf << "\"/\""
                 << completeCpf << "\"" << endl;}
 
         void memAddressAndSizes() {
-            cout << "- MemAddress                     : " << this << endl
-                <<  "- PointerSize                    : " << sizeof(this)
+            cout << "- MemAddress                         : " << this << endl
+                <<  "- PointerSize                        : " << sizeof(this)
                 << " bytes" << endl 
-                <<  "- ObjectSize                     : " << sizeof(*this)
+                <<  "- ObjectSize                         : " << sizeof(*this)
                 << " bytes" << endl;}
 
-        void testRemoveNonNumChars() {
-            cout << "- testRemoveNonNumChars(cpf, 5)  : \""
+        void testfilterNumsAndFillWithZeroes() {
+            cout << "- filterNumsAndFillWithZeroes(cpf, 5): \""
                 << filterNumsAndFillWithZeroes(cpf, 5) << "\"/\""
                 << filterNumsAndFillWithZeroes(completeCpf, 5) << "\""
                 << endl;}
@@ -160,16 +160,55 @@ void demo(string option) {
     cout << "new Cpf(\"111.444.777\", \"111.444.777-35\")" << endl;
     cpf3->debugClass();}
 
+void help_user() {
+    cout << "Digite uma das opções abaixo:" << endl
+        << "'-c' ou '--calcular' e um número de CPF;" << endl
+        << "'-f' ou '--formatar' e um número de CPF;" << endl
+        << "'-v' ou '--verificar' e um número de CPF;" << endl
+        << "'--demo --delete-test';" << endl
+        << "'--demo'." << endl;}
+
 int main(int argc, char* argv[]) {
     string option1, option2;
     if (argc > 1)
         option1 = argv[1];
-    if (argc > 2 && option1 == "--demo")
+    if (argc > 2)
         option2 = argv[2];
     if (option1 == "--demo") {
         cout << "CLI args: " << endl;
         for (int i = 0; i < argc; i++) {
             cout << "- " << i+1 <<  ") " << argv[i] << endl;}
         cout << endl;
-        demo(option2);};
+        demo(option2);
+        return 0;}
+    unique_ptr<Cpf> aux(new Cpf());
+    if(option1 == "--calcular"  || option1 == "-c") {
+        if (!aux->filterNumsAndFillWithZeroes(option2, 1).length()) {
+            help_user();
+            return 1;}
+        unique_ptr<Cpf> cpf(new Cpf(option2, ""));
+        int* dvs = cpf->calculateVerificationDigits();
+        string cCpf = cpf->format(false);
+        cCpf += "-" + to_string(dvs[0]) + to_string(dvs[1]);
+        cout << "CPF informado: " << cpf->format(false) << endl
+            <<  "CPF completo : " << cCpf << endl
+            <<  "               "
+            << cpf->filterNumsAndFillWithZeroes(cCpf, 11) << endl
+            << "{ " << dvs[0] << ", " << dvs[1] << " }" << endl;}
+    else if(option1 == "--formatar"  || option1 == "-f") {
+        if (!aux->filterNumsAndFillWithZeroes(option2, 1).length()) {
+            help_user();
+            return 1;}
+        unique_ptr<Cpf> cpf(new Cpf("", option2));
+        cout << "CPF formatado: " << cpf->format() << endl;}
+    else if(option1 == "--verificar" || option1 == "-v") {
+        if (!aux->filterNumsAndFillWithZeroes(option2, 1).length()) {
+            help_user();
+            return 1;}
+        unique_ptr<Cpf> cpf(new Cpf("", option2));
+        bool v = cpf->verify();
+        cout << "O CPF " << cpf->format() << " é " << (v ? "" : "in")
+            << "válido." << endl;}
+    else {
+        help_user();}
     return 0;}

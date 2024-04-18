@@ -17,7 +17,7 @@ class Cpf {
         int calculateVerificationDigit(std::string onlyNums);
         void data();
         void memAddressAndSizes();
-        void testRemoveNonNumChars();
+        void testfilterNumsAndFillWithZeroes();
         void repeat(const std::string& s, int n);};
 
 #endif
