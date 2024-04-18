@@ -26,6 +26,13 @@ g++ -std=c++20 -I. cpf.cpp -o cpf
 ./cpf --calcular 123.456.789-XX
 ```
 
+#### Formatação
+
+```console
+./cpf -f 123456789_09
+./cpf --formatar 12345678990
+```
+
 #### Verificação
 
 ```console
@@ -45,4 +52,4 @@ g++ -std=c++20 -I. cpf.cpp -o cpf
 ./cpf --demo --delete-test
 ```
 
-- The `--delete-test` option deletes the first 2/3 objects (note the memory address changes).
+- The `--delete-test` option deletes the first 3/4 objects (note the memory address changes when turning the flag on and off).
