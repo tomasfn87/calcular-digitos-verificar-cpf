@@ -2,6 +2,7 @@
 #include <cstring>
 #include <iostream>
 #include <memory>
+#include <sstream>
 #include <string>
 
 using namespace std;
@@ -13,7 +14,7 @@ class Cpf {
 
         ~Cpf() {}
 
-        string removeNonNumChars(string s, int n) {
+        string filterNumsAndFillWithZeroes(string s, int n) {
             string onlyNums;
             int count = 0;
             for (char c : s) {
@@ -22,11 +23,15 @@ class Cpf {
                     ++count;}
                 if (count == n)
                     break;}
+            if (!count)
+                return "";
+            if (count < n)
+                onlyNums = repeat('0', n - count) + onlyNums;
             return onlyNums;}
 
         int* calculateVerificationDigits() {
             static int verificationDigits[2] = { -1, -1 };
-            string onlyNums = removeNonNumChars(cpf, 9);
+            string onlyNums = filterNumsAndFillWithZeroes(cpf, 9);
             if (!onlyNums.length())
                 return verificationDigits;
             verificationDigits[0] = calculateVerificationDigit(onlyNums);
@@ -35,12 +40,8 @@ class Cpf {
             return verificationDigits;};
 
         bool verify() {
-            string onlyNums = removeNonNumChars(completeCpf, 11);
+            string onlyNums = filterNumsAndFillWithZeroes(completeCpf, 11);
             if (!onlyNums.length())
-                return false;
-            if (onlyNums == "0" || onlyNums == "00")
-                return true;
-            if (onlyNums.length() <= 2)
                 return false;
             const int numOfVds = 2;
             int receivedVds[numOfVds] = { 
@@ -53,6 +54,26 @@ class Cpf {
                 if (receivedVds[i] != calculatedVds[i])
                     return false;
             return true;}
+        
+        string format(bool complete=true) {
+            int length = 11;
+            if (!complete)
+                length -= 2;
+            string onlyNums;
+            if (complete)
+                onlyNums = filterNumsAndFillWithZeroes(completeCpf, length);
+            else
+                onlyNums = filterNumsAndFillWithZeroes(cpf, length);
+            if (!onlyNums.length())
+                return "";
+            stringstream result;
+            result << onlyNums.substr(0, 3) << '.'
+                <<    onlyNums.substr(3, 3) << '.'
+                <<    onlyNums.substr(6, 3);
+            if (!complete)
+                return result.str();
+            result << '-' << onlyNums.substr(9, 2);
+            return result.str();};
 
         void debugClass() {
             data();
@@ -63,7 +84,11 @@ class Cpf {
                 cout << "- testCalculateVerificationDigits: { " 
                     << vds[0] << ", " << vds[1] << " }" << endl;
             bool v = this->verify();
-            cout << "- CPF is " << (v ? "" : "in") << "valid." << endl;}
+            cout << "- CPF is " << (v ? "" : "in") << "valid." << endl;
+            string cpfF  = this->format(false);
+            string cCpfF  = this->format();
+            cout << "- Incomplete CPF: " << cpfF << endl
+                <<  "- Complete   CPF: " << cCpfF << endl;}
 
     private:
         string cpf, completeCpf;
@@ -93,8 +118,15 @@ class Cpf {
 
         void testRemoveNonNumChars() {
             cout << "- testRemoveNonNumChars(cpf, 5)  : \""
-                << removeNonNumChars(cpf, 5) << "\"/\""
-                << removeNonNumChars(completeCpf, 5) << "\"" << endl;}};
+                << filterNumsAndFillWithZeroes(cpf, 5) << "\"/\""
+                << filterNumsAndFillWithZeroes(completeCpf, 5) << "\""
+                << endl;}
+        
+        string repeat(const char& c, int n) {
+            stringstream ss;
+            for (int i = 0; i < n; ++i) {
+                ss << c;}
+            return ss.str();}};
 
 void demo(string option) {
     Cpf* cpf = new Cpf();

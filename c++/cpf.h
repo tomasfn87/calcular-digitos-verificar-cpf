@@ -7,15 +7,17 @@ class Cpf {
     public:
         Cpf(std::string cpf="", std::string completeCpf="");
         ~Cpf();
-        std::string removeNonNumChars(std::string s);
+        std::string filterNumsAndFillWithZeroes(std::string s);
         int* calculateVerificationDigits();
         bool verify();
+        std::string format(bool complete=true);
         void debugClass();
     private:
         std::string cpf, completeCpf;
         int calculateVerificationDigit(std::string onlyNums);
         void data();
         void memAddressAndSizes();
-        void testRemoveNonNumChars();};
+        void testRemoveNonNumChars();
+        void repeat(const std::string& s, int n);};
 
 #endif
