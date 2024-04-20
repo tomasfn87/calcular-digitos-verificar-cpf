@@ -13,7 +13,7 @@ public:
 
     ~Cpf() {}
 
-    string filterNumsAndFillWithZeroes(string s, int n) {
+    string filterNumsAndFillWithZeros(string s, int n) {
         string onlyNums;
         int count = 0;
         for (char c : s) {
@@ -30,7 +30,7 @@ public:
 
     int* calculateVerificationDigits() {
         static int verificationDigits[2] = { -1, -1 };
-        string onlyNums = filterNumsAndFillWithZeroes(cpf, 9);
+        string onlyNums = filterNumsAndFillWithZeros(cpf, 9);
         if (!onlyNums.length())
             return verificationDigits;
         verificationDigits[0] = calculateVerificationDigit(onlyNums);
@@ -39,7 +39,7 @@ public:
         return verificationDigits;};
 
     bool verify() {
-        string onlyNums = filterNumsAndFillWithZeroes(completeCpf, 11);
+        string onlyNums = filterNumsAndFillWithZeros(completeCpf, 11);
         if (!onlyNums.length())
             return false;
         const int numOfVds = 2;
@@ -60,9 +60,9 @@ public:
             length -= 2;
         string onlyNums;
         if (complete)
-            onlyNums = filterNumsAndFillWithZeroes(completeCpf, length);
+            onlyNums = filterNumsAndFillWithZeros(completeCpf, length);
         else
-            onlyNums = filterNumsAndFillWithZeroes(cpf, length);
+            onlyNums = filterNumsAndFillWithZeros(cpf, length);
         if (!onlyNums.length())
             return "";
         stringstream result;
@@ -77,7 +77,7 @@ public:
     void debugClass() {
         data();
         memAddressAndSizes();
-        testfilterNumsAndFillWithZeroes();
+        testFilterNumsAndFillWithZeros();
         int* vds = this->calculateVerificationDigits();
         if (vds[0] != -1) 
             cout << "- testCalculateVerificationDigits    : { " 
@@ -115,10 +115,10 @@ private:
             <<  "- ObjectSize                         : " << sizeof(*this)
             << " bytes" << endl;}
 
-    void testfilterNumsAndFillWithZeroes() {
-        cout << "- filterNumsAndFillWithZeroes(cpf, 5): \""
-            << filterNumsAndFillWithZeroes(cpf, 5) << "\"/\""
-            << filterNumsAndFillWithZeroes(completeCpf, 5) << "\""
+    void testFilterNumsAndFillWithZeros() {
+        cout << "- filterNumsAndFillWithZeros(cpf, 5): \""
+            << filterNumsAndFillWithZeros(cpf, 5) << "\"/\""
+            << filterNumsAndFillWithZeros(completeCpf, 5) << "\""
             << endl;}
     
     string repeat(const char& c, int n) {
@@ -181,7 +181,7 @@ int main(int argc, char* argv[]) {
         demo(option2);
         return 0;}
     unique_ptr<Cpf> aux(new Cpf());
-    if (!aux->filterNumsAndFillWithZeroes(option2, 1).length()) {
+    if (!aux->filterNumsAndFillWithZeros(option2, 1).length()) {
         cout << "ERRO: o CPF informado não possui números." << endl << endl;
         help_user();
         return 1;}
@@ -193,7 +193,7 @@ int main(int argc, char* argv[]) {
         cout << "CPF informado: " << cpf->format(false) << endl
             <<  "CPF completo : " << cCpf << endl
             <<  "               "
-            << cpf->filterNumsAndFillWithZeroes(cCpf, 11) << endl
+            << cpf->filterNumsAndFillWithZeros(cCpf, 11) << endl
             << "{ " << dvs[0] << ", " << dvs[1] << " }" << endl;}
     else if (option1 == "--formatar" || option1 == "-f") {
         unique_ptr<Cpf> cpf(new Cpf("", option2));
