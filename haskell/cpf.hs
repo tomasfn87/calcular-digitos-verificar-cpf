@@ -15,14 +15,14 @@ main = do
             let filteredArg = filterNumsAndFillWithZeros (args !! 1) 1
             if null filteredArg
                 then helpUser
-                else case head args of
-                        "--calcular" -> cliCalculate (args !! 1)
-                        "-c" -> cliCalculate (args !! 1)
-                        "--formatar" -> cliFormat (args !! 1)
-                        "-f" -> cliFormat (args !! 1)
-                        "--verificar" -> cliVerify (args !! 1)
-                        "-v" -> cliVerify (args !! 1)
-                        _ -> helpUser
+            else case head args of
+                    "--calcular" -> cliCalculate (args !! 1)
+                    "-c" -> cliCalculate (args !! 1)
+                    "--formatar" -> cliFormat (args !! 1)
+                    "-f" -> cliFormat (args !! 1)
+                    "--verificar" -> cliVerify (args !! 1)
+                    "-v" -> cliVerify (args !! 1)
+                    _ -> helpUser
         _ -> helpUser
 
 cliCalculate :: String -> IO ()
@@ -121,7 +121,7 @@ verify cpf =
     in d1 == head lastTwoChars && d2 == last lastTwoChars
 
 format :: String -> String
-format cpf =
-    let onlyNums = filterNumsAndFillWithZeros cpf 11
+format cpf = intercalate "." [part1, part2, part3] ++ "-" ++ part4
+    where
+        onlyNums = filterNumsAndFillWithZeros cpf 11
         [part1, part2, part3, part4] = chunksOf 3 onlyNums
-    in intercalate "." [part1, part2, part3] ++ "-" ++ part4
