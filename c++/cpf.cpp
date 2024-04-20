@@ -80,12 +80,14 @@ public:
         testFilterNumsAndFillWithZeros();
         int* vds = this->calculateVerificationDigits();
         if (vds[0] != -1) 
-            cout << "- testCalculateVerificationDigits    : { " 
+            cout << "- testCalculateVerificationDigits   : { " 
                 << vds[0] << ", " << vds[1] << " }" << endl;
-        string cpfF  = this->format(false);
-        string cCpfF  = this->format();
-        cout << "- Format Incomplete CPF              : " << cpfF << endl
-            <<  "- Format Complete   CPF              : " << cCpfF << endl;
+        string cpfF = this->format(false);
+        string cCpfF = this->format();
+        if (cCpfF.length() || cpfF.length()) 
+            cout << "- Format Incomplete CPF             : " << cpfF << endl
+                <<  "- Format Complete   CPF             : " << cCpfF
+                << endl;
         bool v = this->verify();
         cout << "- CPF is " << (v ? "" : "in") << "valid." << endl;}
 
@@ -105,14 +107,14 @@ private:
         return 0;};
 
     void data() {
-        cout << "- Data                               : \"" << cpf << "\"/\""
+        cout << "- Data                              : \"" << cpf << "\"/\""
             << completeCpf << "\"" << endl;}
 
     void memAddressAndSizes() {
-        cout << "- MemAddress                         : " << this << endl
-            <<  "- PointerSize                        : " << sizeof(this)
+        cout << "- MemAddress                        : " << this << endl
+            <<  "- PointerSize                       : " << sizeof(this)
             << " bytes" << endl 
-            <<  "- ObjectSize                         : " << sizeof(*this)
+            <<  "- ObjectSize                        : " << sizeof(*this)
             << " bytes" << endl;}
 
     void testFilterNumsAndFillWithZeros() {
