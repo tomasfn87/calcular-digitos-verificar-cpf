@@ -163,9 +163,9 @@ void demo(string option) {
 
 void help_user() {
     cout << "Digite uma das opções abaixo:" << endl
-        << "- '--calcular'  ou '-c' e um número de CPF;" << endl
-        << "- '--formatar'  ou '-f' e um número de CPF;" << endl
-        << "- '--verificar' ou '-v' e um número de CPF;" << endl
+        << "- '-c' ou '--calcular' e um número de CPF sem os dígitos verificadores;" << endl
+        << "- '-f' ou '--formatar' e um número de CPF completo;" << endl
+        << "- '-v' ou '--verificar' e um número de CPF completo;" << endl
         << "- '--demo';" << endl
         << "- '--demo --delete-test'." << endl;}
 
