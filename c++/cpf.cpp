@@ -31,9 +31,10 @@ public:
     // Move assignment 
     Cpf& operator=(Cpf&& c) = default;
 
-    // Equality operator
-    bool operator==(const Cpf* c) const {
-        return (cpf == c->cpf) && (completeCpf == c->completeCpf);}
+    // Special equality operator: ignores formatted CPF numbers
+    bool operator==(Cpf* c) {
+        return (format() == c->format())
+        && (format(false) == c->format(false));}
 
     string filterNumsAndFillWithZeros(string s, int n) {
         string onlyNums;
@@ -107,9 +108,10 @@ public:
         string cpfF = this->format(false);
         string cCpfF = this->format();
         if (cCpfF.length() || cpfF.length()) 
-            cout << "- Format Incomplete CPF             : " << cpfF << endl
-                <<  "- Format Complete   CPF             : " << cCpfF
-                << endl;
+            cout << "- Format Incomplete CPF             : \"" << cpfF
+                << "\"" << endl
+                <<  "- Format Complete   CPF             : \"" << cCpfF
+                << "\"" << endl;
         bool v = this->verify();
         cout << "- CPF is " << (v ? "" : "in") << "valid." << endl;}
 
@@ -144,74 +146,80 @@ private:
             << filterNumsAndFillWithZeros(cpf, 5) << "\"/\""
             << filterNumsAndFillWithZeros(completeCpf, 5) << "\""
             << endl;}
-    
+
     string repeat(const char& c, int n) {
         stringstream ss;
         for (int i = 0; i < n; ++i) {
             ss << c;}
         return ss.str();}};
 
-void demo(string option) {
-    Cpf* cpf = new Cpf();
-    cout << "Cpf* cpf = new Cpf()" << endl;
-    cpf->debugClass();
+void smartCompareCpfObjects(
+    string cpfA, Cpf* pCpfA, string cpfB, Cpf* pCpfB) {
+    cout << "- `" + cpfA + "` is " << (pCpfA != *pCpfB ? "not " : "") 
+        << "equal to `" << cpfB << "`." << endl;}
+
+Cpf* createDefaultCpfObject(string varName) {
+    Cpf* c = new Cpf();
+    cout << "Cpf* " << varName << " = new Cpf()" << endl;
+    return c;}
+
+Cpf* createCpfObject(string varName, string cpf, string completeCpf) {
+    Cpf* c = new Cpf(cpf, completeCpf);
+    cout << "Cpf* " << varName << " = new Cpf(\"" << cpf << "\", "
+        << "\"" << completeCpf << "\")" << endl;
+    return c;}
+
+Cpf* copyCpfObject(
+    string newCpf, string oldCpf, Cpf* pOldCpf) {
+    cout << "Cpf* " << newCpf << " = new Cpf(*" << oldCpf << ")" << endl;
+    Cpf* pNewCpf = new Cpf(*pOldCpf);
+    return pNewCpf;}
+
+void deleteTest(string varName, Cpf* cpf, string option="") {
     if (option == "--delete-test") {
-        cout << "- deleting `cpf`" << endl;
+        cout << "- deleting `" << varName << "`" << endl;
         delete cpf;
-        cpf = nullptr;}
+        cpf = nullptr;}}
+
+void demo(string option) {
+    Cpf* cpf = createDefaultCpfObject("cpf");
+    cpf->debugClass();
+    deleteTest("cpf", cpf, option);
     cout << endl;
 
-    Cpf* cpf1 = new Cpf("0", "00");
-    cout << "Cpf* cpf1 = new Cpf(\"0\", \"00\")" << endl;
+    Cpf* cpf1 = createCpfObject("cpf1", "0", "00");
     cpf1->debugClass();
-    if (option == "--delete-test") {
-        cout << "- deleting `cpf1`" << endl;
-        delete cpf1;
-        cpf1 = nullptr;}
+    deleteTest("cpf1", cpf1, option);
     cout << endl;
 
-    Cpf* cpf2 = new Cpf("test...1 2 3", "testing...1 2 3");
-    cout << "Cpf* cpf2 = new Cpf(\"test...1 2 3\", \"testing...1 2 3\""
-        << endl;
+    Cpf* cpf2 = createCpfObject("cpf2", "test...1 2 3", "testing...1 2 3");
     cpf2->debugClass();
-    if (option == "--delete-test") {
-        cout << "- deleting `cpf2`" << endl;
-        delete cpf2;
-        cpf2 = nullptr;}
     cout << endl;
 
-    Cpf* cpf3 = new Cpf("111.444.777", "111.444.777-35");
-    cout << "Cpf* cpf3 = new Cpf(\"111.444.777\", \"111.444.777-35\")" << endl;
+    Cpf* cpf3 = createCpfObject("cpf3", "003.444.777", "003.444.777-62");
     cpf3->debugClass();
     cout << endl;
-    
-    Cpf* cpf4 = new Cpf(*cpf3);
-    cout << "Cpf* cpf4 = new Cpf(*cpf3)" << endl;
+
+    Cpf* cpf4 = copyCpfObject("cpf4", "cpf3", cpf3);
     cout << endl;
 
-    Cpf* cpf5 = new Cpf("111.444.777", "111.444.777-35");
-    cout << "new Cpf(\"111.444.777\", \"111.444.777-35\")" << endl;
+    Cpf* cpf5 = createCpfObject("cpf5", "03.444.777", "03.444.777-62");
     cpf5->debugClass();
     cout << endl;
-    
-    cout << "`cpf3` is ";
-    if (!(cpf3 == *cpf4))
-        cout << "not ";
-    cout << "equal to `cpf4`." << endl;
-    
-    cout << "`cpf3` is ";
-    if (!(cpf3 == *cpf5))
-        cout << "not ";
-    cout << "equal to `cpf5`." << endl;
-    
-    if (option == "--delete-test") {
-        cout << endl;
-        cout << "- deleting `cpf3`" << endl;
-        cout << endl;
-        delete cpf3;
-        cpf3 = nullptr;}
+
+    Cpf* cpf6 = createCpfObject("cpf6", "3444777", "344477762");
+    cpf6->debugClass();
+    cout << endl;
+
+    smartCompareCpfObjects("cpf3", cpf3, "cpf4", cpf4);
+    smartCompareCpfObjects("cpf3", cpf3, "cpf5", cpf5);
+    smartCompareCpfObjects("cpf3", cpf3, "cpf6", cpf6);
 
     if (option == "--delete-test") {
+        cout << endl;
+        deleteTest("cpf3", cpf3, option);
+        cout << endl;
+
         cout << "`cpf4` is accessible after deleting `cpf3`" << endl;
         cpf4->debugClass();}}
 
