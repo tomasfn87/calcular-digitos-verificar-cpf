@@ -84,8 +84,10 @@ demo = do
 helpUser :: IO ()
 helpUser = do
     putStrLn $ "Digite uma das opções abaixo:"
-    putStrLn $ "- '--calcular'  ou '-c' e número de CPF;"
-    putStrLn $ "- '--verificar' ou '-v' e número de CPF;"
+    putStr $ "- '-c' ou '--calcular' e um número de CPF sem os dígitos "
+    putStrLn $ "verificadores;"
+    putStrLn $ "- '-f' ou '--formatar' e um número de CPF completo;"
+    putStrLn $ "- '-v' ou '--verificar' e um número de CPF completo;"
     putStrLn $ "- '--demo'."
 
 filterNumsAndFillWithZeros :: String -> Int -> String
