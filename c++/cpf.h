@@ -5,8 +5,14 @@
 
 class Cpf {
     public:
-        Cpf(std::string cpf="", std::string completeCpf="");
+        Cpf(std::string cpf, std::string completeCpf);
+        Cpf();
         ~Cpf();
+        Cpf(const Cpf&);
+        Cpf& operator=(const Cpf&);
+        Cpf(Cpf&& cpf);
+        Cpf& operator=(Cpf&&);
+        bool operator==(const Cpf*) const;
         std::string filterNumsAndFillWithZeros(std::string s);
         int* calculateVerificationDigits();
         bool verify();

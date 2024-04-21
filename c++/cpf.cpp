@@ -8,10 +8,32 @@ using namespace std;
 
 class Cpf {
 public:
-    Cpf(string cpf="", string completeCpf=""):
-        cpf(cpf), completeCpf(completeCpf) {}
+    // Standard constructor
+    Cpf(string cpf, string completeCpf):
+        cpf(cpf), 
+        completeCpf(completeCpf) {}
 
+    // Default constructor
+    Cpf() {}
+
+    // Destructor
     ~Cpf() {}
+
+    // Copy constructor
+    Cpf(const Cpf& c) = default;
+
+    // Copy assignment operator
+    Cpf& operator=(const Cpf& c) = default;
+
+    // Move constructor
+    Cpf(Cpf&& c) = default;
+
+    // Move assignment 
+    Cpf& operator=(Cpf&& c) = default;
+
+    // Equality operator
+    bool operator==(const Cpf* c) const {
+        return (cpf == c->cpf) && (completeCpf == c->completeCpf);}
 
     string filterNumsAndFillWithZeros(string s, int n) {
         string onlyNums;
@@ -131,7 +153,7 @@ private:
 
 void demo(string option) {
     Cpf* cpf = new Cpf();
-    cout << "new Cpf()" << endl;
+    cout << "Cpf* cpf = new Cpf()" << endl;
     cpf->debugClass();
     if (option == "--delete-test") {
         cout << "- deleting `cpf`" << endl;
@@ -140,7 +162,7 @@ void demo(string option) {
     cout << endl;
 
     Cpf* cpf1 = new Cpf("0", "00");
-    cout << "new Cpf(\"0\", \"00\")" << endl;
+    cout << "Cpf* cpf1 = new Cpf(\"0\", \"00\")" << endl;
     cpf1->debugClass();
     if (option == "--delete-test") {
         cout << "- deleting `cpf1`" << endl;
@@ -148,8 +170,9 @@ void demo(string option) {
         cpf1 = nullptr;}
     cout << endl;
 
-    Cpf* cpf2 = new Cpf("test...1...2...3", "testing...1...2...3");
-    cout << "new Cpf(\"test...1...2...3\", \"testing...1...2...3\")" << endl;
+    Cpf* cpf2 = new Cpf("test...1 2 3", "testing...1 2 3");
+    cout << "Cpf* cpf2 = new Cpf(\"test...1 2 3\", \"testing...1 2 3\""
+        << endl;
     cpf2->debugClass();
     if (option == "--delete-test") {
         cout << "- deleting `cpf2`" << endl;
@@ -158,12 +181,44 @@ void demo(string option) {
     cout << endl;
 
     Cpf* cpf3 = new Cpf("111.444.777", "111.444.777-35");
+    cout << "Cpf* cpf3 = new Cpf(\"111.444.777\", \"111.444.777-35\")" << endl;
+    cpf3->debugClass();
+    cout << endl;
+    
+    Cpf* cpf4 = new Cpf(*cpf3);
+    cout << "Cpf* cpf4 = new Cpf(*cpf3)" << endl;
+    cout << endl;
+
+    Cpf* cpf5 = new Cpf("111.444.777", "111.444.777-35");
     cout << "new Cpf(\"111.444.777\", \"111.444.777-35\")" << endl;
-    cpf3->debugClass();}
+    cpf5->debugClass();
+    cout << endl;
+    
+    cout << "`cpf3` is ";
+    if (!(cpf3 == *cpf4))
+        cout << "not ";
+    cout << "equal to `cpf4`." << endl;
+    
+    cout << "`cpf3` is ";
+    if (!(cpf3 == *cpf5))
+        cout << "not ";
+    cout << "equal to `cpf5`." << endl;
+    
+    if (option == "--delete-test") {
+        cout << endl;
+        cout << "- deleting `cpf3`" << endl;
+        cout << endl;
+        delete cpf3;
+        cpf3 = nullptr;}
+
+    if (option == "--delete-test") {
+        cout << "`cpf4` is accessible after deleting `cpf3`" << endl;
+        cpf4->debugClass();}}
 
 void help_user() {
     cout << "Digite uma das opções abaixo:" << endl
-        << "- '-c' ou '--calcular' e um número de CPF sem os dígitos verificadores;" << endl
+        << "- '-c' ou '--calcular' e um número de CPF sem os dígitos " 
+        << "verificadores;" << endl
         << "- '-f' ou '--formatar' e um número de CPF completo;" << endl
         << "- '-v' ou '--verificar' e um número de CPF completo;" << endl
         << "- '--demo';" << endl
@@ -211,3 +266,4 @@ int main(int argc, char* argv[]) {
         help_user();
         return 1;}
     return 0;}
+
