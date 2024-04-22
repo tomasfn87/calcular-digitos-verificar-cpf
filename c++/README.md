@@ -14,7 +14,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ### Compilar
 
 ```console
-g++ -std=c++20 -I. cpf.cpp -o cpf
+g++ -std=c++20 -I. main.cpp cpf.cpp -o cpf
 ```
 
 ### Executar
@@ -45,6 +45,9 @@ g++ -std=c++20 -I. cpf.cpp -o cpf
 ```console
 ./cpf --demo
 ```
+
+- A classe `Cpf` suporta comparação de objetos ignorando a formatação:
+  - __Exemplo__: a comparação entre os membros `cpfComplete` com valores `"12345678909"` e `"123.456.789-09"` resultará em verdadeiro.
 
 ##### `--delete-test` option
 
