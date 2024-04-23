@@ -1,17 +1,37 @@
-#include "cpf.h"
+export module cpf;
 
-#include <cctype>
-#include <iostream>
-#include <memory>
-#include <sstream>
-#include <string>
+import <cctype>;
+import <iostream>;
+import <memory>;
+import <sstream>;
+import <string>;
 
-using namespace std;
+export class Cpf {
+public:
+    Cpf(std::string cpf, std::string completeCpf);
+    Cpf();
+    ~Cpf();
+    Cpf(const Cpf&);
+    Cpf& operator=(const Cpf&);
+    Cpf(Cpf&& cpf);
+    Cpf& operator=(Cpf&&);
+    bool operator==(Cpf*);
+    std::string filterNumsAndFillWithZeros(std::string s, int n);
+    int* calculateVerificationDigits();
+    bool verify();
+    std::string format(bool complete=true);
+    void debugClass();
+private:
+    std::string cpf, completeCpf;
+    void data();
+    int calculateVerificationDigit(std::string onlyNums);
+    void memAddressAndSizes();
+    void testFilterNumsAndFillWithZeros();
+    std::string repeat(const char& s, int n);};
 
 // Standard constructor
-Cpf::Cpf(string cpf, string completeCpf):
-    cpf(cpf), 
-    completeCpf(completeCpf) {}
+Cpf::Cpf(std::string cpf, std::string completeCpf):
+    cpf(cpf), completeCpf(completeCpf) {}
 
 // Default constructor
 Cpf::Cpf() {}
@@ -34,10 +54,10 @@ Cpf& Cpf::operator=(Cpf&& c) = default;
 // Special equality operator: ignores formatted CPF numbers
 bool Cpf::operator==(Cpf* c) {
     return (format() == c->format())
-    && (format(false) == c->format(false));}
+        && (format(false) == c->format(false));}
 
-string Cpf::filterNumsAndFillWithZeros(string s, int n) {
-    string onlyNums;
+export std::string Cpf::filterNumsAndFillWithZeros(std::string s, int n) {
+    std::string onlyNums;
     int count = 0;
     for (char c : s) {
         if (isdigit(c)) {
@@ -51,44 +71,45 @@ string Cpf::filterNumsAndFillWithZeros(string s, int n) {
         onlyNums = repeat('0', n - count) + onlyNums;
     return onlyNums;}
 
-int* Cpf::calculateVerificationDigits() {
+export int* Cpf::calculateVerificationDigits() {
     static int verificationDigits[2] = { -1, -1 };
-    string onlyNums = filterNumsAndFillWithZeros(cpf, 9);
-    if (!onlyNums.length())
+    std::stringstream onlyNums;
+    onlyNums << filterNumsAndFillWithZeros(cpf, 9);
+    if (!onlyNums.str().length())
         return verificationDigits;
-    verificationDigits[0] = calculateVerificationDigit(onlyNums);
-    onlyNums += to_string(verificationDigits[0]);
-    verificationDigits[1] = calculateVerificationDigit(onlyNums);
+    verificationDigits[0] = calculateVerificationDigit(onlyNums.str());
+    onlyNums << verificationDigits[0];
+    verificationDigits[1] = calculateVerificationDigit(onlyNums.str());
     return verificationDigits;};
 
-bool Cpf::verify() {
-    string onlyNums = filterNumsAndFillWithZeros(completeCpf, 11);
+export bool Cpf::verify() {
+    std::string onlyNums = filterNumsAndFillWithZeros(completeCpf, 11);
     if (!onlyNums.length())
         return false;
     const int numOfVds = 2;
     int receivedVds[numOfVds] = { 
         onlyNums[onlyNums.length() - 2] - '0',
         onlyNums[onlyNums.length() - 1] - '0'};
-    string receivedCpf = onlyNums.erase(onlyNums.size() - numOfVds);
-    unique_ptr<Cpf> cpf(new Cpf(receivedCpf, ""));
+    std::string receivedCpf = onlyNums.erase(onlyNums.size() - numOfVds);
+    std::unique_ptr<Cpf> cpf(new Cpf(receivedCpf, ""));
     int* calculatedVds = cpf->calculateVerificationDigits();
     for (int i = 0; i < numOfVds; ++i)
         if (receivedVds[i] != calculatedVds[i])
             return false;
     return true;}
 
-string Cpf::format(bool complete) {
+export std::string Cpf::format(bool complete) {
     int length = 11;
     if (!complete)
         length -= 2;
-    string onlyNums;
+    std::string onlyNums;
     if (complete)
         onlyNums = filterNumsAndFillWithZeros(completeCpf, length);
     else
         onlyNums = filterNumsAndFillWithZeros(cpf, length);
     if (!onlyNums.length())
         return "";
-    stringstream result;
+    std::stringstream result;
     result << onlyNums.substr(0, 3) << '.'
         <<    onlyNums.substr(3, 3) << '.'
         <<    onlyNums.substr(6, 3);
@@ -97,25 +118,25 @@ string Cpf::format(bool complete) {
     result << '-' << onlyNums.substr(9, 2);
     return result.str();};
 
-void Cpf::debugClass() {
+export void Cpf::debugClass() {
     data();
     memAddressAndSizes();
     testFilterNumsAndFillWithZeros();
     int* vds = this->calculateVerificationDigits();
     if (vds[0] != -1) 
-        cout << "- testCalculateVerificationDigits   : { " 
-            << vds[0] << ", " << vds[1] << " }" << endl;
-    string cpfF = this->format(false);
-    string cCpfF = this->format();
+        std::cout << "- calculateVerificationDigits       : { " 
+            << vds[0] << ", " << vds[1] << " }" << std::endl;
+    std::string cpfF = this->format(false);
+    std::string cCpfF = this->format();
     if (cCpfF.length() || cpfF.length()) 
-        cout << "- Format Incomplete CPF             : \"" << cpfF
-            << "\"" << endl
+        std::cout << "- Format Incomplete CPF             : \"" << cpfF
+            << "\"" << std::endl
             <<  "- Format Complete   CPF             : \"" << cCpfF
-            << "\"" << endl;
+            << "\"" << std::endl;
     bool v = this->verify();
-    cout << "- CPF is " << (v ? "" : "in") << "valid." << endl;}
+    std::cout << "- CPF is " << (v ? "" : "in") << "valid." << std::endl;}
 
-int Cpf::calculateVerificationDigit(string onlyNums) {
+int Cpf::calculateVerificationDigit(std::string onlyNums) {
     int sum = 0;
     int factor, mod;
     factor = onlyNums.length() + 1;
@@ -128,24 +149,24 @@ int Cpf::calculateVerificationDigit(string onlyNums) {
     return 0;};
 
 void Cpf::data() {
-    cout << "- Data                              : \"" << cpf << "\"/\""
-        << completeCpf << "\"" << endl;}
+    std::cout << "- Data                              : \"" << cpf << "\"/\""
+        << completeCpf << "\"" << std::endl;}
 
 void Cpf::memAddressAndSizes() {
-    cout << "- MemAddress                        : " << this << endl
+    std::cout << "- MemAddress                        : " << this << std::endl
         <<  "- PointerSize                       : " << sizeof(this)
-        << " bytes" << endl 
+        << " bytes" << std::endl 
         <<  "- ObjectSize                        : " << sizeof(*this)
-        << " bytes" << endl;}
+        << " bytes" << std::endl;}
 
 void Cpf::testFilterNumsAndFillWithZeros() {
-    cout << "- filterNumsAndFillWithZeros(cpf, 5): \""
+    std::cout << "- filterNumsAndFillWithZeros(cpf, 5): \""
         << filterNumsAndFillWithZeros(cpf, 5) << "\"/\""
         << filterNumsAndFillWithZeros(completeCpf, 5) << "\""
-        << endl;}
+        << std::endl;}
 
-string Cpf::repeat(const char& c, int n) {
-    stringstream ss;
+std::string Cpf::repeat(const char& c, int n) {
+    std::stringstream ss;
     for (int i = 0; i < n; ++i) {
         ss << c;}
     return ss.str();}

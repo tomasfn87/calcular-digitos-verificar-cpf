@@ -13,36 +13,36 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 ### Compilar
 
-```console
-g++ -std=c++20 -I. main.cpp cpf.cpp -o cpf
+```shell
+chmod +x compile.sh && ./compile.sh
 ```
 
 ### Executar
 
 #### Cálculo Dígitos Verificadores
 
-```console
+```shell
 ./cpf -c 123.456.789-XX
 ./cpf --calcular 123.456.789-XX
 ```
 
 #### Formatação
 
-```console
+```shell
 ./cpf -f 123456789_09
 ./cpf --formatar 12345678990
 ```
 
 #### Verificação
 
-```console
+```shell
 ./cpf -v 123.456.789-09
 ./cpf --verificar 123.456.789-90
 ```
 
 #### Demo
 
-```console
+```shell
 ./cpf --demo
 ```
 
@@ -51,8 +51,8 @@ g++ -std=c++20 -I. main.cpp cpf.cpp -o cpf
 
 ##### `--delete-test` option
 
-```console
+```shell
 ./cpf --demo --delete-test
 ```
 
-- The `--delete-test` option deletes the first 3/4 objects (note the memory address changes when turning the flag on and off).
+- A opção `--delete-test` irá deletar alguns objetos (notar o endereço de cada objeto na memória com e sem a opção ligada).

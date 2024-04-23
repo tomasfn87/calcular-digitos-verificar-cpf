@@ -1,14 +1,15 @@
-#include "cpf.h"
+import cpf;
 
-#include <iostream>
-#include <memory>
-#include <string>
+import <iostream>;
+import <memory>;
+import <string>;
+import <sstream>;
 
 using namespace std;
 
 void smartCompareCpfObjects(
     string cpfA, Cpf* pCpfA, string cpfB, Cpf* pCpfB) {
-    cout << "- `" + cpfA + "` is " << (pCpfA != *pCpfB ? "not " : "")
+    cout << "- `" + cpfA + "` is " << (!(pCpfA == *pCpfB) ? "not " : "")
         << "equal to `" << cpfB << "`." << endl;}
 
 Cpf* createDefaultCpfObject(string varName) {
@@ -47,6 +48,7 @@ void demo(string option) {
 
     Cpf* cpf2 = createCpfObject("cpf2", "test...1 2 3", "testing...1 2 3");
     cpf2->debugClass();
+    deleteTest("cpf2", cpf2, option);
     cout << endl;
 
     Cpf* cpf3 = createCpfObject("cpf3", "003.444.777", "003.444.777-62");
@@ -99,19 +101,20 @@ int main(int argc, char* argv[]) {
         demo(option2);
         return 0;}
     unique_ptr<Cpf> aux(new Cpf());
-    if (!aux->filterNumsAndFillWithZeros(option2, 1).length()) {
+    if (argc > 2 && !aux->filterNumsAndFillWithZeros(option2, 1).length()) {
         cout << "ERRO: o CPF informado não possui números." << endl << endl;
         help_user();
         return 1;}
     if (option1 == "--calcular" || option1 == "-c") {
         unique_ptr<Cpf> cpf(new Cpf(option2, ""));
         int* dvs = cpf->calculateVerificationDigits();
-        string cCpf = cpf->format(false);
-        cCpf += "-" + to_string(dvs[0]) + to_string(dvs[1]);
+        stringstream cCpf;
+        cCpf << cpf->format(false);
+        cCpf << "-" << dvs[0] << dvs[1];
         cout << "CPF informado: " << cpf->format(false) << endl
-            <<  "CPF completo : " << cCpf << endl
+            <<  "CPF completo : " << cCpf.str() << endl
             <<  "               "
-            << cpf->filterNumsAndFillWithZeros(cCpf, 11) << endl
+            << cpf->filterNumsAndFillWithZeros(cCpf.str(), 11) << endl
             << "{ " << dvs[0] << ", " << dvs[1] << " }" << endl;}
     else if (option1 == "--formatar" || option1 == "-f") {
         unique_ptr<Cpf> cpf(new Cpf("", option2));
