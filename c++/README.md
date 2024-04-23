@@ -17,6 +17,12 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 chmod +x compile.sh && ./compile.sh
 ```
 
+### Recompilar
+
+```shell
+chmod +x recompile.sh && ./recompile.sh
+```
+
 ### Executar
 
 #### Cálculo Dígitos Verificadores
