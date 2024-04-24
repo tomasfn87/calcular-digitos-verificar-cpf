@@ -15,7 +15,8 @@ public:
     Cpf& operator=(const Cpf&);
     Cpf(Cpf&& cpf);
     Cpf& operator=(Cpf&&);
-    bool operator==(Cpf*);
+    bool operator==(Cpf&);
+    bool operator!=(Cpf&);
     std::string filterNumsAndFillWithZeros(std::string s, int n);
     int* calculateVerificationDigits();
     bool verify();
@@ -52,9 +53,12 @@ Cpf::Cpf(Cpf&& c) = default;
 Cpf& Cpf::operator=(Cpf&& c) = default;
 
 // Special equality operator: ignores formatted CPF numbers
-bool Cpf::operator==(Cpf* c) {
-    return (format() == c->format())
-        && (format(false) == c->format(false));}
+bool Cpf::operator==(Cpf& c) {
+    return (format() == c.format())
+        && (format(false) == c.format(false));}
+
+bool Cpf::operator!=(Cpf& c) {
+    return !(*this == c);}
 
 export std::string Cpf::filterNumsAndFillWithZeros(std::string s, int n) {
     std::string onlyNums;

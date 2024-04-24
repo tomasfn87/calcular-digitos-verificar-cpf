@@ -8,8 +8,8 @@ import <sstream>;
 using namespace std;
 
 void smartCompareCpfObjects(
-    string cpfA, Cpf* pCpfA, string cpfB, Cpf* pCpfB) {
-    cout << "- `" + cpfA + "` is " << (!(pCpfA == *pCpfB) ? "not " : "")
+    string cpfA, Cpf& pCpfA, string cpfB, Cpf& pCpfB) {
+    cout << "- `" + cpfA + "` is " << (pCpfA != pCpfB ? "not " : "")
         << "equal to `" << cpfB << "`." << endl;}
 
 Cpf* createDefaultCpfObject(string varName) {
@@ -66,9 +66,9 @@ void demo(string option) {
     cpf6->debugClass();
     cout << endl;
 
-    smartCompareCpfObjects("cpf3", cpf3, "cpf4", cpf4);
-    smartCompareCpfObjects("cpf3", cpf3, "cpf5", cpf5);
-    smartCompareCpfObjects("cpf3", cpf3, "cpf6", cpf6);
+    smartCompareCpfObjects("cpf3", *cpf3, "cpf4", *cpf4);
+    smartCompareCpfObjects("cpf3", *cpf3, "cpf5", *cpf5);
+    smartCompareCpfObjects("cpf3", *cpf3, "cpf6", *cpf6);
 
     if (option == "--delete-test") {
         cout << endl;
