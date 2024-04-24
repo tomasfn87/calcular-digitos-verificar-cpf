@@ -9,8 +9,10 @@ using namespace std;
 
 void smartCompareCpfObjects(
     string cpfA, Cpf& pCpfA, string cpfB, Cpf& pCpfB) {
-    cout << "- `" + cpfA + "` is " << (pCpfA != pCpfB ? "not " : "")
-        << "equal to `" << cpfB << "`." << endl;}
+    cout << "- `" << cpfA << "` is " << (pCpfA != pCpfB ? "not " : "")
+        << "equal to `" << cpfB << "`;" << endl
+        <<  "    `&" << cpfA << "`: " << &pCpfA
+        << "; `&" << cpfB << "`: " << &pCpfB << "." << endl;}
 
 Cpf* createDefaultCpfObject(string varName) {
     Cpf* c = new Cpf();
@@ -67,7 +69,9 @@ void demo(string option) {
     cout << endl;
 
     smartCompareCpfObjects("cpf3", *cpf3, "cpf4", *cpf4);
+    cout << endl;
     smartCompareCpfObjects("cpf3", *cpf3, "cpf5", *cpf5);
+    cout << endl;
     smartCompareCpfObjects("cpf3", *cpf3, "cpf6", *cpf6);
 
     if (option == "--delete-test") {

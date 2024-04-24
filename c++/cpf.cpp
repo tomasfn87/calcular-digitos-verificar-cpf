@@ -126,17 +126,15 @@ export void Cpf::debugClass() {
     data();
     memAddressAndSizes();
     testFilterNumsAndFillWithZeros();
+    std::string cpfF = this->format(false);
+    std::string cCpfF = this->format();
+    if (cCpfF.length() || cpfF.length()) 
+        std::cout << "- Format CPF                        : \"" << cpfF
+            <<  "\"/\"" << cCpfF << "\"" << std::endl;
     int* vds = this->calculateVerificationDigits();
     if (vds[0] != -1) 
         std::cout << "- calculateVerificationDigits       : { " 
             << vds[0] << ", " << vds[1] << " }" << std::endl;
-    std::string cpfF = this->format(false);
-    std::string cCpfF = this->format();
-    if (cCpfF.length() || cpfF.length()) 
-        std::cout << "- Format Incomplete CPF             : \"" << cpfF
-            << "\"" << std::endl
-            <<  "- Format Complete   CPF             : \"" << cCpfF
-            << "\"" << std::endl;
     bool v = this->verify();
     std::cout << "- CPF is " << (v ? "" : "in") << "valid." << std::endl;}
 
@@ -158,10 +156,8 @@ void Cpf::data() {
 
 void Cpf::memAddressAndSizes() {
     std::cout << "- MemAddress                        : " << this << std::endl
-        <<  "- PointerSize                       : " << sizeof(this)
-        << " bytes" << std::endl 
-        <<  "- ObjectSize                        : " << sizeof(*this)
-        << " bytes" << std::endl;}
+        <<  "- PointerSize/ObjectSize            : " << sizeof(this)
+        << " bytes/" << sizeof(*this) << " bytes" << std::endl;}
 
 void Cpf::testFilterNumsAndFillWithZeros() {
     std::cout << "- filterNumsAndFillWithZeros(cpf, 5): \""
