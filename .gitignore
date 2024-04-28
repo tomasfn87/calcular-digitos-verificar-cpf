@@ -8,8 +8,14 @@
 # python
 /python/__pycache__
 
+# visual studio
+*.vs
+
 # vscode
 *.vscode/
+
+# c++ modules
+*gcm.cache
 
 # asdf folder
 .tool-versions
