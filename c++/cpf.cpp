@@ -63,8 +63,7 @@ bool Cpf::operator!=(Cpf& c) {
     return !(*this == c);}
 
 export bool Cpf::hasANumber(std::string s) {
-    return filterNumsAndFillWithZeros(s, 1).length() != 0;
-}
+    return filterNumsAndFillWithZeros(s, 1).length() != 0;}
 
 export int* Cpf::calculateVerificationDigits() {
     static int verificationDigits[2] = { -1, -1 };
@@ -75,7 +74,7 @@ export int* Cpf::calculateVerificationDigits() {
     verificationDigits[0] = calculateVerificationDigit(onlyNums.str());
     onlyNums << verificationDigits[0];
     verificationDigits[1] = calculateVerificationDigit(onlyNums.str());
-    return verificationDigits;};
+    return verificationDigits;}
 
 export bool Cpf::verify() {
     std::string onlyNums = filterNumsAndFillWithZeros(completeCpf, 11);
@@ -94,14 +93,7 @@ export bool Cpf::verify() {
     return true;}
 
 export std::string Cpf::format(bool complete) {
-    int length = 9;
-    if (complete)
-        length += 2;
-    std::string onlyNums;
-    if (complete)
-        onlyNums = filterNumsAndFillWithZeros(completeCpf, length);
-    else
-        onlyNums = filterNumsAndFillWithZeros(cpf, length);
+    std::string onlyNums = clean(complete);
     if (!onlyNums.length())
         return "";
     std::stringstream result;
@@ -111,30 +103,30 @@ export std::string Cpf::format(bool complete) {
     if (!complete)
         return result.str();
     result << '-' << onlyNums.substr(9, 2);
-    return result.str();};
+    return result.str();}
 
 export std::string Cpf::clean(bool complete) {
     std::string result;
     int length = 9;
-    if (complete) length += 2;
+    if (complete)
+        length += 2;
     if (complete)
         result = completeCpf;
     else
         result = cpf;
-    return filterNumsAndFillWithZeros(result, length);};
+    return filterNumsAndFillWithZeros(result, length);}
 
 export void Cpf::debugClass() {
     data();
     memAddressAndSizes();
-    testFilterNumsAndFillWithZeros();
-    std::string cpfF = this->format(false);
-    std::string cCpfF = this->format();
-    if (cCpfF.length() || cpfF.length()) 
-        std::cout << "- Format CPF                        : \"" << cpfF
-            <<  "\"/\"" << cCpfF << "\"" << std::endl;
+    if (this->clean(false).length() || this->clean().length())
+        std::cout << "- Format CPF         : \"" << this->format(false)
+            << "\"/\"" << this->format() << "\"" << std::endl
+            <<       "- Clean CPF          : \"" << this->clean(false)
+            << "\"/\"" << this->clean() << "\"" << std::endl;
     int* vds = this->calculateVerificationDigits();
     if (vds[0] != -1) 
-        std::cout << "- calculateVerificationDigits       : { " 
+        std::cout << "- Verification Digits: { " 
             << vds[0] << ", " << vds[1] << " }" << std::endl;
     bool v = this->verify();
     std::cout << "- CPF is " << (v ? "" : "in") << "valid." << std::endl;}
@@ -164,22 +156,16 @@ int Cpf::calculateVerificationDigit(std::string onlyNums) {
     mod = sum % 11;
     if (mod > 1) 
         return 11 - mod;
-    return 0;};
+    return 0;}
 
 void Cpf::data() {
-    std::cout << "- Data                              : \"" << cpf << "\"/\""
+    std::cout << "- Data               : \"" << cpf << "\"/\""
         << completeCpf << "\"" << std::endl;}
 
 void Cpf::memAddressAndSizes() {
-    std::cout << "- MemAddress                        : " << this << std::endl
-        <<  "- PointerSize/ObjectSize            : " << sizeof(this)
+    std::cout << "- Memory Address     : " << this << std::endl
+        <<       "- Pointer/Object Size: " << sizeof(this)
         << " bytes/" << sizeof(*this) << " bytes" << std::endl;}
-
-void Cpf::testFilterNumsAndFillWithZeros() {
-    std::cout << "- filterNumsAndFillWithZeros(cpf, 5): \""
-        << filterNumsAndFillWithZeros(cpf, 5) << "\"/\""
-        << filterNumsAndFillWithZeros(completeCpf, 5) << "\""
-        << std::endl;}
 
 std::string Cpf::repeat(const char& c, int n) {
     std::stringstream ss;
