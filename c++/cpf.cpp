@@ -17,7 +17,7 @@ public:
     Cpf& operator=(Cpf&&);
     bool operator==(Cpf&);
     bool operator!=(Cpf&);
-    bool hasANumber(std::string s);
+    static bool hasANumber(std::string s);
     int* calculateVerificationDigits();
     bool verify();
     std::string format(bool complete=true);
@@ -26,11 +26,10 @@ public:
 private:
     std::string cpf, completeCpf;
     void data();
-    std::string filterNumsAndFillWithZeros(std::string s, int n);
+    static std::string filterNumsAndFillWithZeros(std::string s, int n);
     int calculateVerificationDigit(std::string onlyNums);
     void memAddressAndSizes();
-    void testFilterNumsAndFillWithZeros();
-    std::string repeat(const char& s, int n);};
+    static std::string repeat(const char& s, int n);};
 
 // Standard constructor
 Cpf::Cpf(std::string cpf, std::string completeCpf):

@@ -104,8 +104,7 @@ int main(int argc, char* argv[]) {
         cout << endl;
         demo(option2);
         return 0;}
-    unique_ptr<Cpf> aux(new Cpf());
-    if (argc > 2 && !aux->hasANumber(option2)) {
+    if (argc > 2 && Cpf::hasANumber(option2)) {
         cout << "ERRO: o CPF informado não possui números." << endl << endl;
         help_user();
         return 1;}
