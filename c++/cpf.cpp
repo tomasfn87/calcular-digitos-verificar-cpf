@@ -63,7 +63,7 @@ bool Cpf::operator!=(Cpf& c) {
     return !(*this == c);}
 
 export bool Cpf::hasANumber(const std::string s) {
-    return filterNumsAndFillWithZeros(s, 1).length() != 0;}
+    return filterNumsAndFillWithZeros(s, 1).length() > 0;}
 
 export int* Cpf::calculateVerificationDigits() const {
     static int verificationDigits[2] = { -1, -1 };
