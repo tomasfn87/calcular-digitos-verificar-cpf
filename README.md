@@ -21,7 +21,7 @@ _Teste a versão em_ `Go`:
 ### _Instalação_
 
 ```shell
-sudo git clone --depth 1 --no-checkout https://github.com/tomasfn87/calcular-digitos-verificar-cpf /usr/local/lib/calcular-digitos-verificar-cpf && pushd /usr/local/lib/calcular-digitos-verificar-cpf && sudo git sparse-checkout set python/{cpf.py,{calcular_digitos,verificar}_cpf.{py,sh}} && sudo git checkout && sudo mv python/* . && sudo chmod +x *.sh && sudo ln -rs /usr/local/lib/calcular-digitos-verificar-cpf/calcular_digitos_cpf.sh /usr/local/bin/cdcpf && sudo ln -rs /usr/local/lib/calcular-digitos-verificar-cpf/verificar_cpf.sh /usr/local/bin/vcpf && sudo rmdir python && popd && echo "\nUse os comandos vcpf e cdcpf para verificar ou calcular os dígitos de um CPF."
+sudo git clone --depth 1 --no-checkout https://github.com/tomasfn87/calcular-digitos-verificar-cpf /usr/local/lib/calcular-digitos-verificar-cpf && pushd /usr/local/lib/calcular-digitos-verificar-cpf && sudo git sparse-checkout set python/{cpf.py,{calcular_digitos,verificar}_cpf.{py,sh}} && sudo git checkout && sudo mv python/* . && sudo chmod +x *.sh && sudo ln -s /usr/local/lib/calcular-digitos-verificar-cpf/calcular_digitos_cpf.sh /usr/local/bin/cdcpf && sudo ln -s /usr/local/lib/calcular-digitos-verificar-cpf/verificar_cpf.sh /usr/local/bin/vcpf && sudo rmdir python && popd && echo "\nUse os comandos vcpf e cdcpf para verificar ou calcular os dígitos de um CPF."
 ```
 
 ### _Desinstalação_
